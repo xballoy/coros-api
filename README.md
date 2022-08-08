@@ -1,5 +1,8 @@
 # Bulk export Coros activities
 
+⚠️ This repository is using a **non-public API** from [COROS Training Hub](https://t.coros.com/) that could break
+anytime.
+
 > Bulk export your Coros activities to FIT to import them in a 3rd party
 
 ## Getting started
