@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { BASE_URL, CorosResponse } from './common';
-import { TrainingType } from './training-type';
+import { BASE_URL, CorosResponse } from './common.js';
+import { TrainingType } from './training-type.js';
 
 export type QueryActivitiesResponse = {
   count: number;

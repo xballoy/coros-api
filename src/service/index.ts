@@ -1,8 +1,5 @@
-export { downloadActivityDetail } from './downloadActivityDetail';
-export type { DownloadActivityDetailResponse } from './downloadActivityDetail';
-export { downloadFile } from './downloadFile';
-export { login } from './login';
-export type { LoginResponse } from './login';
-export { queryActivities } from './queryActivities';
-export type { QueryActivitiesResponse } from './queryActivities';
-export { TrainingType } from './training-type';
+export { downloadActivityDetail, type DownloadActivityDetailResponse } from './downloadActivityDetail.js';
+export { downloadFile } from './downloadFile.js';
+export { login, type LoginResponse } from './login.js';
+export { queryActivities, type QueryActivitiesResponse } from './queryActivities.js';
+export { TrainingType } from './training-type.js';

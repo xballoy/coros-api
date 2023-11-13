@@ -1,7 +1,7 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
+import stream from 'node:stream/promises';
 import axios from 'axios';
-import stream from 'stream/promises';
 
 export const downloadFile = async (url: string, directory: string, fileName: string): Promise<void> => {
   console.log(`Downloading ${fileName}`);

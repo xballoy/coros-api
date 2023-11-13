@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { BASE_URL, CorosResponse } from './common';
+import { BASE_URL, CorosResponse } from './common.js';
 
 export type DownloadActivityDetailResponse = {
   fileUrl: string;

@@ -1,12 +1,6 @@
 {
-  "extends": "@tsconfig/node18/tsconfig.json",
-  "ts-node": {
-    "transpileOnly": true,
-    "esm": true,
-    "experimentalSpecifierResolution": "node"
-  },
+  "extends": "@tsconfig/node20/tsconfig.json",
   "compilerOptions": {
-    "module": "ESNext",
     "outDir": "build"
   },
   "include": ["src/**/*"]

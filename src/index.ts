@@ -1,41 +1,41 @@
 import meow from 'meow';
 import { parse, format } from 'date-fns';
-import { queryActivities, login, downloadActivityDetail, downloadFile } from './service';
+import { queryActivities, login, downloadActivityDetail, downloadFile } from './service/index.js';
 
 (async () => {
   const cli = meow(
     `
     Usage:
-        ts-node src/index.ts [options]
+        node --loader @swc-node/register/esm src/index.ts [options]
 
     Options:
         -u, --user          Coros username (required)
         -p, --password      Coros password (required)
-        -o, --out           out directory
+        -o, --out           out directory (required)
         -h, --help          print usage information
 `,
     {
       importMeta: import.meta,
       flags: {
         help: {
-          alias: 'h',
+          shortFlag: 'h',
         },
         username: {
           type: 'string',
-          alias: 'u',
+          shortFlag: 'u',
         },
         password: {
           type: 'string',
-          alias: 'p',
+          shortFlag: 'p',
         },
         out: {
           type: 'string',
-          alias: 'o',
+          shortFlag: 'o',
         },
       },
       autoVersion: false,
       autoHelp: true,
-    }
+    },
   );
 
   if (!cli.flags.username || !cli.flags.password || !cli.flags.out) {
