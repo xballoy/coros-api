@@ -1,6 +1,6 @@
+import { createHash } from 'node:crypto';
 import axios, { AxiosResponse } from 'axios';
-import { createHash } from 'crypto';
-import { BASE_URL, CorosResponse } from './common';
+import { BASE_URL, CorosResponse } from './common.js';
 
 type LoginRequest = {
   account: string;
