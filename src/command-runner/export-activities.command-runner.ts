@@ -1,6 +1,9 @@
 import { Command, CommandRunner, Option } from 'nest-commander';
 import { parse, format } from 'date-fns';
-import { queryActivities, login, downloadActivityDetail, downloadFile } from './service';
+import { LoginCommand } from '../service/login.command';
+import { QueryActivitiesCommand } from '../service/query-activities.command';
+import { DownloadActivityDetailCommand } from '../service/download-activity-detail.command';
+import { DownloadFileCommand } from '../service/download-file.command';
 
 type Flags = {
   user: string;
@@ -9,11 +12,20 @@ type Flags = {
 };
 
 @Command({ name: 'export-activities', description: 'Bulk export your Coros activities' })
-export class ExportActivitiesCommand extends CommandRunner {
-  async run(_passedParams: string[], { user, password, outDir }: Flags): Promise<void> {
-    const { accessToken } = await login({ username: user, password });
+export class ExportActivitiesCommandRunner extends CommandRunner {
+  constructor(
+    private readonly loginCommand: LoginCommand,
+    private readonly queryActivitiesCommand: QueryActivitiesCommand,
+    private readonly downloadActivityDetailCommand: DownloadActivityDetailCommand,
+    private readonly downloadFileCommand: DownloadFileCommand,
+  ) {
+    super();
+  }
 
-    const activities = await queryActivities(accessToken)({ size: 100, pageNumber: 1 });
+  async run(_passedParams: string[], { user, password, outDir }: Flags): Promise<void> {
+    const { accessToken } = await this.loginCommand.handle({ username: user, password });
+
+    const activities = await this.queryActivitiesCommand.handle(accessToken, { size: 100, pageNumber: 1 });
     const activitiesToDownload = activities.dataList.map((it) => {
       const activityDate = parse(String(it.date), 'yyyymmdd', new Date());
 
@@ -25,8 +37,8 @@ export class ExportActivitiesCommand extends CommandRunner {
     });
 
     for (const { labelId, sportType, fileName } of activitiesToDownload) {
-      const { fileUrl } = await downloadActivityDetail(accessToken)({ labelId, sportType });
-      await downloadFile(fileUrl, outDir, fileName);
+      const { fileUrl } = await this.downloadActivityDetailCommand.handle(accessToken, { labelId, sportType });
+      await this.downloadFileCommand.handle(fileUrl, outDir, fileName);
     }
   }
 

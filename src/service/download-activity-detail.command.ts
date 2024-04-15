@@ -1,5 +1,7 @@
-import axios, { AxiosResponse } from 'axios';
 import { BASE_URL, CorosResponse } from './common.js';
+import { Injectable } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
+import { AxiosResponse } from 'axios';
 
 export type DownloadActivityDetailResponse = {
   fileUrl: string;
@@ -9,15 +11,21 @@ type DownloadActivityDetail = {
   labelId: string;
   sportType: number;
 };
-export const downloadActivityDetail =
-  (accessToken: string) =>
-  async ({ labelId, sportType }: DownloadActivityDetail): Promise<DownloadActivityDetailResponse> => {
+
+@Injectable()
+export class DownloadActivityDetailCommand {
+  constructor(private readonly httpService: HttpService) {}
+
+  async handle(
+    accessToken: string,
+    { labelId, sportType }: DownloadActivityDetail,
+  ): Promise<DownloadActivityDetailResponse> {
     const url = new URL(`${BASE_URL}/activity/detail/download`);
     url.searchParams.append('labelId', labelId);
     url.searchParams.append('sportType', String(sportType));
     url.searchParams.append('fileType', '4');
 
-    const response = await axios.post<
+    const response = await this.httpService.axiosRef.post<
       CorosResponse<DownloadActivityDetailResponse>,
       AxiosResponse<CorosResponse<DownloadActivityDetailResponse>>
     >(url.toString(), undefined, {
@@ -33,4 +41,5 @@ export const downloadActivityDetail =
     }
 
     return response.data.data;
-  };
+  }
+}

@@ -1,6 +1,7 @@
-import axios from 'axios';
 import { BASE_URL, CorosResponse } from './common.js';
 import { TrainingType } from './training-type.js';
+import { HttpService } from '@nestjs/axios';
+import { Injectable } from '@nestjs/common';
 
 export type QueryActivitiesResponse = {
   count: number;
@@ -76,9 +77,12 @@ type QueryActivities = {
   endDay?: string;
   keywords?: string;
 };
-export const queryActivities =
-  (accessToken: string) =>
-  async ({ size, pageNumber, modeList }: QueryActivities): Promise<QueryActivitiesResponse> => {
+
+@Injectable()
+export class QueryActivitiesCommand {
+  constructor(private readonly httpService: HttpService) {}
+
+  async handle(accessToken: string, { size, pageNumber, modeList }: QueryActivities): Promise<QueryActivitiesResponse> {
     const url = new URL(`${BASE_URL}/activity/query`);
     url.searchParams.append('size', String(size));
     url.searchParams.append('pageNumber', String(pageNumber));
@@ -86,7 +90,7 @@ export const queryActivities =
       url.searchParams.append('modeList', String(modeList));
     }
 
-    const response = await axios.get<CorosResponse<QueryActivitiesResponse>>(url.toString(), {
+    const response = await this.httpService.axiosRef.get<CorosResponse<QueryActivitiesResponse>>(url.toString(), {
       headers: {
         Accept: 'application/json',
         'Accept-Encoding': 'gzip, deflate, br',
@@ -99,4 +103,5 @@ export const queryActivities =
     }
 
     return response.data.data;
-  };
+  }
+}

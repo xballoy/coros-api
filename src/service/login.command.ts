@@ -1,6 +1,8 @@
 import { createHash } from 'node:crypto';
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { BASE_URL, CorosResponse } from './common.js';
+import { Injectable } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
 
 type LoginRequest = {
   account: string;
@@ -87,24 +89,30 @@ export type LoginResponse = {
   };
 };
 
-type Login = {
+type LoginCommandInput = {
   username: string;
   password: string;
 };
-export const login = async ({ username, password }: Login): Promise<LoginResponse> => {
-  const url = `${BASE_URL}/account/login`;
-  const response = await axios.post<
-    CorosResponse<LoginResponse>,
-    AxiosResponse<CorosResponse<LoginResponse>>,
-    LoginRequest
-  >(url, {
-    account: username,
-    accountType: 2,
-    pwd: createHash('md5').update(password).digest('hex'),
-  });
-  if (response.data.result !== '0000') {
-    throw new Error(response.data.message);
-  }
 
-  return response.data.data;
-};
+@Injectable()
+export class LoginCommand {
+  constructor(private readonly httpService: HttpService) {}
+
+  async handle({ username, password }: LoginCommandInput): Promise<LoginResponse> {
+    const url = `${BASE_URL}/account/login`;
+    const response = await this.httpService.axiosRef.post<
+      CorosResponse<LoginResponse>,
+      AxiosResponse<CorosResponse<LoginResponse>>,
+      LoginRequest
+    >(url, {
+      account: username,
+      accountType: 2,
+      pwd: createHash('md5').update(password).digest('hex'),
+    });
+    if (response.data.result !== '0000') {
+      throw new Error(response.data.message);
+    }
+
+    return response.data.data;
+  }
+}
