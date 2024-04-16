@@ -23,7 +23,7 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
   }
 
   async run(_passedParams: string[], { user, password, outDir }: Flags): Promise<void> {
-    const { accessToken } = await this.loginCommand.handle({ username: user, password });
+    const { accessToken } = await this.loginCommand.run({ username: user, password });
 
     const activities = await this.queryActivitiesCommand.handle(accessToken, { size: 100, pageNumber: 1 });
     const activitiesToDownload = activities.dataList.map((it) => {

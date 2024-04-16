@@ -1,118 +1,50 @@
 import { createHash } from 'node:crypto';
-import { AxiosResponse } from 'axios';
-import { BASE_URL, CorosResponse } from './common.js';
+import { BASE_URL, CorosResponse, CorosResponseBase } from './common.js';
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
+import { BaseCommand } from '../command/base.command';
+import { object, ObjectEntries, ObjectSchema, string, parse, Input, is } from 'valibot';
 
-type LoginRequest = {
-  account: string;
-  accountType: number;
-  pwd: string;
-};
-export type LoginResponse = {
-  accessToken: string;
-  birthday: number;
-  countryCode: string;
-  email: string;
-  headPic: string;
-  hrZoneType: number;
-  maxHr: number;
-  newMessageCount: number;
-  nickname: string;
-  regionId: number;
-  rhr: number;
-  runScoreList: {
-    avgPace: number;
-    distance: number;
-    distanceRatio: number;
-    distanceTargetTotal: number;
-    distanceTotal: number;
-    duration: number;
-    durationRatio: number;
-    durationTargetTotal: number;
-    durationTotal: number;
-    trainingLoadRatio: number;
-    trainingLoadTargetTotal: number;
-    trainingLoadTotal: number;
-    type: number;
-  }[];
-  sex: number;
-  stature: number;
-  unit: number;
-  userId: string;
-  userProfile: {
-    acceptTeamInvitation: number;
-    age: number;
-    allowCoachEditing: number;
-    allowMembersView: number;
-    allowsTeamViewHistorical: number;
-    autoTrainingLoadData: number;
-    facade: number;
-    gender: number;
-    language: string;
-    region: number;
-    showActivityMap: number;
-    stature: number;
-    weight: number;
-  };
-  weight: number;
-  zoneData: {
-    lthr: number;
-    lthrZone: {
-      hr: number;
-      index: number;
-      ratio: number;
-    }[];
-    ltsp: number;
-    ltspZone: {
-      index: number;
-      pace: number;
-      ratio: number;
-    }[];
-    ltspZoneDefault: {
-      index: number;
-      pace: number;
-      ratio: number;
-    }[];
-    maxHr: number;
-    maxHrZone: {
-      hr: number;
-      index: number;
-      ratio: number;
-    }[];
-    rhr: number;
-    rhrZone: {
-      hr: number;
-      index: number;
-      ratio: number;
-    }[];
-  };
-};
+const LoginResponse = CorosResponse(
+  object({
+    accessToken: string(),
+  }),
+);
 
-type LoginCommandInput = {
-  username: string;
-  password: string;
-};
+const LoginCommandInput = object({
+  username: string(),
+  password: string(),
+});
+type LoginCommandInput = Input<typeof LoginCommandInput>;
+
+const LoginCommandOutput = object({
+  accessToken: string(),
+});
+type LoginCommandOutput = Input<typeof LoginCommandOutput>;
 
 @Injectable()
-export class LoginCommand {
-  constructor(private readonly httpService: HttpService) {}
+export class LoginCommand extends BaseCommand<LoginCommandInput, Promise<LoginCommandOutput>> {
+  constructor(private readonly httpService: HttpService) {
+    super();
+  }
 
-  async handle({ username, password }: LoginCommandInput): Promise<LoginResponse> {
+  protected inputValidator(): ObjectSchema<ObjectEntries, undefined, LoginCommandInput> {
+    return LoginCommandInput;
+  }
+
+  protected async handle({ username, password }: LoginCommandInput): Promise<LoginCommandOutput> {
     const url = `${BASE_URL}/account/login`;
-    const response = await this.httpService.axiosRef.post<
-      CorosResponse<LoginResponse>,
-      AxiosResponse<CorosResponse<LoginResponse>>,
-      LoginRequest
-    >(url, {
+    const response = await this.httpService.axiosRef.post(url, {
       account: username,
       accountType: 2,
       pwd: createHash('md5').update(password).digest('hex'),
     });
-    if (response.data.result !== '0000') {
+
+    if (is(CorosResponseBase, response.data) && response.data.result !== '0000') {
       throw new Error(response.data.message);
     }
+    const { data } = parse(LoginResponse, response.data);
 
-    return response.data.data;
+    return data;
   }
 }

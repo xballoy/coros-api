@@ -1,7 +1,6 @@
-import { BASE_URL, CorosResponse } from './common.js';
+import { BASE_URL } from './common.js';
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { AxiosResponse } from 'axios';
 
 export type DownloadActivityDetailResponse = {
   fileUrl: string;
@@ -25,10 +24,7 @@ export class DownloadActivityDetailCommand {
     url.searchParams.append('sportType', String(sportType));
     url.searchParams.append('fileType', '4');
 
-    const response = await this.httpService.axiosRef.post<
-      CorosResponse<DownloadActivityDetailResponse>,
-      AxiosResponse<CorosResponse<DownloadActivityDetailResponse>>
-    >(url.toString(), undefined, {
+    const response = await this.httpService.axiosRef.post(url.toString(), undefined, {
       headers: {
         Accept: 'application/json',
         'Accept-Encoding': 'gzip, deflate, br',

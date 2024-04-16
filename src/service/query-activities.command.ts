@@ -1,4 +1,4 @@
-import { BASE_URL, CorosResponse } from './common.js';
+import { BASE_URL } from './common.js';
 import { TrainingType } from './training-type.js';
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
@@ -90,7 +90,7 @@ export class QueryActivitiesCommand {
       url.searchParams.append('modeList', String(modeList));
     }
 
-    const response = await this.httpService.axiosRef.get<CorosResponse<QueryActivitiesResponse>>(url.toString(), {
+    const response = await this.httpService.axiosRef.get(url.toString(), {
       headers: {
         Accept: 'application/json',
         'Accept-Encoding': 'gzip, deflate, br',
