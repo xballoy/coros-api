@@ -1,10 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:base",
-    "group:all",
-    "schedule:weekly"
-  ],
+  "extends": ["config:best-practices", ":maintainLockFilesWeekly", ":automergeMinor"],
   "automerge": true,
   "lockFileMaintenance": {
     "enabled": true

@@ -9,16 +9,25 @@ anytime.
 
 - Install Node.js (see [.nvmrc](.nvmrc) for the supported version)
 - Run `npm install`
-- Run `npm start -- -u COROS_EMAIL_ID -p PASSWORD -o OUT_DIR`.
+- Create a `.env` file (see [.env.example](.env.example)) with your email, password and the Coros API URL
+- Run `npm start -- export-activities -out OUT_DIR`.
 
-For example:
+Example:
 
 ```shell
-npm start -- -u john.doe@example.com -p mysecurepassword -o ~/Dowloads
+# Download all activities in fit format in Downloads folder
+npm start -- export-activities -o ~/Dowloads
 ```
 
-By default, the script will download the last 100 activities from your Coros profile. You can change this setting by
-editing the `queryActivities` parameters in the [index.ts](src/index.ts).
+**Options:**
+
+```
+  -o, --out [outDir]       Output directory
+  --exportType <fileType>  Export data type (choices: "fit", "tcx", "gpx", "kml", "csv", default: "fit")
+  --fromDate <from>        Export activities created after this date (inclusive). Format must be YYYY-MM-DD
+  --toDate <to>            Export activities created before this date (inclusive). Format must be YYYY-MM-DD
+  -h, --help               display help for command
+```
 
 ## Licence
 
