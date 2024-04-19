@@ -1,19 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ExportActivitiesCommandRunner } from './command-runner/export-activities.command-runner';
-import { HttpModule } from '@nestjs/axios';
-import { LoginCommand } from './service/login.command';
-import { QueryActivitiesCommand } from './service/query-activities.command';
-import { DownloadActivityDetailCommand } from './service/download-activity-detail.command';
 import { DownloadFileCommand } from './service/download-file.command';
+import { CorosModule } from './coros/coros.module';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
-  imports: [HttpModule],
-  providers: [
-    ExportActivitiesCommandRunner,
-    LoginCommand,
-    QueryActivitiesCommand,
-    DownloadActivityDetailCommand,
-    DownloadFileCommand,
-  ],
+  imports: [CorosModule, HttpModule],
+  providers: [ExportActivitiesCommandRunner, DownloadFileCommand],
 })
 export class AppModule {}

@@ -1,31 +1,25 @@
 import { Command, CommandRunner, Option } from 'nest-commander';
 import { parse, format } from 'date-fns';
-import { LoginCommand } from '../service/login.command';
-import { QueryActivitiesCommand } from '../service/query-activities.command';
-import { DownloadActivityDetailCommand } from '../service/download-activity-detail.command';
 import { DownloadFileCommand } from '../service/download-file.command';
+import { CorosAPI } from '../coros/coros-api';
 
 type Flags = {
-  user: string;
-  password: string;
   outDir: string;
 };
 
 @Command({ name: 'export-activities', description: 'Bulk export your Coros activities' })
 export class ExportActivitiesCommandRunner extends CommandRunner {
   constructor(
-    private readonly loginCommand: LoginCommand,
-    private readonly queryActivitiesCommand: QueryActivitiesCommand,
-    private readonly downloadActivityDetailCommand: DownloadActivityDetailCommand,
     private readonly downloadFileCommand: DownloadFileCommand,
+    private readonly corosService: CorosAPI,
   ) {
     super();
   }
 
-  async run(_passedParams: string[], { user, password, outDir }: Flags): Promise<void> {
-    const { accessToken } = await this.loginCommand.run({ username: user, password });
+  async run(_passedParams: string[], { outDir }: Flags): Promise<void> {
+    await this.corosService.login();
 
-    const activities = await this.queryActivitiesCommand.handle(accessToken, { size: 100, pageNumber: 1 });
+    const activities = await this.corosService.queryActivities({ size: 100, page: 1 });
     const activitiesToDownload = activities.dataList.map((it) => {
       const activityDate = parse(String(it.date), 'yyyymmdd', new Date());
 
@@ -37,29 +31,9 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
     });
 
     for (const { labelId, sportType, fileName } of activitiesToDownload) {
-      const { fileUrl } = await this.downloadActivityDetailCommand.handle(accessToken, { labelId, sportType });
+      const { fileUrl } = await this.corosService.downloadActivityDetail({ labelId, sportType, fileType: '4' });
       await this.downloadFileCommand.handle(fileUrl, outDir, fileName);
     }
-  }
-
-  @Option({
-    name: 'user',
-    flags: '-u, --user [user]',
-    description: 'Coros username',
-    required: true,
-  })
-  parseUser(user: string) {
-    return user;
-  }
-
-  @Option({
-    name: 'password',
-    flags: '-p, --password [password]',
-    description: 'Coros password',
-    required: true,
-  })
-  parsePassword(password: string) {
-    return password;
   }
 
   @Option({
