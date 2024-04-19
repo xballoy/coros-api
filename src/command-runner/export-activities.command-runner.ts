@@ -1,10 +1,12 @@
+import dayjs from 'dayjs';
 import { Command, CommandRunner, Option } from 'nest-commander';
-import { parse, format } from 'date-fns';
 import { DownloadFileCommand } from '../service/download-file.command';
 import { CorosAPI } from '../coros/coros-api';
+import { DEFAULT_FILE_TYPE, parseReadableFileType, READABLE_FILE_TYPE, ReadableFileType } from '../coros/file-type';
 
 type Flags = {
   outDir: string;
+  fileType: ReadableFileType;
 };
 
 @Command({ name: 'export-activities', description: 'Bulk export your Coros activities' })
@@ -16,22 +18,26 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
     super();
   }
 
-  async run(_passedParams: string[], { outDir }: Flags): Promise<void> {
+  async run(_passedParams: string[], { outDir, fileType }: Flags): Promise<void> {
     await this.corosService.login();
 
     const activities = await this.corosService.queryActivities({ size: 100, page: 1 });
     const activitiesToDownload = activities.dataList.map((it) => {
-      const activityDate = parse(String(it.date), 'yyyymmdd', new Date());
+      const activityDate = dayjs(String(it.date), 'YYYYMMDD');
 
       return {
         labelId: it.labelId,
         sportType: it.sportType,
-        fileName: `${format(activityDate, 'yyyy-mm-dd')}_${it.name.trim()}_${it.labelId}.fit`,
+        fileName: `${activityDate.format('YYYY-MM-DD')} ${it.name.trim()} ${it.labelId}.${fileType}`,
       };
     });
 
     for (const { labelId, sportType, fileName } of activitiesToDownload) {
-      const { fileUrl } = await this.corosService.downloadActivityDetail({ labelId, sportType, fileType: '4' });
+      const { fileUrl } = await this.corosService.downloadActivityDetail({
+        labelId,
+        sportType,
+        fileType: parseReadableFileType(fileType),
+      });
       await this.downloadFileCommand.handle(fileUrl, outDir, fileName);
     }
   }
@@ -42,7 +48,19 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
     description: 'Output directory',
     required: true,
   })
-  parseOut(out: string) {
+  parseOutDir(out: string) {
     return out;
+  }
+
+  @Option({
+    name: 'fileType',
+    flags: '-t, --type <fileType>',
+    choices: READABLE_FILE_TYPE,
+    description: 'Export data type',
+    defaultValue: DEFAULT_FILE_TYPE,
+    required: false,
+  })
+  parseFileType(fileType: ReadableFileType): ReadableFileType {
+    return fileType;
   }
 }

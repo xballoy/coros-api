@@ -1,7 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { CorosConfigService } from '../coros.config';
-import { BaseCommand } from '../../command/base.command';
+import { BaseRequest } from '../base-request';
 import {
   array,
   date,
@@ -101,7 +101,7 @@ export const QueryActivitiesResponse = CorosResponse(QueryActivitiesData);
 export type QueryActivitiesResponse = Input<typeof QueryActivitiesResponse>;
 
 @Injectable()
-export class QueryActivitiesCommand extends BaseCommand<QueryActivitiesInput, QueryActivitiesResponse> {
+export class QueryActivitiesRequest extends BaseRequest<QueryActivitiesInput, QueryActivitiesResponse> {
   constructor(
     private readonly httpService: HttpService,
     private readonly corosConfig: CorosConfigService,

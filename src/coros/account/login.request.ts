@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { BaseCommand } from '../../command/base.command';
+import { BaseRequest } from '../base-request';
 import { object, ObjectEntries, ObjectSchema, Input, string, number, array, tuple } from 'valibot';
 import { CorosConfigService } from '../coros.config';
 import { CorosResponse } from '../common';
@@ -117,11 +117,11 @@ export type LoginData = Input<typeof LoginData>;
 export const LoginResponse = CorosResponse(LoginData);
 export type LoginResponse = Input<typeof LoginResponse>;
 
-const LoginCommandInput = object({});
-type LoginCommandInput = Input<typeof LoginCommandInput>;
+const LoginInput = object({});
+type LoginInput = Input<typeof LoginInput>;
 
 @Injectable()
-export class LoginCommand extends BaseCommand<LoginCommandInput, LoginResponse, Omit<LoginData, 'accessToken'>> {
+export class LoginRequest extends BaseRequest<LoginInput, LoginResponse, Omit<LoginData, 'accessToken'>> {
   constructor(
     private readonly httpService: HttpService,
     private readonly corosConfig: CorosConfigService,
@@ -130,15 +130,15 @@ export class LoginCommand extends BaseCommand<LoginCommandInput, LoginResponse, 
     super();
   }
 
-  protected inputValidator(): ObjectSchema<ObjectEntries, undefined, LoginCommandInput> {
-    return LoginCommandInput;
+  protected inputValidator(): ObjectSchema<ObjectEntries, undefined, LoginInput> {
+    return LoginInput;
   }
 
   protected responseValidator(): ObjectSchema<ObjectEntries, undefined, LoginResponse> {
     return LoginResponse;
   }
 
-  protected async handle({}: LoginCommandInput): Promise<Omit<LoginData, 'accessToken'>> {
+  protected async handle({}: LoginInput): Promise<Omit<LoginData, 'accessToken'>> {
     const url = new URL('/account/login', this.corosConfig.apiUrl);
     const { data } = await this.httpService.axiosRef.post(url.toString(), {
       account: this.corosConfig.email,

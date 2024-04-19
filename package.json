@@ -55,7 +55,6 @@
     "@nestjs/core": "10.3.7",
     "@nestjs/platform-fastify": "10.3.7",
     "axios": "1.6.8",
-    "date-fns": "2.30.0",
     "dayjs": "1.11.10",
     "dotenv": "16.4.5",
     "nest-commander": "3.12.5",

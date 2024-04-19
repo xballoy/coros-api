@@ -1,7 +1,11 @@
 import { flatten, ObjectEntries, ObjectSchema, parse, safeParse } from 'valibot';
-import { CorosResponseBase, CorosResponseWithData } from '../coros/common';
+import { CorosResponseBase, CorosResponseWithData } from './common';
 
-export abstract class BaseCommand<Input, Response extends CorosResponseWithData, Output = Response['data']> {
+export abstract class BaseRequest<Input, Response extends CorosResponseWithData, Output = Response['data']> {
+  protected abstract inputValidator(): ObjectSchema<ObjectEntries, undefined, Input>;
+  protected abstract responseValidator(): ObjectSchema<ObjectEntries, undefined, Response>;
+  protected abstract handle(args: Input): Promise<Output>;
+
   public async run(args: Input): Promise<Output> {
     parse(this.inputValidator(), args);
     return await this.handle(args);
@@ -29,8 +33,4 @@ export abstract class BaseCommand<Input, Response extends CorosResponseWithData,
       });
     }
   }
-
-  protected abstract inputValidator(): ObjectSchema<ObjectEntries, undefined, Input>;
-  protected abstract responseValidator(): ObjectSchema<ObjectEntries, undefined, Response>;
-  protected abstract handle(args: Input): Promise<Output>;
 }

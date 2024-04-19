@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { CorosConfigService } from './coros.config';
 import { CorosAPI } from './coros-api';
 import { CorosAuthenticationService } from './coros-authentication.service';
-import { LoginCommand } from './account/login.command';
-import { QueryActivitiesCommand } from './activity/query-activities.command';
-import { DownloadActivityDetailCommand } from './activity/download-activity-detail.command';
+import { LoginRequest } from './account/login.request';
+import { QueryActivitiesRequest } from './activity/query-activities.request';
+import { DownloadActivityDetailRequest } from './activity/download-activity-detail.request';
 import { HttpModule } from '@nestjs/axios';
 
 @Module({
@@ -13,9 +13,9 @@ import { HttpModule } from '@nestjs/axios';
     CorosConfigService,
     CorosAuthenticationService,
     CorosAPI,
-    LoginCommand,
-    QueryActivitiesCommand,
-    DownloadActivityDetailCommand,
+    LoginRequest,
+    QueryActivitiesRequest,
+    DownloadActivityDetailRequest,
   ],
   exports: [CorosAPI],
 })

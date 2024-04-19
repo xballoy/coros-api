@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { LoginCommand } from './account/login.command';
-import { QueryActivitiesCommand } from './activity/query-activities.command';
-import { DownloadActivityDetailCommand } from './activity/download-activity-detail.command';
+import { LoginRequest } from './account/login.request';
+import { QueryActivitiesRequest } from './activity/query-activities.request';
+import { DownloadActivityDetailRequest } from './activity/download-activity-detail.request';
 
 @Injectable()
 export class CorosAPI {
   constructor(
-    private readonly loginCommand: LoginCommand,
-    private readonly queryActivitiesCommand: QueryActivitiesCommand,
-    private readonly downloadActivityDetailCommand: DownloadActivityDetailCommand,
+    private readonly loginCommand: LoginRequest,
+    private readonly queryActivitiesCommand: QueryActivitiesRequest,
+    private readonly downloadActivityDetailCommand: DownloadActivityDetailRequest,
   ) {}
 
   async login() {
-    await this.loginCommand.run({});
+    return await this.loginCommand.run({});
   }
 
   async queryActivities({ from, to, page, size }: { from?: Date; to?: Date; size?: number; page?: number }) {

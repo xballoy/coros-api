@@ -3,7 +3,7 @@ import { HttpService } from '@nestjs/axios';
 import { CorosConfigService } from '../coros.config';
 import { CorosAuthenticationService } from '../coros-authentication.service';
 import { URL } from 'node:url';
-import { BaseCommand } from '../../command/base.command';
+import { BaseRequest } from '../base-request';
 import { Input, number, object, ObjectEntries, ObjectSchema, string } from 'valibot';
 import { CorosResponse } from '../common';
 
@@ -23,7 +23,7 @@ export const DownloadActivityDetailResponse = CorosResponse(DownloadActivityDeta
 export type DownloadActivityDetailResponse = Input<typeof DownloadActivityDetailResponse>;
 
 @Injectable()
-export class DownloadActivityDetailCommand extends BaseCommand<
+export class DownloadActivityDetailRequest extends BaseRequest<
   DownloadActivityDetailInput,
   DownloadActivityDetailResponse
 > {
