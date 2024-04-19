@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { BaseRequest } from '../base-request';
-import { object, ObjectEntries, ObjectSchema, Input, string, number, array, tuple } from 'valibot';
+import { object, ObjectEntries, ObjectSchema, Input, string, number } from 'valibot';
 import { CorosConfigService } from '../coros.config';
 import { CorosResponse } from '../common';
 import { CorosAuthenticationService } from '../coros-authentication.service';
@@ -17,100 +17,6 @@ export type LoginBody = Input<typeof LoginBody>;
 
 export const LoginData = object({
   accessToken: string(),
-  birthday: number(),
-  countryCode: string(),
-  email: string(),
-  headPic: string(),
-  hrZoneType: number(),
-  isCompetitionTestUser: number(),
-  maxHr: number(),
-  newMessageCount: number(),
-  nickname: string(),
-  profile: string(),
-  regionId: number(),
-  rhr: number(),
-  runScoreList: array(
-    object({
-      avgPace: number(),
-      distance: number(),
-      distanceRatio: number(),
-      distanceTargetTotal: number(),
-      distanceTotal: number(),
-      duration: number(),
-      durationRatio: number(),
-      durationTargetTotal: number(),
-      durationTotal: number(),
-      trainingLoadRatio: number(),
-      trainingLoadTargetTotal: number(),
-      trainingLoadTotal: number(),
-      type: number(),
-    }),
-  ),
-  sex: number(),
-  stature: number(),
-  unit: number(),
-  userId: string(),
-  userProfile: object({
-    acceptTeamInvitation: number(),
-    age: number(),
-    allowCoachEditing: number(),
-    allowMembersView: number(),
-    allowsTeamViewHistorical: number(),
-    autoTrainingLoadData: number(),
-    facade: number(),
-    gender: number(),
-    language: string(),
-    region: number(),
-    showActivityMap: number(),
-    stature: number(),
-    weight: number(),
-  }),
-  weight: number(),
-  zoneData: object({
-    lthr: number(),
-    lthrRange: tuple([number(), number()]),
-    lthrZone: array(
-      object({
-        hr: number(),
-        index: number(),
-        ratio: number(),
-      }),
-    ),
-    ltsp: number(),
-    ltspRange: tuple([number(), number()]),
-    ltspZone: array(
-      object({
-        index: number(),
-        pace: number(),
-        ratio: number(),
-      }),
-    ),
-    ltspZoneDefault: array(
-      object({
-        index: number(),
-        pace: number(),
-        ratio: number(),
-      }),
-    ),
-    maxHr: number(),
-    maxHrRange: tuple([number(), number()]),
-    maxHrZone: array(
-      object({
-        hr: number(),
-        index: number(),
-        ratio: number(),
-      }),
-    ),
-    rhr: number(),
-    rhrRange: tuple([number(), number()]),
-    rhrZone: array(
-      object({
-        hr: number(),
-        index: number(),
-        ratio: number(),
-      }),
-    ),
-  }),
 });
 export type LoginData = Input<typeof LoginData>;
 
