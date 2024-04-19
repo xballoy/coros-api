@@ -1,4 +1,4 @@
-import { object, ObjectEntries, ObjectSchema, string, merge, Input } from 'valibot';
+import { Input, merge, object, ObjectEntries, ObjectSchema, string } from 'valibot';
 
 export const CorosResponseBase = object({
   apiCode: string(),

@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { HttpService } from '@nestjs/axios';
-import { CorosConfigService } from '../coros.config';
-import { CorosAuthenticationService } from '../coros-authentication.service';
 import { URL } from 'node:url';
-import { BaseRequest } from '../base-request';
+import { HttpService } from '@nestjs/axios';
+import { Injectable } from '@nestjs/common';
 import { Input, number, object, ObjectEntries, ObjectSchema, string } from 'valibot';
+import { BaseRequest } from '../base-request';
 import { CorosResponse } from '../common';
+import { CorosAuthenticationService } from '../coros-authentication.service';
+import { CorosConfigService } from '../coros.config';
 
 export const DownloadActivityDetailInput = object({
   labelId: string(),

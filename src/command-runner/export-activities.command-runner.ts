@@ -1,9 +1,9 @@
+import { existsSync } from 'node:fs';
 import dayjs from 'dayjs';
 import { Command, CommandRunner, Option } from 'nest-commander';
 import { DownloadFile } from '../core/download-file.service';
 import { CorosAPI } from '../coros/coros-api';
 import { FileTypes } from '../coros/file-type';
-import { existsSync } from 'node:fs';
 import { InvalidParameterError } from './invalid-parameter-error';
 
 type Flags = {

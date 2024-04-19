@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
 import assert from 'node:assert';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class CorosAuthenticationService {
