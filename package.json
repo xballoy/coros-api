@@ -6,7 +6,7 @@
     "build": "nest build",
     "format:check": "prettier --check src",
     "format:fix": "prettier --write src",
-    "start": "nest start",
+    "start": "nest start --",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",

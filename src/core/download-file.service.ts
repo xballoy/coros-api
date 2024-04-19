@@ -5,7 +5,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class DownloadFileCommand {
+export class DownloadFile {
   constructor(private readonly httpService: HttpService) {}
 
   async handle(url: string, directory: string, fileName: string): Promise<void> {
