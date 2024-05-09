@@ -10,13 +10,13 @@ anytime.
 - Install Node.js (see [.nvmrc](.nvmrc) for the supported version)
 - Run `npm install`
 - Create a `.env` file (see [.env.example](.env.example)) with your email, password and the Coros API URL
-- Run `npm start -- export-activities -out OUT_DIR`.
+- Run `npx nest start -- export-activities -out OUT_DIR`.
 
 Example:
 
 ```shell
 # Download all activities in fit format in Downloads folder
-npm start -- export-activities -o ~/Dowloads
+npx nest start -- export-activities -o ~/Dowloads
 ```
 
 **Options:**
