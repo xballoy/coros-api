@@ -1,6 +1,6 @@
 import { URL } from 'node:url';
 import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Input, number, object, ObjectEntries, ObjectSchema, string } from 'valibot';
 import { BaseRequest } from '../base-request';
 import { CorosResponse } from '../common';
@@ -27,6 +27,8 @@ export class DownloadActivityDetailRequest extends BaseRequest<
   DownloadActivityDetailInput,
   DownloadActivityDetailResponse
 > {
+  private readonly logger = new Logger(DownloadActivityDetailRequest.name);
+
   constructor(
     private readonly httpService: HttpService,
     private readonly corosConfig: CorosConfigService,
@@ -54,6 +56,7 @@ export class DownloadActivityDetailRequest extends BaseRequest<
         accessToken: this.corosAuthenticationService.accessToken,
       },
     });
+    this.logger.verbose('Download activity detail response', data);
 
     this.assertCorosResponseBase(data);
     this.assertCorosResponse(data);

@@ -6,6 +6,6 @@ import { AppModule } from './app.module';
 dayjs.extend(customParseFormat);
 
 async function bootstrap() {
-  await CommandFactory.run(AppModule, ['warn', 'error']);
+  await CommandFactory.run(AppModule, ['log', 'warn', 'error', 'fatal']);
 }
 void bootstrap();

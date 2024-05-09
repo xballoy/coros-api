@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { URL } from 'node:url';
 import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Input, number, object, ObjectEntries, ObjectSchema, string } from 'valibot';
 import { BaseRequest } from '../base-request';
 import { CorosResponse } from '../common';
@@ -28,6 +28,8 @@ type LoginInput = Input<typeof LoginInput>;
 
 @Injectable()
 export class LoginRequest extends BaseRequest<LoginInput, LoginResponse, Omit<LoginData, 'accessToken'>> {
+  private readonly logger = new Logger(LoginRequest.name);
+
   constructor(
     private readonly httpService: HttpService,
     private readonly corosConfig: CorosConfigService,
@@ -51,6 +53,7 @@ export class LoginRequest extends BaseRequest<LoginInput, LoginResponse, Omit<Lo
       accountType: 2,
       pwd: createHash('md5').update(this.corosConfig.password).digest('hex'),
     } satisfies LoginBody);
+    this.logger.verbose('Login request response', data);
 
     this.assertCorosResponseBase(data);
     this.assertCorosResponse(data);

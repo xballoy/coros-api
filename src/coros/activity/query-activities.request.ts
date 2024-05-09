@@ -1,6 +1,6 @@
 import { URL } from 'node:url';
 import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import dayjs from 'dayjs';
 import {
   array,
@@ -59,6 +59,8 @@ export class QueryActivitiesRequest extends BaseRequest<
   QueryActivitiesResponse,
   QueryActivitiesOutput
 > {
+  private readonly logger = new Logger(QueryActivitiesRequest.name);
+
   constructor(
     private readonly httpService: HttpService,
     private readonly corosConfig: CorosConfigService,
@@ -112,6 +114,7 @@ export class QueryActivitiesRequest extends BaseRequest<
         accessToken: this.corosAuthenticationService.accessToken,
       },
     });
+    this.logger.verbose('Query activity response', data);
 
     this.assertCorosResponseBase(data);
     this.assertCorosResponse(data);

@@ -1,4 +1,5 @@
-import { flatten, ObjectEntries, ObjectSchema, parse, safeParse } from 'valibot';
+import { ObjectEntries, ObjectSchema, safeParse } from 'valibot';
+import { ValidationError } from '../core/validation-error';
 import { CorosResponseBase, CorosResponseWithData } from './common';
 
 export abstract class BaseRequest<Input, Response extends CorosResponseWithData, Output = Response['data']> {
@@ -7,14 +8,17 @@ export abstract class BaseRequest<Input, Response extends CorosResponseWithData,
   protected abstract handle(args: Input): Promise<Output>;
 
   public async run(args: Input): Promise<Output> {
-    parse(this.inputValidator(), args);
+    const parseResult = safeParse(this.inputValidator(), args);
+    if (!parseResult.success) {
+      throw new ValidationError(parseResult.issues, { cause: args });
+    }
     return await this.handle(args);
   }
 
   protected assertCorosResponseBase(data: any): asserts data is CorosResponseBase {
     const parseResult = safeParse(CorosResponseBase, data);
     if (!parseResult.success) {
-      throw new Error(flatten(parseResult.issues).root?.join(', ') ?? 'Invalid Coros response', {
+      throw new ValidationError(parseResult.issues, {
         cause: data,
       });
     }
@@ -28,7 +32,7 @@ export abstract class BaseRequest<Input, Response extends CorosResponseWithData,
   protected assertCorosResponse(data: any): asserts data is Response {
     const parseResult = safeParse(this.responseValidator(), data);
     if (!parseResult.success) {
-      throw new Error(flatten(parseResult.issues).root?.join(', ') ?? 'Invalid Coros response', {
+      throw new ValidationError(parseResult.issues, {
         cause: data,
       });
     }
