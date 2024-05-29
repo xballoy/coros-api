@@ -4,12 +4,12 @@
   "description": "Coros API",
   "scripts": {
     "build": "nest build",
-    "format:check": "prettier --check src",
-    "format:fix": "prettier --write src",
+    "format:check": "biome format src",
+    "format:fix": "biome format --write src",
     "start": "nest start",
     "start:prod": "node dist/main",
-    "lint:check": "eslint \"{src,apps,libs,test}/**/*.ts\" --cache",
-    "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --cache --fix"
+    "lint:check": "biome lint src",
+    "lint:fix": "biome lint --apply src"
   },
   "repository": {
     "type": "git",
@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/xballoy/coros-api#readme",
   "devDependencies": {
-    "@ianvs/prettier-plugin-sort-imports": "4.2.1",
+    "@biomejs/biome": "1.7.3",
     "@nestjs/cli": "10.3.2",
     "@nestjs/schematics": "10.1.1",
     "@nestjs/testing": "10.3.8",
@@ -31,13 +31,7 @@
     "@swc/core": "1.5.7",
     "@tsconfig/node20": "20.1.4",
     "@types/node": "20.12.13",
-    "@typescript-eslint/eslint-plugin": "7.11.0",
-    "@typescript-eslint/parser": "7.11.0",
     "@vitest/coverage-v8": "1.6.0",
-    "eslint": "8.57.0",
-    "eslint-config-prettier": "9.1.0",
-    "eslint-plugin-prettier": "5.1.3",
-    "prettier": "3.2.5",
     "source-map-support": "0.5.21",
     "typescript": "5.4.5",
     "unplugin-swc": "1.4.5",
