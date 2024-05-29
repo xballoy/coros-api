@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { Injectable } from '@nestjs/common';
-import { Input, object, parse, string } from 'valibot';
+import { type Input, object, parse, string } from 'valibot';
 
 const CorosConfig = object({
   apiUrl: string(),

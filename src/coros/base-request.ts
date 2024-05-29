@@ -1,6 +1,6 @@
-import { ObjectEntries, ObjectSchema, safeParse } from 'valibot';
+import { type ObjectEntries, type ObjectSchema, safeParse } from 'valibot';
 import { ValidationError } from '../core/validation-error';
-import { CorosResponseBase, CorosResponseWithData } from './common';
+import { CorosResponseBase, type CorosResponseWithData } from './common';
 
 export abstract class BaseRequest<Input, Response extends CorosResponseWithData, Output = Response['data']> {
   protected abstract inputValidator(): ObjectSchema<ObjectEntries, undefined, Input>;
@@ -15,7 +15,7 @@ export abstract class BaseRequest<Input, Response extends CorosResponseWithData,
     return await this.handle(args);
   }
 
-  protected assertCorosResponseBase(data: any): asserts data is CorosResponseBase {
+  protected assertCorosResponseBase(data: unknown): asserts data is CorosResponseBase {
     const parseResult = safeParse(CorosResponseBase, data);
     if (!parseResult.success) {
       throw new ValidationError(parseResult.issues, {
@@ -29,7 +29,7 @@ export abstract class BaseRequest<Input, Response extends CorosResponseWithData,
     }
   }
 
-  protected assertCorosResponse(data: any): asserts data is Response {
+  protected assertCorosResponse(data: unknown): asserts data is Response {
     const parseResult = safeParse(this.responseValidator(), data);
     if (!parseResult.success) {
       throw new ValidationError(parseResult.issues, {

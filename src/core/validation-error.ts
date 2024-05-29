@@ -1,5 +1,5 @@
 import OS from 'node:os';
-import { flatten, SchemaIssue } from 'valibot';
+import { type SchemaIssue, flatten } from 'valibot';
 
 export class ValidationError extends Error {
   constructor(
