@@ -19,9 +19,7 @@ jobs:
           node-version-file: '.nvmrc'
       - name: Install dependencies
         run: npm ci
-      - name: Check format
-        run: npm run format:check
-      - name: Check lint
-        run: npm run lint:check
+      - name: Code quality
+        run:  npx @biomejs/biome ci src
       - name: Build
         run: npm run build

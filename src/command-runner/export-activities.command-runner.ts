@@ -2,9 +2,9 @@ import { existsSync } from 'node:fs';
 import { Logger } from '@nestjs/common';
 import dayjs from 'dayjs';
 import { Command, CommandRunner, Option } from 'nest-commander';
-import { DownloadFile } from '../core/download-file.service';
-import { CorosAPI } from '../coros/coros-api';
-import { FileTypes } from '../coros/file-type';
+import type { DownloadFile } from '../core/download-file.service';
+import type { CorosAPI } from '../coros/coros-api';
+import { DefaultFileType, FileTypeKeys, getFileTypeFromKey, isValidFileType } from '../coros/file-type';
 import { InvalidParameterError } from './invalid-parameter-error';
 
 type Flags = {
@@ -30,10 +30,10 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
     this.logger.debug(`Running export-activities command with args ${JSON.stringify({ outDir, fileType, from, to })}`);
 
     await this.corosService.login();
-    this.logger.debug(`Login success`);
+    this.logger.debug('Login success');
 
     const { activities } = await this.corosService.queryActivities({ from, to });
-    this.logger.debug(`Query activities success`);
+    this.logger.debug('Query activities success');
 
     const activitiesToDownload = activities.map((it) => {
       const activityDate = dayjs(String(it.date), 'YYYYMMDD');
@@ -73,17 +73,17 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
   @Option({
     name: 'fileType',
     flags: '--exportType <fileType>',
-    choices: FileTypes.keys,
+    choices: FileTypeKeys,
     description: 'Export data type',
-    defaultValue: FileTypes.default.key,
+    defaultValue: DefaultFileType.key,
     required: false,
   })
   parseFileType(fileType: string): { key: string; value: string } {
-    if (!FileTypes.isValid(fileType)) {
-      throw new InvalidParameterError('exportType', `Must be one of: ${FileTypes.keys.join(', ')}.`);
+    if (!isValidFileType(fileType)) {
+      throw new InvalidParameterError('exportType', `Must be one of: ${FileTypeKeys.join(', ')}.`);
     }
 
-    return FileTypes.parse(fileType);
+    return getFileTypeFromKey(fileType);
   }
 
   @Option({

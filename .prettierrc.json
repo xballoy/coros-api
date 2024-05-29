@@ -1,6 +1,0 @@
-{
-  "singleQuote": true,
-  "plugins": ["@ianvs/prettier-plugin-sort-imports"],
-  "importOrder": ["<BUILTIN_MODULES>", "^@nest/(.*)$", "<THIRD_PARTY_MODULES>", "^[./]"],
-  "importOrderParserPlugins" : ["typescript", "decorators"]
-}
