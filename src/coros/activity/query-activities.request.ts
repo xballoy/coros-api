@@ -1,5 +1,5 @@
 import { URL } from 'node:url';
-import type { HttpService } from '@nestjs/axios';
+import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import dayjs from 'dayjs';
 import {
@@ -17,8 +17,8 @@ import {
 } from 'valibot';
 import { BaseRequest } from '../base-request';
 import { CorosResponse } from '../common';
-import type { CorosAuthenticationService } from '../coros-authentication.service';
-import type { CorosConfigService } from '../coros.config';
+import { CorosAuthenticationService } from '../coros-authentication.service';
+import { CorosConfigService } from '../coros.config';
 
 export const QueryActivitiesInput = object({
   pageSize: optional(

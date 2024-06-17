@@ -1,12 +1,12 @@
 import { createHash } from 'node:crypto';
 import { URL } from 'node:url';
-import type { HttpService } from '@nestjs/axios';
+import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import { type Input, type ObjectEntries, type ObjectSchema, number, object, string } from 'valibot';
 import { BaseRequest } from '../base-request';
 import { CorosResponse } from '../common';
-import type { CorosAuthenticationService } from '../coros-authentication.service';
-import type { CorosConfigService } from '../coros.config';
+import { CorosAuthenticationService } from '../coros-authentication.service';
+import { CorosConfigService } from '../coros.config';
 
 export const LoginBody = object({
   account: string(),

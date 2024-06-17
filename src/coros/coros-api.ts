@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import type { LoginRequest } from './account/login.request';
-import type { DownloadActivityDetailRequest } from './activity/download-activity-detail.request';
-import type { QueryActivitiesRequest } from './activity/query-activities.request';
+import { LoginRequest } from './account/login.request';
+import { DownloadActivityDetailRequest } from './activity/download-activity-detail.request';
+import { QueryActivitiesRequest } from './activity/query-activities.request';
 
 @Injectable()
 export class CorosAPI {

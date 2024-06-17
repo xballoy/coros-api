@@ -6,7 +6,12 @@
     "lineWidth": 120
   },
   "organizeImports": { "enabled": true },
-  "linter": { "enabled": true, "rules": { "recommended": true } },
+  "linter": { "enabled": true, "rules": { "recommended": true,
+    "style": {
+      "useImportType": "off"
+    }
+  }
+  },
   "javascript": {
     "formatter": {
       "quoteStyle": "single"

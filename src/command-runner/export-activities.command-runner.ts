@@ -2,8 +2,8 @@ import { existsSync } from 'node:fs';
 import { Logger } from '@nestjs/common';
 import dayjs from 'dayjs';
 import { Command, CommandRunner, Option } from 'nest-commander';
-import type { DownloadFile } from '../core/download-file.service';
-import type { CorosAPI } from '../coros/coros-api';
+import { DownloadFile } from '../core/download-file.service';
+import { CorosAPI } from '../coros/coros-api';
 import { DefaultFileType, FileTypeKeys, getFileTypeFromKey, isValidFileType } from '../coros/file-type';
 import { InvalidParameterError } from './invalid-parameter-error';
 
