@@ -1,26 +1,26 @@
 import { URL } from 'node:url';
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
-import { type Input, type ObjectEntries, type ObjectSchema, number, object, string } from 'valibot';
+import { z } from 'zod';
 import { BaseRequest } from '../base-request';
 import { CorosResponse } from '../common';
 import { CorosAuthenticationService } from '../coros-authentication.service';
 import { CorosConfigService } from '../coros.config';
 
-export const DownloadActivityDetailInput = object({
-  labelId: string(),
-  sportType: number(),
-  fileType: string(),
+export const DownloadActivityDetailInput = z.object({
+  labelId: z.string(),
+  sportType: z.number(),
+  fileType: z.string(),
 });
-export type DownloadActivityDetailInput = Input<typeof DownloadActivityDetailInput>;
+export type DownloadActivityDetailInput = z.infer<typeof DownloadActivityDetailInput>;
 
-export const DownloadActivityDetailData = object({
-  fileUrl: string(),
+export const DownloadActivityDetailData = z.object({
+  fileUrl: z.string(),
 });
-export type DownloadActivityDetailData = Input<typeof DownloadActivityDetailData>;
+export type DownloadActivityDetailData = z.infer<typeof DownloadActivityDetailData>;
 
 export const DownloadActivityDetailResponse = CorosResponse(DownloadActivityDetailData);
-export type DownloadActivityDetailResponse = Input<typeof DownloadActivityDetailResponse>;
+export type DownloadActivityDetailResponse = z.infer<typeof DownloadActivityDetailResponse>;
 
 @Injectable()
 export class DownloadActivityDetailRequest extends BaseRequest<
@@ -37,11 +37,11 @@ export class DownloadActivityDetailRequest extends BaseRequest<
     super();
   }
 
-  protected inputValidator(): ObjectSchema<ObjectEntries, undefined, DownloadActivityDetailInput> {
+  protected inputValidator(): z.Schema<DownloadActivityDetailInput> {
     return DownloadActivityDetailInput;
   }
 
-  protected responseValidator(): ObjectSchema<ObjectEntries, undefined, DownloadActivityDetailResponse> {
+  protected responseValidator(): z.Schema<DownloadActivityDetailResponse> {
     return DownloadActivityDetailResponse;
   }
 

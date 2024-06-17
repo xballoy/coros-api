@@ -2,56 +2,42 @@ import { URL } from 'node:url';
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import dayjs from 'dayjs';
-import {
-  type Input,
-  type ObjectEntries,
-  type ObjectSchema,
-  array,
-  date,
-  maxValue,
-  minValue,
-  number,
-  object,
-  optional,
-  string,
-} from 'valibot';
+import { z } from 'zod';
 import { BaseRequest } from '../base-request';
 import { CorosResponse } from '../common';
 import { CorosAuthenticationService } from '../coros-authentication.service';
 import { CorosConfigService } from '../coros.config';
 
-export const QueryActivitiesInput = object({
-  pageSize: optional(
-    number([minValue(1, 'Page size must be at least 1'), maxValue(200, 'Page size must not exceed 200')]),
-  ),
-  pageNumber: optional(number([minValue(1, 'Page number must be at least 1')])),
-  from: optional(date()),
-  to: optional(date()),
+export const QueryActivitiesInput = z.object({
+  pageSize: z.number().min(1, 'Page size must be at least 1').max(200, 'Page size must not exceed 200').optional(),
+  pageNumber: z.number().min(1, 'Page number must be at least 1').optional(),
+  from: z.date().optional(),
+  to: z.date().optional(),
 });
-export type QueryActivitiesInput = Input<typeof QueryActivitiesInput>;
+export type QueryActivitiesInput = z.infer<typeof QueryActivitiesInput>;
 
-export const Activity = object({
-  date: number(),
-  labelId: string(),
-  name: string(),
-  sportType: number(),
+export const Activity = z.object({
+  date: z.number(),
+  labelId: z.string(),
+  name: z.string(),
+  sportType: z.number(),
 });
-export const QueryActivitiesData = object({
-  count: number(),
-  dataList: array(Activity),
-  pageNumber: number(),
-  totalPage: number(),
+export const QueryActivitiesData = z.object({
+  count: z.number(),
+  dataList: z.array(Activity),
+  pageNumber: z.number(),
+  totalPage: z.number(),
 });
-export type QueryActivitiesData = Input<typeof QueryActivitiesData>;
+export type QueryActivitiesData = z.infer<typeof QueryActivitiesData>;
 
 export const QueryActivitiesResponse = CorosResponse(QueryActivitiesData);
-export type QueryActivitiesResponse = Input<typeof QueryActivitiesResponse>;
+export type QueryActivitiesResponse = z.infer<typeof QueryActivitiesResponse>;
 
-export const QueryActivitiesOutput = object({
-  count: number(),
-  activities: array(Activity),
+export const QueryActivitiesOutput = z.object({
+  count: z.number(),
+  activities: z.array(Activity),
 });
-export type QueryActivitiesOutput = Input<typeof QueryActivitiesOutput>;
+export type QueryActivitiesOutput = z.infer<typeof QueryActivitiesOutput>;
 
 @Injectable()
 export class QueryActivitiesRequest extends BaseRequest<
@@ -69,11 +55,11 @@ export class QueryActivitiesRequest extends BaseRequest<
     super();
   }
 
-  protected inputValidator(): ObjectSchema<ObjectEntries, undefined, QueryActivitiesInput> {
+  protected inputValidator(): z.Schema<QueryActivitiesInput> {
     return QueryActivitiesInput;
   }
 
-  protected responseValidator(): ObjectSchema<ObjectEntries, undefined, QueryActivitiesResponse> {
+  protected responseValidator(): z.Schema<QueryActivitiesResponse> {
     return QueryActivitiesResponse;
   }
 

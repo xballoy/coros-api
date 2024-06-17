@@ -1,19 +1,18 @@
 import OS from 'node:os';
-import { type SchemaIssue, flatten } from 'valibot';
+import type { z } from 'zod';
 
-export class ValidationError extends Error {
+export class ValidationError<T> extends Error {
   constructor(
-    public readonly issues: [SchemaIssue, ...SchemaIssue[]],
+    public readonly issues: z.ZodIssue[],
     public readonly options?: ErrorOptions,
   ) {
     super(ValidationError.getMessage(issues), options);
     this.name = 'ValidationError';
   }
 
-  private static getMessage(issues: [SchemaIssue, ...SchemaIssue[]]): string {
-    const flatErrors = flatten(issues);
-    const rootError = flatErrors.root?.join(', ');
-    const nestedErrors = Object.entries(flatErrors.nested).map(([key, values]) => `${key} => ${values?.join(', ')}`);
-    return [rootError, ...nestedErrors].filter((it) => !!it).join(OS.EOL);
+  private static getMessage(issues: z.ZodIssue[]): string {
+    return Object.entries(issues.flat())
+      .map(([key, values]) => `${key} => ${values?.message}`)
+      .join(OS.EOL);
   }
 }

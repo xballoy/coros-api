@@ -2,29 +2,29 @@ import { createHash } from 'node:crypto';
 import { URL } from 'node:url';
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
-import { type Input, type ObjectEntries, type ObjectSchema, number, object, string } from 'valibot';
+import { z } from 'zod';
 import { BaseRequest } from '../base-request';
 import { CorosResponse } from '../common';
 import { CorosAuthenticationService } from '../coros-authentication.service';
 import { CorosConfigService } from '../coros.config';
 
-export const LoginBody = object({
-  account: string(),
-  accountType: number(),
-  pwd: string(),
+export const LoginBody = z.object({
+  account: z.string(),
+  accountType: z.number(),
+  pwd: z.string(),
 });
-export type LoginBody = Input<typeof LoginBody>;
+export type LoginBody = z.infer<typeof LoginBody>;
 
-export const LoginData = object({
-  accessToken: string(),
+export const LoginData = z.object({
+  accessToken: z.string(),
 });
-export type LoginData = Input<typeof LoginData>;
+export type LoginData = z.infer<typeof LoginData>;
 
 export const LoginResponse = CorosResponse(LoginData);
-export type LoginResponse = Input<typeof LoginResponse>;
+export type LoginResponse = z.infer<typeof LoginResponse>;
 
-const LoginInput = object({});
-type LoginInput = Input<typeof LoginInput>;
+const LoginInput = z.object({});
+type LoginInput = z.infer<typeof LoginInput>;
 
 @Injectable()
 export class LoginRequest extends BaseRequest<LoginInput, LoginResponse, Omit<LoginData, 'accessToken'>> {
@@ -38,11 +38,11 @@ export class LoginRequest extends BaseRequest<LoginInput, LoginResponse, Omit<Lo
     super();
   }
 
-  protected inputValidator(): ObjectSchema<ObjectEntries, undefined, LoginInput> {
+  protected inputValidator(): z.Schema<LoginInput> {
     return LoginInput;
   }
 
-  protected responseValidator(): ObjectSchema<ObjectEntries, undefined, LoginResponse> {
+  protected responseValidator(): z.Schema<LoginResponse> {
     return LoginResponse;
   }
 

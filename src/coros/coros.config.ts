@@ -1,20 +1,20 @@
 import 'dotenv/config';
 import { Injectable } from '@nestjs/common';
-import { type Input, object, parse, string } from 'valibot';
+import { z } from 'zod';
 
-const CorosConfig = object({
-  apiUrl: string(),
-  email: string(),
-  password: string(),
+const CorosConfig = z.object({
+  apiUrl: z.string(),
+  email: z.string(),
+  password: z.string(),
 });
-type CorosConfig = Input<typeof CorosConfig>;
+type CorosConfig = z.infer<typeof CorosConfig>;
 
 @Injectable()
 export class CorosConfigService {
   private readonly config: CorosConfig;
 
   constructor() {
-    this.config = parse(CorosConfig, {
+    this.config = CorosConfig.parse({
       apiUrl: process.env.COROS_API_URL,
       email: process.env.COROS_EMAIL,
       password: process.env.COROS_PASSWORD,
