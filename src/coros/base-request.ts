@@ -2,11 +2,7 @@ import type { z } from 'zod';
 import { ValidationError } from '../core/validation-error';
 import { CorosResponseBase, type CorosResponseWithData } from './common';
 
-export abstract class BaseRequest<
-  Input,
-  Response extends CorosResponseWithData,
-  Output = Response['data'],
-> {
+export abstract class BaseRequest<Input, Response extends CorosResponseWithData, Output = Response['data']> {
   protected abstract inputValidator(): z.Schema<Input>;
   protected abstract responseValidator(): z.Schema<Response>;
   protected abstract handle(args: Input): Promise<Output>;
