@@ -16,7 +16,7 @@ Example:
 
 ```shell
 # Download all activities in fit format in Downloads folder
-npx nest start -- export-activities -o ~/Dowloads
+npx nest start -- export-activities -o ~/Downloads
 ```
 
 **Options:**
