@@ -24,8 +24,8 @@
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@nestjs/cli": "10.3.2",
-    "@nestjs/schematics": "10.1.1",
-    "@nestjs/testing": "10.3.9",
+    "@nestjs/schematics": "10.1.2",
+    "@nestjs/testing": "10.3.10",
     "@swc-node/register": "1.10.0",
     "@swc/cli": "0.3.14",
     "@swc/core": "1.6.5",
@@ -39,8 +39,8 @@
   },
   "dependencies": {
     "@nestjs/axios": "3.0.2",
-    "@nestjs/common": "10.3.9",
-    "@nestjs/core": "10.3.9",
+    "@nestjs/common": "10.3.10",
+    "@nestjs/core": "10.3.10",
     "axios": "1.7.2",
     "dayjs": "1.11.11",
     "dotenv": "16.4.5",
