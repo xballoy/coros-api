@@ -28,7 +28,7 @@
     "@nestjs/testing": "10.4.1",
     "@swc-node/register": "1.10.9",
     "@swc/cli": "0.4.0",
-    "@swc/core": "1.7.14",
+    "@swc/core": "1.7.18",
     "@tsconfig/node20": "20.1.4",
     "@types/node": "20.16.1",
     "@vitest/coverage-v8": "2.0.5",
