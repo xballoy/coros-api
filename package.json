@@ -24,7 +24,7 @@
   "devDependencies": {
     "@biomejs/biome": "1.9.3",
     "@nestjs/cli": "10.4.5",
-    "@nestjs/schematics": "10.2.0",
+    "@nestjs/schematics": "10.2.1",
     "@nestjs/testing": "10.4.5",
     "@swc-node/register": "1.10.9",
     "@swc/cli": "0.4.0",
