@@ -67,6 +67,10 @@ export class QueryActivitiesRequest extends BaseRequest<
   async handle({ pageSize = 20, pageNumber = 1, from, to }: QueryActivitiesInput): Promise<QueryActivitiesOutput> {
     const activities = await this.getActivities({ pageSize, pageNumber, from, to });
 
+    if(activities.length === 0) {
+      this.logger.log('No activities found.')
+    }
+
     return {
       count: activities.length,
       activities,
