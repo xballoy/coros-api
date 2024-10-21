@@ -1,0 +1,4 @@
+pre-commit:
+  commands:
+    check:
+      run: npx biome check --write --no-errors-on-unmatched --files-ignore-unknown=true {staged_files} && git update-index --again
