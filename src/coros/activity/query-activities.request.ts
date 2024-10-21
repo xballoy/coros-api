@@ -22,11 +22,12 @@ export const Activity = z.object({
   name: z.string(),
   sportType: z.number(),
 });
+export type Activity = z.infer<typeof Activity>;
 export const QueryActivitiesData = z.object({
   count: z.number(),
-  dataList: z.array(Activity),
-  pageNumber: z.number(),
-  totalPage: z.number(),
+  dataList: z.array(Activity).optional(),
+  pageNumber: z.number().optional(),
+  totalPage: z.number().optional(),
 });
 export type QueryActivitiesData = z.infer<typeof QueryActivitiesData>;
 
@@ -82,7 +83,7 @@ export class QueryActivitiesRequest extends BaseRequest<
     pageNumber: number;
     from?: Date;
     to?: Date;
-  }): Promise<QueryActivitiesData['dataList']> {
+  }): Promise<Activity[]> {
     const url = new URL('/activity/query', this.corosConfig.apiUrl);
     url.searchParams.append('size', String(pageSize));
     url.searchParams.append('pageNumber', String(pageNumber));
@@ -109,8 +110,8 @@ export class QueryActivitiesRequest extends BaseRequest<
       data: { dataList, totalPage },
     } = data;
 
-    const activities = [...dataList];
-    if (pageNumber < totalPage) {
+    const activities = [...(dataList ?? [])];
+    if (pageNumber < (totalPage ?? 0)) {
       const next = await this.getActivities({ pageSize, pageNumber: pageNumber + 1, from, to });
       activities.push(...next);
     }
