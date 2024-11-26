@@ -31,12 +31,12 @@
     "@swc/core": "1.9.3",
     "@tsconfig/node20": "20.1.4",
     "@types/node": "22.10.0",
-    "@vitest/coverage-v8": "2.1.5",
+    "@vitest/coverage-v8": "2.1.6",
     "lefthook": "1.8.4",
     "source-map-support": "0.5.21",
     "typescript": "5.7.2",
     "unplugin-swc": "1.5.1",
-    "vitest": "2.1.5"
+    "vitest": "2.1.6"
   },
   "dependencies": {
     "@nestjs/axios": "3.1.2",
