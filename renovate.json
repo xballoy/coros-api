@@ -1,4 +1,14 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:best-practices", ":maintainLockFilesWeekly", ":automergeMinor", "customManagers:biomeVersions"]
+  "extends": ["config:best-practices", ":maintainLockFilesWeekly", ":automergeMinor", "customManagers:biomeVersions"],
+  "packageRules": [
+    {
+      "matchPaths": [".github/workflows/**"],
+      "matchStrings": ["node-version:\\s*\"(?<currentValue>.*?)\"\\s*"],
+      "datasourceTemplate": "node",
+      "depNameTemplate": "node",
+      "versioningTemplate": "node",
+      "extractVersionTemplate": "^(?<version>\\d+\\.\\d+\\.\\d+)$"
+    }
+  ]
 }
