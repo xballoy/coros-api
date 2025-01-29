@@ -1,0 +1,16 @@
+name: "Node.js Vulnerabilities"
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  is-my-node-vulnerable:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Check Node.js
+        uses: nodejs/is-my-node-vulnerable@c37a56bad56e34fe5223ddd3cb223cc4158136ae # v1.6.1
+        with:
+          node-version: "22.13.0"
