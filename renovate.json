@@ -6,7 +6,7 @@
       "customType": "regex",
       "fileMatch": ["^.github/(?:workflows|actions)/.+\\.ya?ml$"],
       "matchStrings": ["node-version: (?<currentValue>.*?)"],
-      "datasourceTemplate": "node"
+      "datasourceTemplate": "node-version"
     }
   ]
 }
