@@ -3,12 +3,11 @@
   "extends": ["config:best-practices", ":maintainLockFilesWeekly", ":automergeMinor", "customManagers:biomeVersions"],
   "customManagers": [
     {
-      "matchPaths": [".github/workflows/**"],
-      "matchStrings": ["node-version:\\s*\"(?<currentValue>.*?)\"\\s*"],
+      "customType": "regex",
       "datasourceTemplate": "node",
       "depNameTemplate": "node",
-      "versioningTemplate": "node",
-      "extractVersionTemplate": "^(?<version>\\d+\\.\\d+\\.\\d+)$"
+      "fileMatch": ["^\\.github/workflows/*.yml$"],
+      "matchStrings": ["node-version:\\s*\"(?<currentValue>.*?)\"\\s*"]
     }
   ]
 }
