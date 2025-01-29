@@ -4,10 +4,9 @@
   "customManagers": [
     {
       "customType": "regex",
-      "datasourceTemplate": "node",
-      "depNameTemplate": "node",
-      "fileMatch": ["^\\.github/workflows/*.yml$"],
-      "matchStrings": ["node-version:\\s*\"(?<currentValue>.*?)\"\\s*"]
+      "fileMatch": ["^.github/(?:workflows|actions)/.+\\.ya?ml$"],
+      "matchStrings": ["node-version: (?<currentValue>.*?)"],
+      "datasourceTemplate": "node"
     }
   ]
 }
