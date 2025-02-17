@@ -29,6 +29,10 @@ npx nest start -- export-activities -o ~/Downloads
   -h, --help               display help for command
 ```
 
+## API Documentation
+
+The API used by this project are documented using [Bruno](https://www.usebruno.com/) in the [api folder](./api).
+
 ## Licence
 
 [MIT License](LICENSE.md)

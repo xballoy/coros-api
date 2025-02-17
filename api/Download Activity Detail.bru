@@ -1,0 +1,37 @@
+meta {
+  name: Download Activity Detail
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{API_URL}}/activity/detail/download?labelId&sportType&fileType
+  body: none
+  auth: none
+}
+
+params:query {
+  labelId: 
+  sportType: 
+  fileType: 
+}
+
+script:pre-request {
+  const loginResponse = await bru.runRequest("Login");
+  req.setHeader("accessToken",  loginResponse.data.data.accessToken);
+}
+
+docs {
+  # Download Activity Detail
+  
+  Query Parameters:
+  
+  - `labelId`: label ID of the activity, you can get it from the `Query Activities` request
+  - `sportType`: sport type of the actity, you can get it from the `Query Activities` request
+  - `fileType`: one of the following depending on the type of file you want
+    - `4`: fit
+    - `3`: tcx
+    - `2`: kml
+    - `1`: gpx
+    - `0`: csv
+}
