@@ -3,6 +3,7 @@
   "version": "2.0.1",
   "description": "Coros API",
   "scripts": {
+    "postinstall": "patch-package",
     "build": "nest build",
     "format:check": "biome format src",
     "format:fix": "biome format --write src",
@@ -47,6 +48,7 @@
     "dayjs": "1.11.13",
     "dotenv": "16.4.7",
     "nest-commander": "3.16.0",
+    "patch-package": "8.0.0",
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.1",
     "zod": "3.24.2"

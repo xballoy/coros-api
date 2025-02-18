@@ -15,8 +15,20 @@ export class CorosAPI {
     return await this.loginCommand.run({});
   }
 
-  async queryActivities({ from, to, page, size }: { from?: Date; to?: Date; size?: number; page?: number }) {
-    return await this.queryActivitiesCommand.run({ from, to, pageSize: size, pageNumber: page });
+  async queryActivities({
+    from,
+    to,
+    page,
+    size,
+    sportTypes,
+  }: { from?: Date; to?: Date; size?: number; page?: number; sportTypes: string[] }) {
+    return await this.queryActivitiesCommand.run({
+      from,
+      to,
+      pageSize: size,
+      pageNumber: page,
+      modeList: sportTypes.join(','),
+    });
   }
 
   async downloadActivityDetail({

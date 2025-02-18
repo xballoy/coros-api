@@ -5,11 +5,13 @@ import { Command, CommandRunner, Option } from 'nest-commander';
 import { DownloadFile } from '../core/download-file.service';
 import { CorosAPI } from '../coros/coros-api';
 import { DefaultFileType, FileTypeKeys, getFileTypeFromKey, isValidFileTypeKey } from '../coros/file-type';
+import { DefaultSportType, SportTypeKeys, getSportTypeFromKey, isValidSportTypeKey } from '../coros/sport-type';
 import { InvalidParameterError } from './invalid-parameter-error';
 
 type Flags = {
   outDir: string;
-  fileType: { key: string; value: string } | string;
+  fileType: { key: string; value: string };
+  sportTypes: { key: string; value: string }[];
   from: Date;
   to: Date;
 };
@@ -25,14 +27,18 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
     super();
   }
 
-  async run(_passedParams: string[], { outDir, fileType: fileTypeArgs, from, to }: Flags): Promise<void> {
-    const fileType = typeof fileTypeArgs === 'string' ? this.parseFileType(fileTypeArgs) : fileTypeArgs;
-    this.logger.debug(`Running export-activities command with args ${JSON.stringify({ outDir, fileType, from, to })}`);
+  async run(_passedParams: string[], flags: Flags): Promise<void> {
+    this.logger.debug(`Running export-activities command with args ${JSON.stringify(flags)}`);
+    const { outDir, fileType, from, to, sportTypes } = flags;
 
     await this.corosService.login();
     this.logger.debug('Login success');
 
-    const { activities } = await this.corosService.queryActivities({ from, to });
+    const { activities } = await this.corosService.queryActivities({
+      from,
+      to,
+      sportTypes: sportTypes.map((it) => it.value),
+    });
     this.logger.debug('Query activities success');
 
     const activitiesToDownload = activities.map((it) => {
@@ -75,7 +81,7 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
     flags: '--exportType <fileType>',
     choices: FileTypeKeys,
     description: 'Export data type',
-    defaultValue: DefaultFileType.key,
+    defaultValue: DefaultFileType satisfies { key: string; value: string },
     required: false,
   })
   parseFileType(fileType: string): { key: string; value: string } {
@@ -84,6 +90,23 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
     }
 
     return getFileTypeFromKey(fileType);
+  }
+
+  @Option({
+    name: 'sportTypes',
+    flags: '--exportSportTypes <sportTypes>',
+    choices: SportTypeKeys,
+    description: 'Export sport types',
+    defaultValue: [DefaultSportType] satisfies { key: string; value: string }[],
+    required: false,
+  })
+  parseSportType(sportTypes: string): { key: string; value: string }[] {
+    const invalidSportTypes = sportTypes.split(',').filter((sportType) => !isValidSportTypeKey(sportType));
+    if (invalidSportTypes.length) {
+      throw new InvalidParameterError('sportType', `Must be comma separated values of: ${SportTypeKeys.join(', ')}.`);
+    }
+
+    return sportTypes.split(',').filter(isValidSportTypeKey).map(getSportTypeFromKey);
   }
 
   @Option({

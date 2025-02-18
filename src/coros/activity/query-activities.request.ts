@@ -13,6 +13,7 @@ export const QueryActivitiesInput = z.object({
   pageNumber: z.number().min(1, 'Page number must be at least 1').optional(),
   from: z.date().optional(),
   to: z.date().optional(),
+  modeList: z.string(),
 });
 export type QueryActivitiesInput = z.infer<typeof QueryActivitiesInput>;
 
@@ -64,8 +65,14 @@ export class QueryActivitiesRequest extends BaseRequest<
     return QueryActivitiesResponse;
   }
 
-  async handle({ pageSize = 20, pageNumber = 1, from, to }: QueryActivitiesInput): Promise<QueryActivitiesOutput> {
-    const activities = await this.getActivities({ pageSize, pageNumber, from, to });
+  async handle({
+    pageSize = 20,
+    pageNumber = 1,
+    from,
+    to,
+    modeList,
+  }: QueryActivitiesInput): Promise<QueryActivitiesOutput> {
+    const activities = await this.getActivities({ pageSize, pageNumber, from, to, modeList });
 
     if (activities.length === 0) {
       this.logger.log('No activities found.');
@@ -82,15 +89,18 @@ export class QueryActivitiesRequest extends BaseRequest<
     pageNumber,
     from,
     to,
+    modeList,
   }: {
     pageSize: number;
     pageNumber: number;
     from?: Date;
     to?: Date;
+    modeList: string;
   }): Promise<Activity[]> {
     const url = new URL('/activity/query', this.corosConfig.apiUrl);
     url.searchParams.append('size', String(pageSize));
     url.searchParams.append('pageNumber', String(pageNumber));
+    url.searchParams.append('modeList', modeList);
 
     if (from) {
       url.searchParams.append('startDay', dayjs(from).format('YYYYMMDD'));
@@ -116,7 +126,7 @@ export class QueryActivitiesRequest extends BaseRequest<
 
     const activities = [...(dataList ?? [])];
     if (pageNumber < (totalPage ?? 0)) {
-      const next = await this.getActivities({ pageSize, pageNumber: pageNumber + 1, from, to });
+      const next = await this.getActivities({ pageSize, pageNumber: pageNumber + 1, from, to, modeList });
       activities.push(...next);
     }
     return activities;
