@@ -5,13 +5,15 @@ import { Command, CommandRunner, Option } from 'nest-commander';
 import { DownloadFile } from '../core/download-file.service';
 import { CorosAPI } from '../coros/coros-api';
 import { DefaultFileType, FileTypeKeys, getFileTypeFromKey, isValidFileTypeKey } from '../coros/file-type';
-import { DefaultSportType, SportTypeKeys, getSportTypeFromKey, isValidSportTypeKey } from '../coros/sport-type';
+import { DefaultSportType, SportTypeKeys, getSportTypeValueFromKey, isValidSportTypeKey } from '../coros/sport-type';
 import { InvalidParameterError } from './invalid-parameter-error';
 
+type FileTypeFlag = { key: string; value: string };
+type SportTypesFlag = string[];
 type Flags = {
   outDir: string;
-  fileType: { key: string; value: string };
-  sportTypes: { key: string; value: string }[];
+  fileType: FileTypeFlag;
+  sportTypes: SportTypesFlag;
   from: Date;
   to: Date;
 };
@@ -37,7 +39,7 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
     const { activities } = await this.corosService.queryActivities({
       from,
       to,
-      sportTypes: sportTypes.map((it) => it.value),
+      sportTypes,
     });
     this.logger.debug('Query activities success');
 
@@ -85,10 +87,10 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
     flags: '--exportType <fileType>',
     choices: FileTypeKeys,
     description: 'Export data type',
-    defaultValue: DefaultFileType satisfies { key: string; value: string },
+    defaultValue: DefaultFileType satisfies FileTypeFlag,
     required: false,
   })
-  parseFileType(fileType: string): { key: string; value: string } {
+  parseFileType(fileType: string): FileTypeFlag {
     if (!isValidFileTypeKey(fileType)) {
       throw new InvalidParameterError('exportType', `Must be one of: ${FileTypeKeys.join(', ')}.`);
     }
@@ -101,16 +103,16 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
     flags: '--exportSportTypes <sportTypes>',
     choices: SportTypeKeys,
     description: 'Export sport types',
-    defaultValue: [DefaultSportType] satisfies { key: string; value: string }[],
+    defaultValue: [DefaultSportType.value] satisfies SportTypesFlag,
     required: false,
   })
-  parseSportType(sportTypes: string): { key: string; value: string }[] {
+  parseSportType(sportTypes: string): SportTypesFlag {
     const invalidSportTypes = sportTypes.split(',').filter((sportType) => !isValidSportTypeKey(sportType));
     if (invalidSportTypes.length) {
       throw new InvalidParameterError('sportType', `Must be comma separated values of: ${SportTypeKeys.join(', ')}.`);
     }
 
-    return sportTypes.split(',').filter(isValidSportTypeKey).map(getSportTypeFromKey);
+    return sportTypes.split(',').filter(isValidSportTypeKey).map(getSportTypeValueFromKey);
   }
 
   @Option({

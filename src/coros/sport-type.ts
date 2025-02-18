@@ -88,8 +88,8 @@ const AllSportTypes: {
 export const SportTypeKeys: SportTypeKey[] = Object.values(AllSportTypes).map(({ key }) => key);
 export const DefaultSportType = AllSportTypes.all;
 
-export const getSportTypeFromKey = (value: SportTypeKey) => {
-  return AllSportTypes[value];
+export const getSportTypeValueFromKey = (value: SportTypeKey) => {
+  return AllSportTypes[value].value;
 };
 
 export const isValidSportTypeKey = (value: string): value is SportTypeKey => {
