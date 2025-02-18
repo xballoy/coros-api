@@ -52,13 +52,17 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
     });
 
     for (const { labelId, sportType, fileName } of activitiesToDownload) {
-      const { fileUrl } = await this.corosService.downloadActivityDetail({
-        labelId,
-        sportType,
-        fileType: fileType.value,
-      });
-      await this.downloadFileCommand.handle(fileUrl, outDir, fileName);
-      this.logger.debug(`Downloading ${fileName} success`);
+      try {
+        const { fileUrl } = await this.corosService.downloadActivityDetail({
+          labelId,
+          sportType,
+          fileType: fileType.value,
+        });
+        await this.downloadFileCommand.handle(fileUrl, outDir, fileName);
+        this.logger.debug(`Downloading ${fileName} success`);
+      } catch (error) {
+        this.logger.error(`Downloading ${fileName} failed`);
+      }
     }
   }
 
