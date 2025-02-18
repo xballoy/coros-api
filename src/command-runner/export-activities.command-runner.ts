@@ -4,12 +4,16 @@ import dayjs from 'dayjs';
 import { Command, CommandRunner, Option } from 'nest-commander';
 import { DownloadFile } from '../core/download-file.service';
 import { CorosAPI } from '../coros/coros-api';
-import { DefaultFileType, FileTypeKeys, getFileTypeFromKey, isValidFileType } from '../coros/file-type';
+import { DefaultFileType, FileTypeKeys, getFileTypeFromKey, isValidFileTypeKey } from '../coros/file-type';
+import { DefaultSportType, SportTypeKeys, getSportTypeValueFromKey, isValidSportTypeKey } from '../coros/sport-type';
 import { InvalidParameterError } from './invalid-parameter-error';
 
+type FileTypeFlag = { key: string; value: string };
+type SportTypesFlag = string[];
 type Flags = {
   outDir: string;
-  fileType: { key: string; value: string } | string;
+  fileType: FileTypeFlag;
+  sportTypes: SportTypesFlag;
   from: Date;
   to: Date;
 };
@@ -25,14 +29,18 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
     super();
   }
 
-  async run(_passedParams: string[], { outDir, fileType: fileTypeArgs, from, to }: Flags): Promise<void> {
-    const fileType = typeof fileTypeArgs === 'string' ? this.parseFileType(fileTypeArgs) : fileTypeArgs;
-    this.logger.debug(`Running export-activities command with args ${JSON.stringify({ outDir, fileType, from, to })}`);
+  async run(_passedParams: string[], flags: Flags): Promise<void> {
+    this.logger.debug(`Running export-activities command with args ${JSON.stringify(flags)}`);
+    const { outDir, fileType, from, to, sportTypes } = flags;
 
     await this.corosService.login();
     this.logger.debug('Login success');
 
-    const { activities } = await this.corosService.queryActivities({ from, to });
+    const { activities } = await this.corosService.queryActivities({
+      from,
+      to,
+      sportTypes,
+    });
     this.logger.debug('Query activities success');
 
     const activitiesToDownload = activities.map((it) => {
@@ -46,13 +54,17 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
     });
 
     for (const { labelId, sportType, fileName } of activitiesToDownload) {
-      const { fileUrl } = await this.corosService.downloadActivityDetail({
-        labelId,
-        sportType,
-        fileType: fileType.value,
-      });
-      await this.downloadFileCommand.handle(fileUrl, outDir, fileName);
-      this.logger.debug(`Downloading ${fileName} success`);
+      try {
+        const { fileUrl } = await this.corosService.downloadActivityDetail({
+          labelId,
+          sportType,
+          fileType: fileType.value,
+        });
+        await this.downloadFileCommand.handle(fileUrl, outDir, fileName);
+        this.logger.debug(`Downloading ${fileName} success`);
+      } catch (error) {
+        this.logger.error(`Downloading ${fileName} failed`);
+      }
     }
   }
 
@@ -64,7 +76,7 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
   })
   parseOutDir(out: string) {
     if (!existsSync(out)) {
-      throw new InvalidParameterError('out', `${out} directory does not exists`);
+      throw new InvalidParameterError('out', out, 'Directory does not exists');
     }
 
     return out;
@@ -75,15 +87,36 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
     flags: '--exportType <fileType>',
     choices: FileTypeKeys,
     description: 'Export data type',
-    defaultValue: DefaultFileType.key,
+    defaultValue: DefaultFileType satisfies FileTypeFlag,
     required: false,
   })
-  parseFileType(fileType: string): { key: string; value: string } {
-    if (!isValidFileType(fileType)) {
-      throw new InvalidParameterError('exportType', `Must be one of: ${FileTypeKeys.join(', ')}.`);
+  parseFileType(fileType: string): FileTypeFlag {
+    if (!isValidFileTypeKey(fileType)) {
+      throw new InvalidParameterError('exportType', fileType, `Must be one of: ${FileTypeKeys.join(', ')}.`);
     }
 
     return getFileTypeFromKey(fileType);
+  }
+
+  @Option({
+    name: 'sportTypes',
+    flags: '--exportSportTypes <sportTypes>',
+    choices: SportTypeKeys,
+    description: 'Export sport types',
+    defaultValue: [DefaultSportType.value] satisfies SportTypesFlag,
+    required: false,
+  })
+  parseSportType(sportTypes: string): SportTypesFlag {
+    const invalidSportTypes = sportTypes.split(',').filter((sportType) => !isValidSportTypeKey(sportType));
+    if (invalidSportTypes.length) {
+      throw new InvalidParameterError(
+        'sportType',
+        invalidSportTypes.join(', '),
+        `Must be comma separated values of: ${SportTypeKeys.join(', ')}.`,
+      );
+    }
+
+    return sportTypes.split(',').filter(isValidSportTypeKey).map(getSportTypeValueFromKey);
   }
 
   @Option({
@@ -95,7 +128,7 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
   parseFrom(from: string): Date {
     const maybeDate = dayjs(from, 'YYYY-MM-DD', true);
     if (!maybeDate.isValid()) {
-      throw new InvalidParameterError('fromDate', 'Format must be YYYY-MM-DD');
+      throw new InvalidParameterError('fromDate', from, 'Format must be YYYY-MM-DD');
     }
 
     return maybeDate.toDate();
@@ -110,7 +143,7 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
   parseTo(to: string): Date {
     const maybeDate = dayjs(to, 'YYYY-MM-DD', true);
     if (!maybeDate.isValid()) {
-      throw new InvalidParameterError('toDate', 'Format must be YYYY-MM-DD');
+      throw new InvalidParameterError('toDate', to, 'Format must be YYYY-MM-DD');
     }
 
     return maybeDate.toDate();

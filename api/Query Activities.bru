@@ -1,0 +1,74 @@
+meta {
+  name: Query Activities
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{API_URL}}/activity/query?size=1&pageNumber=1
+  body: none
+  auth: none
+}
+
+params:query {
+  size: 1
+  pageNumber: 1
+  ~from: 
+  ~to: 
+  ~modeList: 
+}
+
+script:pre-request {
+  const loginResponse = await bru.runRequest("Login");
+  req.setHeader("accessToken",  loginResponse.data.data.accessToken);
+}
+
+docs {
+  # Query Activities
+  
+  Query Parameters:
+  
+  - `size`: number of activities to fetch (must be between 1 and 200)
+  - `pageNumber`: page number (must be at least one)
+  - `from`: start date (format YYYYMMDD), optional
+  - `end`: end date (format YYYYMMDD), optional
+  - `modeList`: list of sport to includes (comma separated values), optional
+  	- `100`: Run
+  	- `101`: Indoor Run
+  	- `102`: Trail Run
+  	- `103`: Track Run
+  	- `104`: Hike  
+  	- `105`: Mtn Climb  
+  	- `106`: Climb  
+  	- `200`: Road Bike  
+  	- `201`: Indoor Bike  
+  	- `202`: E-Bike  
+  	- `203`: Gravel Bike  
+  	- `204`: Mountain Bike  
+  	- `205`: E-MTB  
+  	- `299`: Helmet Riding  
+  	- `300`: Pool Swim  
+  	- `301`: Open Water  
+  	- `400`: Gym Cardio  
+  	- `401`: GPS Cardio  
+  	- `402`: Strength  
+  	- `500`: Ski  
+  	- `501`: Snowboard  
+  	- `502`: XC Ski  
+  	- `503`: Ski Touring  
+  	- `700`: Rowing  
+  	- `701`: Indoor Rower  
+  	- `702`: Whitewater  
+  	- `704`: Flatwater  
+  	- `705`: Windsurfing  
+  	- `706`: Speedsurfing  
+  	- `800`: Indoor Climb  
+  	- `801`: Bouldering  
+  	- `900`: Walk  
+  	- `901`: Jump Rope  
+  	- `902`: Floor Climb  
+  	- `10000`: Triathlon  
+  	- `10001`: Multisport  
+  	- `10002`: Ski Touring  
+  	- `10003`: Outdoor Climb
+}

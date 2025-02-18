@@ -1,0 +1,25 @@
+meta {
+  name: Login
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{API_URL}}/account/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "accountType": 2,
+    "account": "{{COROS_EMAIL}}",
+    "pwd": "{{COROS_PASSWORD_MD5}}"
+  }
+}
+
+docs {
+  # Login
+  
+  Used as a pre-request for other request in order to dynamically set the accessToken.
+}
