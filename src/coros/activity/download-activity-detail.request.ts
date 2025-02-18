@@ -28,13 +28,19 @@ export class DownloadActivityDetailRequest extends BaseRequest<
   DownloadActivityDetailResponse
 > {
   private readonly logger = new Logger(DownloadActivityDetailRequest.name);
+  private readonly httpService: HttpService;
+  private readonly corosConfig: CorosConfigService;
+  private readonly corosAuthenticationService: CorosAuthenticationService;
 
   constructor(
-    private readonly httpService: HttpService,
-    private readonly corosConfig: CorosConfigService,
-    private readonly corosAuthenticationService: CorosAuthenticationService,
+    httpService: HttpService,
+    corosConfig: CorosConfigService,
+    corosAuthenticationService: CorosAuthenticationService,
   ) {
     super();
+    this.corosAuthenticationService = corosAuthenticationService;
+    this.corosConfig = corosConfig;
+    this.httpService = httpService;
   }
 
   protected inputValidator(): z.Schema<DownloadActivityDetailInput> {

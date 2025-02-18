@@ -21,12 +21,13 @@ type Flags = {
 @Command({ name: 'export-activities', description: 'Bulk export your Coros activities' })
 export class ExportActivitiesCommandRunner extends CommandRunner {
   private readonly logger = new Logger(ExportActivitiesCommandRunner.name);
+  private readonly downloadFileCommand: DownloadFile;
+  private readonly corosService: CorosAPI;
 
-  constructor(
-    private readonly downloadFileCommand: DownloadFile,
-    private readonly corosService: CorosAPI,
-  ) {
+  constructor(downloadFileCommand: DownloadFile, corosService: CorosAPI) {
     super();
+    this.corosService = corosService;
+    this.downloadFileCommand = downloadFileCommand;
   }
 
   async run(_passedParams: string[], flags: Flags): Promise<void> {

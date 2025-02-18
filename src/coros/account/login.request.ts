@@ -29,13 +29,19 @@ type LoginInput = z.infer<typeof LoginInput>;
 @Injectable()
 export class LoginRequest extends BaseRequest<LoginInput, LoginResponse, Omit<LoginData, 'accessToken'>> {
   private readonly logger = new Logger(LoginRequest.name);
+  private readonly httpService: HttpService;
+  private readonly corosConfig: CorosConfigService;
+  private readonly corosAuthenticationService: CorosAuthenticationService;
 
   constructor(
-    private readonly httpService: HttpService,
-    private readonly corosConfig: CorosConfigService,
-    private readonly corosAuthenticationService: CorosAuthenticationService,
+    httpService: HttpService,
+    corosConfig: CorosConfigService,
+    corosAuthenticationService: CorosAuthenticationService,
   ) {
     super();
+    this.corosAuthenticationService = corosAuthenticationService;
+    this.corosConfig = corosConfig;
+    this.httpService = httpService;
   }
 
   protected inputValidator(): z.Schema<LoginInput> {

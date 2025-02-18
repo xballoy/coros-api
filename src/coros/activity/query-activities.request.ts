@@ -48,13 +48,19 @@ export class QueryActivitiesRequest extends BaseRequest<
   QueryActivitiesOutput
 > {
   private readonly logger = new Logger(QueryActivitiesRequest.name);
+  private readonly httpService: HttpService;
+  private readonly corosConfig: CorosConfigService;
+  private readonly corosAuthenticationService: CorosAuthenticationService;
 
   constructor(
-    private readonly httpService: HttpService,
-    private readonly corosConfig: CorosConfigService,
-    private readonly corosAuthenticationService: CorosAuthenticationService,
+    httpService: HttpService,
+    corosConfig: CorosConfigService,
+    corosAuthenticationService: CorosAuthenticationService,
   ) {
     super();
+    this.corosAuthenticationService = corosAuthenticationService;
+    this.corosConfig = corosConfig;
+    this.httpService = httpService;
   }
 
   protected inputValidator(): z.Schema<QueryActivitiesInput> {
