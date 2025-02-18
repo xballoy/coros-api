@@ -10,7 +10,8 @@
     "start": "nest start",
     "start:prod": "node dist/main",
     "lint:check": "biome lint src",
-    "lint:fix": "biome lint --apply src"
+    "lint:fix": "biome lint --apply src",
+    "test": "vitest --run"
   },
   "repository": {
     "type": "git",

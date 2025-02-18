@@ -21,5 +21,7 @@ jobs:
         run: npm ci
       - name: Code quality
         run:  npx @biomejs/biome ci src
+      - name: Tests
+        run:  npm run test
       - name: Build
         run: npm run build
