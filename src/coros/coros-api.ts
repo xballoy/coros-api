@@ -5,11 +5,19 @@ import { QueryActivitiesRequest } from './activity/query-activities.request';
 
 @Injectable()
 export class CorosAPI {
+  private readonly loginCommand: LoginRequest;
+  private readonly queryActivitiesCommand: QueryActivitiesRequest;
+  private readonly downloadActivityDetailCommand: DownloadActivityDetailRequest;
+
   constructor(
-    private readonly loginCommand: LoginRequest,
-    private readonly queryActivitiesCommand: QueryActivitiesRequest,
-    private readonly downloadActivityDetailCommand: DownloadActivityDetailRequest,
-  ) {}
+    loginCommand: LoginRequest,
+    queryActivitiesCommand: QueryActivitiesRequest,
+    downloadActivityDetailCommand: DownloadActivityDetailRequest,
+  ) {
+    this.downloadActivityDetailCommand = downloadActivityDetailCommand;
+    this.queryActivitiesCommand = queryActivitiesCommand;
+    this.loginCommand = loginCommand;
+  }
 
   async login() {
     return await this.loginCommand.run({});
