@@ -76,7 +76,7 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
   })
   parseOutDir(out: string) {
     if (!existsSync(out)) {
-      throw new InvalidParameterError('out', `${out} directory does not exists`);
+      throw new InvalidParameterError('out', out, 'Directory does not exists');
     }
 
     return out;
@@ -92,7 +92,7 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
   })
   parseFileType(fileType: string): FileTypeFlag {
     if (!isValidFileTypeKey(fileType)) {
-      throw new InvalidParameterError('exportType', `Must be one of: ${FileTypeKeys.join(', ')}.`);
+      throw new InvalidParameterError('exportType', fileType, `Must be one of: ${FileTypeKeys.join(', ')}.`);
     }
 
     return getFileTypeFromKey(fileType);
@@ -109,7 +109,11 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
   parseSportType(sportTypes: string): SportTypesFlag {
     const invalidSportTypes = sportTypes.split(',').filter((sportType) => !isValidSportTypeKey(sportType));
     if (invalidSportTypes.length) {
-      throw new InvalidParameterError('sportType', `Must be comma separated values of: ${SportTypeKeys.join(', ')}.`);
+      throw new InvalidParameterError(
+        'sportType',
+        invalidSportTypes.join(', '),
+        `Must be comma separated values of: ${SportTypeKeys.join(', ')}.`,
+      );
     }
 
     return sportTypes.split(',').filter(isValidSportTypeKey).map(getSportTypeValueFromKey);
@@ -124,7 +128,7 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
   parseFrom(from: string): Date {
     const maybeDate = dayjs(from, 'YYYY-MM-DD', true);
     if (!maybeDate.isValid()) {
-      throw new InvalidParameterError('fromDate', 'Format must be YYYY-MM-DD');
+      throw new InvalidParameterError('fromDate', from, 'Format must be YYYY-MM-DD');
     }
 
     return maybeDate.toDate();
@@ -139,7 +143,7 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
   parseTo(to: string): Date {
     const maybeDate = dayjs(to, 'YYYY-MM-DD', true);
     if (!maybeDate.isValid()) {
-      throw new InvalidParameterError('toDate', 'Format must be YYYY-MM-DD');
+      throw new InvalidParameterError('toDate', to, 'Format must be YYYY-MM-DD');
     }
 
     return maybeDate.toDate();
