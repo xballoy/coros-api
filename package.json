@@ -25,8 +25,8 @@
   "homepage": "https://github.com/xballoy/coros-api#readme",
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-    "@nestjs/cli": "11.0.5",
-    "@nestjs/schematics": "11.0.2",
+    "@nestjs/cli": "11.0.6",
+    "@nestjs/schematics": "11.0.3",
     "@nestjs/testing": "11.0.13",
     "@swc-node/register": "1.10.10",
     "@swc/cli": "0.6.0",
