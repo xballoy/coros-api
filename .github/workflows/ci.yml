@@ -13,15 +13,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Install pnpm
+        uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4
       - name: Set up Node
         uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
         with:
           node-version: "22.14.0"
+          cache: 'pnpm'
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install
       - name: Code quality
-        run:  npx @biomejs/biome ci src
+        run:  pnpm dlx @biomejs/biome ci src
       - name: Tests
-        run:  npm run test
+        run:  pnpm test
       - name: Build
-        run: npm run build
+        run: pnpm build

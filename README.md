@@ -8,9 +8,10 @@ anytime.
 ## Getting started
 
 - Install Node.js (see [.nvmrc](.nvmrc) for the supported version)
-- Run `npm install`
+- Install [pnpm](https://pnpm.io/installation)
+- Run `pnpm install`
 - Create a `.env` file (see [.env.example](.env.example)) with your email, password and the Coros API URL
-- Run `npx nest start -- export-activities -out OUT_DIR`.
+- Run `pnpm nest start -- export-activities -out OUT_DIR`.
 
 **Options:**
 
@@ -27,16 +28,16 @@ Examples:
 
 ```shell
 # Download all activities in fit format in Downloads folder
-npx nest start -- export-activities -o ~/Downloads
+pnpm nest start -- export-activities -o ~/Downloads
 
 # Download all activities between 2025-01-01 and 2025-02-01 in fit format in Downloads folder
-npx nest start -- export-activities --fromDate 2025-01-01 --toDate 2025-02-01 -o ~/Downloads
+pnpm nest start -- export-activities --fromDate 2025-01-01 --toDate 2025-02-01 -o ~/Downloads
 
 # Download all activities in gpx format in Downloads folder
-npx nest start -- export-activities --exportType gpx -o ~/Downloads
+pnpm nest start -- export-activities --exportType gpx -o ~/Downloads
 
 # Download all walk and run in gpx format in Downloads folder
-npx nest start -- export-activities --exportType gpx --exportSportTypes walk,run -o ~/Downloads
+pnpm nest start -- export-activities --exportType gpx --exportSportTypes walk,run -o ~/Downloads
 ```
 
 ## API Documentation
