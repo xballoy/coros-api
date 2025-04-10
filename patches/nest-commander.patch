@@ -1,0 +1,14 @@
+diff --git a/src/command-runner.interface.d.ts b/src/command-runner.interface.d.ts
+index 344cb48d366b8faa49c23b8575c0591819fd909b..d3b675455cc6cf4fcb10ac57ec7c53d3cc105583 100644
+--- a/src/command-runner.interface.d.ts
++++ b/src/command-runner.interface.d.ts
+@@ -28,7 +28,8 @@ export type RootCommandMetadata = Omit<CommandMetadata, 'name'> & {
+ export interface OptionMetadata {
+     flags: string;
+     description?: string;
+-    defaultValue?: string | boolean | number;
++    // Match commander.js type for defaultValue (https://github.com/tj/commander.js/blob/v11.1.0/typings/index.d.ts#L53)
++    defaultValue?: any;
+     required?: boolean;
+     name?: string;
+     choices?: string[] | true;

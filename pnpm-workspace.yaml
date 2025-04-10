@@ -1,0 +1,9 @@
+onlyBuiltDependencies:
+  - '@biomejs/biome'
+  - '@nestjs/core'
+  - '@swc/core'
+  - esbuild
+  - lefthook
+
+patchedDependencies:
+  nest-commander: patches/nest-commander.patch
