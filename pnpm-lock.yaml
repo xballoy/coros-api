@@ -87,8 +87,8 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
       unplugin-swc:
-        specifier: 1.5.1
-        version: 1.5.1(@swc/core@1.11.21)(rollup@4.39.0)
+        specifier: 1.5.2
+        version: 1.5.2(@swc/core@1.11.21)(rollup@4.39.0)
       vitest:
         specifier: 3.1.2
         version: 3.1.2(@types/node@22.14.1)(terser@5.39.0)
@@ -2543,8 +2543,8 @@ packages:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
     engines: {node: '>= 10.0.0'}
 
-  unplugin-swc@1.5.1:
-    resolution: {integrity: sha512-/ZLrPNjChhGx3Z95pxJ4tQgfI6rWqukgYHKflrNB4zAV1izOQuDhkTn55JWeivpBxDCoK7M/TStb2aS/14PS/g==}
+  unplugin-swc@1.5.2:
+    resolution: {integrity: sha512-bf8DJO8lD1wpnwFglQpVH2XEaFfVsSU5C7yFyLwGT1gxskPtejlDeuttKxjtmHTSqrDsQrK0FCFdhw3Ny+K7hA==}
     peerDependencies:
       '@swc/core': ^1.2.108
 
@@ -5022,7 +5022,7 @@ snapshots:
 
   universalify@2.0.1: {}
 
-  unplugin-swc@1.5.1(@swc/core@1.11.21)(rollup@4.39.0):
+  unplugin-swc@1.5.2(@swc/core@1.11.21)(rollup@4.39.0):
     dependencies:
       '@rollup/pluginutils': 5.1.4(rollup@4.39.0)
       '@swc/core': 1.11.21
