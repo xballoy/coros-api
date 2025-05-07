@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Code quality
-        run:  pnpm dlx @biomejs/biome ci src
+        run: pnpm lint:ci
       - name: Tests
         run:  pnpm test
       - name: Build
