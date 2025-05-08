@@ -41,8 +41,8 @@ importers:
         specifier: 7.8.2
         version: 7.8.2
       zod:
-        specifier: 3.24.4
-        version: 3.24.4
+        specifier: 4.0.0-beta.20250505T195954
+        version: 4.0.0-beta.20250505T195954
     devDependencies:
       '@biomejs/biome':
         specifier: 1.9.4
@@ -1190,6 +1190,9 @@ packages:
 
   '@xtuc/long@4.2.2':
     resolution: {integrity: sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==}
+
+  '@zod/core@0.11.6':
+    resolution: {integrity: sha512-03Bv82fFSfjDAvMfdHHdGSS6SOJs0iCcJlWJv1kJHRtoTT02hZpyip/2Lk6oo4l4FtjuwTrsEQTwg/LD8I7dJA==}
 
   acorn@8.14.1:
     resolution: {integrity: sha512-OvQ/2pUDKmgfCg++xsTX1wGxfTaszcHVcTctW4UJB4hibJx2HXxxO5UmVgyjMa+ZDsiaf5wWLXYpRWMmBI0QHg==}
@@ -2707,8 +2710,8 @@ packages:
     resolution: {integrity: sha512-cYVsTjKl8b+FrnidjibDWskAv7UKOfcwaVZdp/it9n1s9fU3IkgDbhdIRKCW4JDsAlECJY0ytoVPT3sK6kideA==}
     engines: {node: '>=18'}
 
-  zod@3.24.4:
-    resolution: {integrity: sha512-OdqJE9UDRPwWsrHjLN2F8bPxvwJBK22EHLWtanu0LSYr5YqzsaaW3RMgmjwr8Rypg5k+meEJdSPXJZXE/yqOMg==}
+  zod@4.0.0-beta.20250505T195954:
+    resolution: {integrity: sha512-iB8WvxkobVIXMARvQu20fKvbS7mUTiYRpcD8OQV1xjRhxO0EEpYIRJBk6yfBzHAHEdOSDh3SxDITr5Eajr2vtg==}
 
 snapshots:
 
@@ -3729,6 +3732,8 @@ snapshots:
   '@xtuc/ieee754@1.2.0': {}
 
   '@xtuc/long@4.2.2': {}
+
+  '@zod/core@0.11.6': {}
 
   acorn@8.14.1: {}
 
@@ -5209,4 +5214,6 @@ snapshots:
 
   yoctocolors-cjs@2.1.2: {}
 
-  zod@3.24.4: {}
+  zod@4.0.0-beta.20250505T195954:
+    dependencies:
+      '@zod/core': 0.11.6
