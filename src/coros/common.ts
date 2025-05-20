@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod/v4';
 
 export const CorosResponseBase = z.object({
   apiCode: z.string(),
@@ -7,12 +7,11 @@ export const CorosResponseBase = z.object({
 });
 export type CorosResponseBase = z.infer<typeof CorosResponseBase>;
 
-export const CorosResponse = <T extends z.ZodTypeAny>(dataSchema: T) =>
-  CorosResponseBase.merge(
-    z.object({
-      data: dataSchema,
-    }),
-  );
+export const CorosResponse = <T extends z.ZodType>(dataSchema: T) =>
+  z.object({
+    ...CorosResponseBase.shape,
+    data: dataSchema,
+  });
 
-const CorosResponseWithData = CorosResponse(z.object({}));
+const CorosResponseWithData = CorosResponse(z.record(z.string(), z.unknown()));
 export type CorosResponseWithData = z.infer<typeof CorosResponseWithData>;

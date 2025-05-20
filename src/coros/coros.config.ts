@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { Injectable } from '@nestjs/common';
-import { z } from 'zod';
+import { z } from 'zod/v4';
 
 const CorosConfig = z.object({
   apiUrl: z.string(),

@@ -1,19 +1,13 @@
-import type { z } from 'zod';
+import { z } from 'zod/v4';
 
 export class ValidationError extends Error {
-  public readonly issues: z.ZodIssue[];
+  public readonly error: z.ZodError;
   public readonly options?: ErrorOptions;
 
-  constructor(issues: z.ZodIssue[], options?: ErrorOptions) {
-    super(ValidationError.getMessage(issues), options);
+  constructor(error: z.ZodError, options?: ErrorOptions) {
+    super(z.prettifyError(error), options);
     this.options = options;
-    this.issues = issues;
+    this.error = error;
     this.name = 'ValidationError';
-  }
-
-  private static getMessage(issues: z.ZodIssue[]): string {
-    return Object.entries(issues.flat())
-      .map(([_, issue]) => `${issue.path.join('.')} => ${issue.message}`)
-      .join(', ');
   }
 }

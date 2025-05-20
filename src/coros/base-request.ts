@@ -1,4 +1,4 @@
-import type { z } from 'zod';
+import type { z } from 'zod/v4';
 import { ValidationError } from '../core/validation-error';
 import { CorosResponseBase, type CorosResponseWithData } from './common';
 
@@ -10,7 +10,7 @@ export abstract class BaseRequest<Input, Response extends CorosResponseWithData,
   public async run(args: Input): Promise<Output> {
     const parseResult = this.inputValidator().safeParse(args);
     if (!parseResult.success) {
-      throw new ValidationError(parseResult.error.issues, { cause: args });
+      throw new ValidationError(parseResult.error, { cause: args });
     }
     return await this.handle(args);
   }
@@ -18,7 +18,7 @@ export abstract class BaseRequest<Input, Response extends CorosResponseWithData,
   protected assertCorosResponseBase(data: unknown): asserts data is CorosResponseBase {
     const parseResult = CorosResponseBase.safeParse(data);
     if (!parseResult.success) {
-      throw new ValidationError(parseResult.error.issues, {
+      throw new ValidationError(parseResult.error, {
         cause: data,
       });
     }
@@ -32,7 +32,7 @@ export abstract class BaseRequest<Input, Response extends CorosResponseWithData,
   protected assertCorosResponse(data: unknown): asserts data is Response {
     const parseResult = this.responseValidator().safeParse(data);
     if (!parseResult.success) {
-      throw new ValidationError(parseResult.error.issues, {
+      throw new ValidationError(parseResult.error, {
         cause: data,
       });
     }

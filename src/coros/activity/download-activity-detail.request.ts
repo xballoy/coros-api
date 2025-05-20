@@ -1,7 +1,7 @@
 import { URL } from 'node:url';
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
-import { z } from 'zod';
+import { z } from 'zod/v4';
 import { BaseRequest } from '../base-request';
 import { CorosResponse } from '../common';
 import { CorosAuthenticationService } from '../coros-authentication.service';
