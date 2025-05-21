@@ -53,5 +53,5 @@
     "rxjs": "7.8.2",
     "zod": "3.25.7"
   },
-  "packageManager": "pnpm@10.10.0"
+  "packageManager": "pnpm@10.11.0"
 }
