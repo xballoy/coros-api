@@ -87,8 +87,8 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
       unplugin-swc:
-        specifier: 1.5.3
-        version: 1.5.3(@swc/core@1.11.29)(rollup@4.41.1)
+        specifier: 1.5.4
+        version: 1.5.4(@swc/core@1.11.29)(rollup@4.41.1)
       vitest:
         specifier: 3.1.4
         version: 3.1.4(@types/node@22.15.29)(terser@5.39.2)
@@ -2551,13 +2551,13 @@ packages:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
     engines: {node: '>= 10.0.0'}
 
-  unplugin-swc@1.5.3:
-    resolution: {integrity: sha512-lfBT7Wtauf/1y89xGt+x8+T7yB7bCMq/qXeXcOcqQddKDULGEg/4O2201Eh6eCBxbEi8J1Tmy2scG5dhiBJONg==}
+  unplugin-swc@1.5.4:
+    resolution: {integrity: sha512-NYa0rEUI8+Ckr+azVyAWIBWOrqnoWsDeHPLCMAsEWXJzkNwG1GtYf/Fe872ulOPKRmQsY1VEd20d5Y3fLiiZQQ==}
     peerDependencies:
       '@swc/core': ^1.2.108
 
-  unplugin@2.3.4:
-    resolution: {integrity: sha512-m4PjxTurwpWfpMomp8AptjD5yj8qEZN5uQjjGM3TAs9MWWD2tXSSNNj6jGR2FoVGod4293ytyV6SwBbertfyJg==}
+  unplugin@2.3.5:
+    resolution: {integrity: sha512-RyWSb5AHmGtjjNQ6gIlA67sHOsWpsbWpwDokLwTcejVdOjEkJZh7QKu14J00gDDVSh8kGH4KYC/TNBceXFZhtw==}
     engines: {node: '>=18.12.0'}
 
   update-browserslist-db@1.1.3:
@@ -5029,16 +5029,16 @@ snapshots:
 
   universalify@2.0.1: {}
 
-  unplugin-swc@1.5.3(@swc/core@1.11.29)(rollup@4.41.1):
+  unplugin-swc@1.5.4(@swc/core@1.11.29)(rollup@4.41.1):
     dependencies:
       '@rollup/pluginutils': 5.1.4(rollup@4.41.1)
       '@swc/core': 1.11.29
       load-tsconfig: 0.2.5
-      unplugin: 2.3.4
+      unplugin: 2.3.5
     transitivePeerDependencies:
       - rollup
 
-  unplugin@2.3.4:
+  unplugin@2.3.5:
     dependencies:
       acorn: 8.14.1
       picomatch: 4.0.2
