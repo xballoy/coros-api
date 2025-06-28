@@ -29,7 +29,13 @@ export class CorosAPI {
     page,
     size,
     sportTypes,
-  }: { from?: Date; to?: Date; size?: number; page?: number; sportTypes: string[] }) {
+  }: {
+    from?: Date;
+    to?: Date;
+    size?: number;
+    page?: number;
+    sportTypes: string[];
+  }) {
     return await this.queryActivitiesCommand.run({
       from,
       to,

@@ -8,8 +8,8 @@
     "format:fix": "biome format --write src",
     "start": "nest start",
     "start:prod": "node dist/main",
-    "lint:fix": "biome check --write --no-errors-on-unmatched",
-    "lint:check": "biome check --no-errors-on-unmatched",
+    "lint:fix": "biome check --write --no-errors-on-unmatched .",
+    "lint:check": "biome check --no-errors-on-unmatched .",
     "lint:ci": "biome ci --no-errors-on-unmatched",
     "test": "vitest --run"
   },
@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/xballoy/coros-api#readme",
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
+    "@biomejs/biome": "2.0.6",
     "@nestjs/cli": "11.0.7",
     "@nestjs/schematics": "11.0.5",
     "@nestjs/testing": "11.1.3",
