@@ -8,8 +8,8 @@
     "format:fix": "biome format --write src",
     "start": "nest start",
     "start:prod": "node dist/main",
-    "lint:fix": "biome check --write --no-errors-on-unmatched",
-    "lint:check": "biome check --no-errors-on-unmatched",
+    "lint:fix": "biome check --write --no-errors-on-unmatched .",
+    "lint:check": "biome check --no-errors-on-unmatched .",
     "lint:ci": "biome ci --no-errors-on-unmatched",
     "test": "vitest --run"
   },

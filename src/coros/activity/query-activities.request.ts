@@ -5,8 +5,8 @@ import dayjs from 'dayjs';
 import { z } from 'zod/v4';
 import { BaseRequest } from '../base-request';
 import { CorosResponse } from '../common';
-import { CorosAuthenticationService } from '../coros-authentication.service';
 import { CorosConfigService } from '../coros.config';
+import { CorosAuthenticationService } from '../coros-authentication.service';
 
 export const QueryActivitiesInput = z.object({
   pageSize: z.number().min(1, 'Page size must be at least 1').max(200, 'Page size must not exceed 200').optional(),

@@ -5,7 +5,7 @@ import { Command, CommandRunner, Option } from 'nest-commander';
 import { DownloadFile } from '../core/download-file.service';
 import { CorosAPI } from '../coros/coros-api';
 import { DefaultFileType, FileTypeKeys, getFileTypeFromKey, isValidFileTypeKey } from '../coros/file-type';
-import { DefaultSportType, SportTypeKeys, getSportTypeValueFromKey, isValidSportTypeKey } from '../coros/sport-type';
+import { DefaultSportType, getSportTypeValueFromKey, isValidSportTypeKey, SportTypeKeys } from '../coros/sport-type';
 import { InvalidParameterError } from './invalid-parameter-error';
 
 type FileTypeFlag = { key: string; value: string };
@@ -63,7 +63,7 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
         });
         await this.downloadFileCommand.handle(fileUrl, outDir, fileName);
         this.logger.debug(`Downloading ${fileName} success`);
-      } catch (error) {
+      } catch {
         this.logger.error(`Downloading ${fileName} failed`);
       }
     }
