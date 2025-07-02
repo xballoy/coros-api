@@ -1,6 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["github>xballoy/renovate-config"],
+  "packageRules": [
+    {
+      "matchDepNames": ["reflect-metadata"],
+      "abandonmentThreshold": null
+    }
+  ],
   "customManagers": [
     {
       "customType": "regex",
