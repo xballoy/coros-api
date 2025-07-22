@@ -47,7 +47,7 @@
     "axios": "1.10.0",
     "dayjs": "1.11.13",
     "dotenv": "17.2.0",
-    "nest-commander": "3.17.0",
+    "nest-commander": "3.18.0",
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.2",
     "zod": "3.25.76"
