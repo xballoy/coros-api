@@ -1,4 +1,4 @@
-import type { z } from 'zod/v4';
+import type { z } from 'zod';
 import { ValidationError } from '../core/validation-error';
 import { CorosResponseBase, type CorosResponseWithData } from './common';
 

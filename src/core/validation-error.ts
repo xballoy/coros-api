@@ -1,4 +1,4 @@
-import { z } from 'zod/v4';
+import { z } from 'zod';
 
 export class ValidationError extends Error {
   public readonly error: z.ZodError;
