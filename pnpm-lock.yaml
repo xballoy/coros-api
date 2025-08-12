@@ -41,8 +41,8 @@ importers:
         specifier: 7.8.2
         version: 7.8.2
       zod:
-        specifier: 4.0.15
-        version: 4.0.15
+        specifier: 4.0.16
+        version: 4.0.16
     devDependencies:
       '@biomejs/biome':
         specifier: 2.1.4
@@ -2655,8 +2655,8 @@ packages:
     resolution: {integrity: sha512-cYVsTjKl8b+FrnidjibDWskAv7UKOfcwaVZdp/it9n1s9fU3IkgDbhdIRKCW4JDsAlECJY0ytoVPT3sK6kideA==}
     engines: {node: '>=18'}
 
-  zod@4.0.15:
-    resolution: {integrity: sha512-2IVHb9h4Mt6+UXkyMs0XbfICUh1eUrlJJAOupBHUhLRnKkruawyDddYRCs0Eizt900ntIMk9/4RksYl+FgSpcQ==}
+  zod@4.0.16:
+    resolution: {integrity: sha512-Djo/cM339grjI7/HmN+ixYO2FzEMcWr/On50UlQ/RjrWK1I/hPpWhpC76heCptnRFpH0LMwrEbUY50HDc0V8wg==}
 
 snapshots:
 
@@ -5147,4 +5147,4 @@ snapshots:
 
   yoctocolors-cjs@2.1.2: {}
 
-  zod@4.0.15: {}
+  zod@4.0.16: {}
