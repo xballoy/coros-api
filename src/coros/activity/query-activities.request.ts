@@ -9,7 +9,6 @@ import {
 } from '../../infrastructure/configuration/configuration.service';
 import { BaseRequest } from '../base-request';
 import { CorosResponse } from '../common';
-import { CorosAuthenticationService } from '../coros-authentication.service';
 
 export const QueryActivitiesInput = z.object({
   pageSize: z.number().min(1, 'Page size must be at least 1').max(200, 'Page size must not exceed 200').optional(),
@@ -53,15 +52,9 @@ export class QueryActivitiesRequest extends BaseRequest<
   private readonly logger = new Logger(QueryActivitiesRequest.name);
   private readonly httpService: HttpService;
   private readonly configurationService: ConfigurationService;
-  private readonly corosAuthenticationService: CorosAuthenticationService;
 
-  constructor(
-    httpService: HttpService,
-    @Inject(CONFIGURATION_SERVICE_TOKEN) corosConfig: ConfigurationService,
-    corosAuthenticationService: CorosAuthenticationService,
-  ) {
+  constructor(httpService: HttpService, @Inject(CONFIGURATION_SERVICE_TOKEN) corosConfig: ConfigurationService) {
     super();
-    this.corosAuthenticationService = corosAuthenticationService;
     this.configurationService = corosConfig;
     this.httpService = httpService;
   }
@@ -119,11 +112,7 @@ export class QueryActivitiesRequest extends BaseRequest<
       url.searchParams.append('endDay', dayjs(to).format('YYYYMMDD'));
     }
 
-    const { data } = await this.httpService.axiosRef.get(url.toString(), {
-      headers: {
-        accessToken: this.corosAuthenticationService.accessToken,
-      },
-    });
+    const { data } = await this.httpService.axiosRef.get(url.toString());
     this.logger.verbose('Query activity response', data);
 
     this.assertCorosResponseBase(data);

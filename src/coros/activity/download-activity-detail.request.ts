@@ -8,7 +8,6 @@ import {
 } from '../../infrastructure/configuration/configuration.service';
 import { BaseRequest } from '../base-request';
 import { CorosResponse } from '../common';
-import { CorosAuthenticationService } from '../coros-authentication.service';
 
 export const DownloadActivityDetailInput = z.object({
   labelId: z.string(),
@@ -33,15 +32,9 @@ export class DownloadActivityDetailRequest extends BaseRequest<
   private readonly logger = new Logger(DownloadActivityDetailRequest.name);
   private readonly httpService: HttpService;
   private readonly configurationService: ConfigurationService;
-  private readonly corosAuthenticationService: CorosAuthenticationService;
 
-  constructor(
-    httpService: HttpService,
-    @Inject(CONFIGURATION_SERVICE_TOKEN) corosConfig: ConfigurationService,
-    corosAuthenticationService: CorosAuthenticationService,
-  ) {
+  constructor(httpService: HttpService, @Inject(CONFIGURATION_SERVICE_TOKEN) corosConfig: ConfigurationService) {
     super();
-    this.corosAuthenticationService = corosAuthenticationService;
     this.configurationService = corosConfig;
     this.httpService = httpService;
   }
@@ -60,11 +53,7 @@ export class DownloadActivityDetailRequest extends BaseRequest<
     url.searchParams.append('sportType', String(sportType));
     url.searchParams.append('fileType', fileType);
 
-    const { data } = await this.httpService.axiosRef.post(url.toString(), undefined, {
-      headers: {
-        accessToken: this.corosAuthenticationService.accessToken,
-      },
-    });
+    const { data } = await this.httpService.axiosRef.post(url.toString(), undefined);
     this.logger.verbose('Download activity detail response', data);
 
     this.assertCorosResponseBase(data);

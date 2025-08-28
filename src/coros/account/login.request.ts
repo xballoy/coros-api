@@ -8,7 +8,6 @@ import {
 } from '../../infrastructure/configuration/configuration.service';
 import { BaseRequest } from '../base-request';
 import { CorosResponse } from '../common';
-import { CorosAuthenticationService } from '../coros-authentication.service';
 
 export const LoginBody = z.object({
   account: z.string(),
@@ -33,15 +32,12 @@ export class LoginRequest extends BaseRequest<LoginInput, LoginResponse, Omit<Lo
   private readonly logger = new Logger(LoginRequest.name);
   private readonly httpService: HttpService;
   private readonly configurationService: ConfigurationService;
-  private readonly corosAuthenticationService: CorosAuthenticationService;
 
   constructor(
     httpService: HttpService,
     @Inject(CONFIGURATION_SERVICE_TOKEN) configurationService: ConfigurationService,
-    corosAuthenticationService: CorosAuthenticationService,
   ) {
     super();
-    this.corosAuthenticationService = corosAuthenticationService;
     this.configurationService = configurationService;
     this.httpService = httpService;
   }
@@ -69,7 +65,14 @@ export class LoginRequest extends BaseRequest<LoginInput, LoginResponse, Omit<Lo
     const {
       data: { accessToken, ...rest },
     } = data;
-    this.corosAuthenticationService.accessToken = accessToken;
+
+    this.httpService.axiosRef.interceptors.request.use(
+      (config) => {
+        config.headers.accessToken = accessToken;
+        return config;
+      },
+      (error) => Promise.reject(error),
+    );
 
     return rest;
   }
