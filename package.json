@@ -43,10 +43,10 @@
   "dependencies": {
     "@nestjs/axios": "4.0.1",
     "@nestjs/common": "11.1.6",
+    "@nestjs/config": "4.0.2",
     "@nestjs/core": "11.1.6",
     "axios": "1.11.0",
     "dayjs": "1.11.13",
-    "dotenv": "17.2.1",
     "nest-commander": "3.19.0",
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.2",
