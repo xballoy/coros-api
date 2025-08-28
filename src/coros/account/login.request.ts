@@ -1,4 +1,3 @@
-import { createHash } from 'node:crypto';
 import { URL } from 'node:url';
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
@@ -57,7 +56,7 @@ export class LoginRequest extends BaseRequest<LoginInput, LoginResponse, Omit<Lo
     const { data } = await this.httpService.axiosRef.post(url.toString(), {
       account: this.corosConfig.email,
       accountType: 2,
-      pwd: createHash('md5').update(this.corosConfig.password).digest('hex'),
+      pwd: this.corosConfig.password,
     } satisfies LoginBody);
     this.logger.verbose('Login request response', data);
 

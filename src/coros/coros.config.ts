@@ -1,11 +1,12 @@
 import 'dotenv/config';
+import { createHash } from 'node:crypto';
 import { Injectable } from '@nestjs/common';
 import { z } from 'zod';
 
 const CorosConfig = z.object({
   apiUrl: z.string(),
   email: z.string(),
-  password: z.string(),
+  password: z.string().transform((value) => createHash('md5').update(value).digest('hex')),
 });
 type CorosConfig = z.infer<typeof CorosConfig>;
 
