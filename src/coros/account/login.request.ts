@@ -1,12 +1,13 @@
-import { createHash } from 'node:crypto';
 import { URL } from 'node:url';
 import { HttpService } from '@nestjs/axios';
-import { Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { z } from 'zod';
+import {
+  CONFIGURATION_SERVICE_TOKEN,
+  ConfigurationService,
+} from '../../infrastructure/configuration/configuration.service';
 import { BaseRequest } from '../base-request';
 import { CorosResponse } from '../common';
-import { CorosConfigService } from '../coros.config';
-import { CorosAuthenticationService } from '../coros-authentication.service';
 
 export const LoginBody = z.object({
   account: z.string(),
@@ -30,17 +31,14 @@ type LoginInput = z.infer<typeof LoginInput>;
 export class LoginRequest extends BaseRequest<LoginInput, LoginResponse, Omit<LoginData, 'accessToken'>> {
   private readonly logger = new Logger(LoginRequest.name);
   private readonly httpService: HttpService;
-  private readonly corosConfig: CorosConfigService;
-  private readonly corosAuthenticationService: CorosAuthenticationService;
+  private readonly configurationService: ConfigurationService;
 
   constructor(
     httpService: HttpService,
-    corosConfig: CorosConfigService,
-    corosAuthenticationService: CorosAuthenticationService,
+    @Inject(CONFIGURATION_SERVICE_TOKEN) configurationService: ConfigurationService,
   ) {
     super();
-    this.corosAuthenticationService = corosAuthenticationService;
-    this.corosConfig = corosConfig;
+    this.configurationService = configurationService;
     this.httpService = httpService;
   }
 
@@ -53,11 +51,11 @@ export class LoginRequest extends BaseRequest<LoginInput, LoginResponse, Omit<Lo
   }
 
   protected async handle(_: LoginInput): Promise<Omit<LoginData, 'accessToken'>> {
-    const url = new URL('/account/login', this.corosConfig.apiUrl);
+    const url = new URL('/account/login', this.configurationService.apiUrl);
     const { data } = await this.httpService.axiosRef.post(url.toString(), {
-      account: this.corosConfig.email,
+      account: this.configurationService.email,
       accountType: 2,
-      pwd: createHash('md5').update(this.corosConfig.password).digest('hex'),
+      pwd: this.configurationService.hashedPassword,
     } satisfies LoginBody);
     this.logger.verbose('Login request response', data);
 
@@ -67,7 +65,14 @@ export class LoginRequest extends BaseRequest<LoginInput, LoginResponse, Omit<Lo
     const {
       data: { accessToken, ...rest },
     } = data;
-    this.corosAuthenticationService.accessToken = accessToken;
+
+    this.httpService.axiosRef.interceptors.request.use(
+      (config) => {
+        config.headers.accessToken = accessToken;
+        return config;
+      },
+      (error) => Promise.reject(error),
+    );
 
     return rest;
   }

@@ -1,12 +1,14 @@
 import { URL } from 'node:url';
 import { HttpService } from '@nestjs/axios';
-import { Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import dayjs from 'dayjs';
 import { z } from 'zod';
+import {
+  CONFIGURATION_SERVICE_TOKEN,
+  ConfigurationService,
+} from '../../infrastructure/configuration/configuration.service';
 import { BaseRequest } from '../base-request';
 import { CorosResponse } from '../common';
-import { CorosConfigService } from '../coros.config';
-import { CorosAuthenticationService } from '../coros-authentication.service';
 
 export const QueryActivitiesInput = z.object({
   pageSize: z.number().min(1, 'Page size must be at least 1').max(200, 'Page size must not exceed 200').optional(),
@@ -49,17 +51,11 @@ export class QueryActivitiesRequest extends BaseRequest<
 > {
   private readonly logger = new Logger(QueryActivitiesRequest.name);
   private readonly httpService: HttpService;
-  private readonly corosConfig: CorosConfigService;
-  private readonly corosAuthenticationService: CorosAuthenticationService;
+  private readonly configurationService: ConfigurationService;
 
-  constructor(
-    httpService: HttpService,
-    corosConfig: CorosConfigService,
-    corosAuthenticationService: CorosAuthenticationService,
-  ) {
+  constructor(httpService: HttpService, @Inject(CONFIGURATION_SERVICE_TOKEN) corosConfig: ConfigurationService) {
     super();
-    this.corosAuthenticationService = corosAuthenticationService;
-    this.corosConfig = corosConfig;
+    this.configurationService = corosConfig;
     this.httpService = httpService;
   }
 
@@ -103,7 +99,7 @@ export class QueryActivitiesRequest extends BaseRequest<
     to?: Date;
     modeList: string;
   }): Promise<Activity[]> {
-    const url = new URL('/activity/query', this.corosConfig.apiUrl);
+    const url = new URL('/activity/query', this.configurationService.apiUrl);
     url.searchParams.append('size', String(pageSize));
     url.searchParams.append('pageNumber', String(pageNumber));
     url.searchParams.append('modeList', modeList);
@@ -116,11 +112,7 @@ export class QueryActivitiesRequest extends BaseRequest<
       url.searchParams.append('endDay', dayjs(to).format('YYYYMMDD'));
     }
 
-    const { data } = await this.httpService.axiosRef.get(url.toString(), {
-      headers: {
-        accessToken: this.corosAuthenticationService.accessToken,
-      },
-    });
+    const { data } = await this.httpService.axiosRef.get(url.toString());
     this.logger.verbose('Query activity response', data);
 
     this.assertCorosResponseBase(data);

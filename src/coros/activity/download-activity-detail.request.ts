@@ -1,11 +1,13 @@
 import { URL } from 'node:url';
 import { HttpService } from '@nestjs/axios';
-import { Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { z } from 'zod';
+import {
+  CONFIGURATION_SERVICE_TOKEN,
+  ConfigurationService,
+} from '../../infrastructure/configuration/configuration.service';
 import { BaseRequest } from '../base-request';
 import { CorosResponse } from '../common';
-import { CorosConfigService } from '../coros.config';
-import { CorosAuthenticationService } from '../coros-authentication.service';
 
 export const DownloadActivityDetailInput = z.object({
   labelId: z.string(),
@@ -29,17 +31,11 @@ export class DownloadActivityDetailRequest extends BaseRequest<
 > {
   private readonly logger = new Logger(DownloadActivityDetailRequest.name);
   private readonly httpService: HttpService;
-  private readonly corosConfig: CorosConfigService;
-  private readonly corosAuthenticationService: CorosAuthenticationService;
+  private readonly configurationService: ConfigurationService;
 
-  constructor(
-    httpService: HttpService,
-    corosConfig: CorosConfigService,
-    corosAuthenticationService: CorosAuthenticationService,
-  ) {
+  constructor(httpService: HttpService, @Inject(CONFIGURATION_SERVICE_TOKEN) corosConfig: ConfigurationService) {
     super();
-    this.corosAuthenticationService = corosAuthenticationService;
-    this.corosConfig = corosConfig;
+    this.configurationService = corosConfig;
     this.httpService = httpService;
   }
 
@@ -52,16 +48,12 @@ export class DownloadActivityDetailRequest extends BaseRequest<
   }
 
   async handle({ labelId, sportType, fileType }: DownloadActivityDetailInput): Promise<DownloadActivityDetailData> {
-    const url = new URL('/activity/detail/download', this.corosConfig.apiUrl);
+    const url = new URL('/activity/detail/download', this.configurationService.apiUrl);
     url.searchParams.append('labelId', labelId);
     url.searchParams.append('sportType', String(sportType));
     url.searchParams.append('fileType', fileType);
 
-    const { data } = await this.httpService.axiosRef.post(url.toString(), undefined, {
-      headers: {
-        accessToken: this.corosAuthenticationService.accessToken,
-      },
-    });
+    const { data } = await this.httpService.axiosRef.post(url.toString(), undefined);
     this.logger.verbose('Download activity detail response', data);
 
     this.assertCorosResponseBase(data);
