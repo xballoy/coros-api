@@ -32,8 +32,8 @@ importers:
         specifier: 17.2.3
         version: 17.2.3
       nest-commander:
-        specifier: 3.20.0
-        version: 3.20.0(patch_hash=c7055d2e7ef124c81d67ee69d5e8712cff189d829cbc380d71a203c9e861ae25)(@nestjs/common@11.1.6(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.6(@nestjs/common@11.1.6(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2))(@types/inquirer@8.2.12)(@types/node@22.18.8)(typescript@5.9.3)
+        specifier: 3.20.1
+        version: 3.20.1(patch_hash=c7055d2e7ef124c81d67ee69d5e8712cff189d829cbc380d71a203c9e861ae25)(@nestjs/common@11.1.6(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.6(@nestjs/common@11.1.6(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2))(@types/inquirer@8.2.12)(@types/node@22.18.8)(typescript@5.9.3)
       reflect-metadata:
         specifier: 0.2.2
         version: 0.2.2
@@ -2131,8 +2131,8 @@ packages:
   neo-async@2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
 
-  nest-commander@3.20.0:
-    resolution: {integrity: sha512-9PKnDj46t1WK0treW1QSBF0oNnWlIg9/7c1STPhCGhGQyol2se1KuHEcDTLb44uNw2qssL0jduXbn3NtKvSnUw==}
+  nest-commander@3.20.1:
+    resolution: {integrity: sha512-LRI7z6UlWy2vWyQR0PYnAXsaRyJvpfiuvOCmx2jk2kLXJH9+y/omPDl9NE3fq4WMaE0/AhviuUjA12eC/zDqXw==}
     peerDependencies:
       '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0
       '@nestjs/core': ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0
@@ -4645,7 +4645,7 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  nest-commander@3.20.0(patch_hash=c7055d2e7ef124c81d67ee69d5e8712cff189d829cbc380d71a203c9e861ae25)(@nestjs/common@11.1.6(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.6(@nestjs/common@11.1.6(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2))(@types/inquirer@8.2.12)(@types/node@22.18.8)(typescript@5.9.3):
+  nest-commander@3.20.1(patch_hash=c7055d2e7ef124c81d67ee69d5e8712cff189d829cbc380d71a203c9e861ae25)(@nestjs/common@11.1.6(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.6(@nestjs/common@11.1.6(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2))(@types/inquirer@8.2.12)(@types/node@22.18.8)(typescript@5.9.3):
     dependencies:
       '@fig/complete-commander': 3.2.0(commander@11.1.0)
       '@golevelup/nestjs-discovery': 5.0.0(@nestjs/common@11.1.6(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.6(@nestjs/common@11.1.6(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2))
