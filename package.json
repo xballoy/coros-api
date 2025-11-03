@@ -45,7 +45,7 @@
     "@nestjs/common": "11.1.8",
     "@nestjs/core": "11.1.8",
     "axios": "1.12.2",
-    "dayjs": "1.11.18",
+    "dayjs": "1.11.19",
     "dotenv": "17.2.3",
     "nest-commander": "3.20.1",
     "reflect-metadata": "0.2.2",
