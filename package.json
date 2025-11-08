@@ -29,7 +29,7 @@
     "@nestjs/schematics": "11.0.9",
     "@nestjs/testing": "11.1.8",
     "@swc-node/register": "1.11.1",
-    "@swc/cli": "0.7.8",
+    "@swc/cli": "0.7.9",
     "@swc/core": "1.14.0",
     "@tsconfig/node22": "22.0.2",
     "@types/node": "24.9.2",
