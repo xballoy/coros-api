@@ -49,7 +49,7 @@ importers:
         version: 2.3.3
       '@nestjs/cli':
         specifier: 11.0.10
-        version: 11.0.10(@swc/cli@0.7.8(@swc/core@1.14.0)(chokidar@4.0.3))(@swc/core@1.14.0)(@types/node@24.9.2)
+        version: 11.0.10(@swc/cli@0.7.9(@swc/core@1.14.0)(chokidar@4.0.3))(@swc/core@1.14.0)(@types/node@24.9.2)
       '@nestjs/schematics':
         specifier: 11.0.9
         version: 11.0.9(chokidar@4.0.3)(typescript@5.9.3)
@@ -60,8 +60,8 @@ importers:
         specifier: 1.11.1
         version: 1.11.1(@swc/core@1.14.0)(@swc/types@0.1.25)(typescript@5.9.3)
       '@swc/cli':
-        specifier: 0.7.8
-        version: 0.7.8(@swc/core@1.14.0)(chokidar@4.0.3)
+        specifier: 0.7.9
+        version: 0.7.9(@swc/core@1.14.0)(chokidar@4.0.3)
       '@swc/core':
         specifier: 1.14.0
         version: 1.14.0
@@ -982,8 +982,8 @@ packages:
   '@swc-node/sourcemap-support@0.6.1':
     resolution: {integrity: sha512-ovltDVH5QpdHXZkW138vG4+dgcNsxfwxHVoV6BtmTbz2KKl1A8ZSlbdtxzzfNjCjbpayda8Us9eMtcHobm38dA==}
 
-  '@swc/cli@0.7.8':
-    resolution: {integrity: sha512-27Ov4rm0s2C6LLX+NDXfDVB69LGs8K94sXtFhgeUyQ4DBywZuCgTBu2loCNHRr8JhT9DeQvJM5j9FAu/THbo4w==}
+  '@swc/cli@0.7.9':
+    resolution: {integrity: sha512-AFQu3ZZ9IcdClTknxbug08S9ed/q8F3aYkO5NoZ+6IjQ5UEo1s2HN1GRKNvUslYx2EoVYxd+6xGcp6C7wwtxyQ==}
     engines: {node: '>= 16.14.0'}
     hasBin: true
     peerDependencies:
@@ -3155,7 +3155,7 @@ snapshots:
       axios: 1.13.2
       rxjs: 7.8.2
 
-  '@nestjs/cli@11.0.10(@swc/cli@0.7.8(@swc/core@1.14.0)(chokidar@4.0.3))(@swc/core@1.14.0)(@types/node@24.9.2)':
+  '@nestjs/cli@11.0.10(@swc/cli@0.7.9(@swc/core@1.14.0)(chokidar@4.0.3))(@swc/core@1.14.0)(@types/node@24.9.2)':
     dependencies:
       '@angular-devkit/core': 19.2.15(chokidar@4.0.3)
       '@angular-devkit/schematics': 19.2.15(chokidar@4.0.3)
@@ -3177,7 +3177,7 @@ snapshots:
       webpack: 5.100.2(@swc/core@1.14.0)
       webpack-node-externals: 3.0.0
     optionalDependencies:
-      '@swc/cli': 0.7.8(@swc/core@1.14.0)(chokidar@4.0.3)
+      '@swc/cli': 0.7.9(@swc/core@1.14.0)(chokidar@4.0.3)
       '@swc/core': 1.14.0
     transitivePeerDependencies:
       - '@types/node'
@@ -3403,7 +3403,7 @@ snapshots:
       source-map-support: 0.5.21
       tslib: 2.8.1
 
-  '@swc/cli@0.7.8(@swc/core@1.14.0)(chokidar@4.0.3)':
+  '@swc/cli@0.7.9(@swc/core@1.14.0)(chokidar@4.0.3)':
     dependencies:
       '@swc/core': 1.14.0
       '@swc/counter': 0.1.3
