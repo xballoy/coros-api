@@ -35,7 +35,7 @@
     "@types/node": "24.10.0",
     "@vitest/coverage-v8": "4.0.8",
     "fast-check": "4.3.0",
-    "lefthook": "2.0.2",
+    "lefthook": "2.0.3",
     "typescript": "5.9.3",
     "unplugin-swc": "1.5.8",
     "vitest": "4.0.8"
