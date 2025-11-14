@@ -13,4 +13,4 @@ jobs:
       - name: Check Node.js
         uses: nodejs/is-my-node-vulnerable@c37a56bad56e34fe5223ddd3cb223cc4158136ae # v1.6.1
         with:
-          node-version: "24.11.0"
+          node-version: "24.11.1"
