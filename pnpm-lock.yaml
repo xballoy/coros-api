@@ -66,8 +66,8 @@ importers:
         specifier: 1.15.1
         version: 1.15.1
       '@tsconfig/node22':
-        specifier: 22.0.2
-        version: 22.0.2
+        specifier: 22.0.3
+        version: 22.0.3
       '@types/node':
         specifier: 24.10.1
         version: 24.10.1
@@ -1079,8 +1079,8 @@ packages:
   '@tokenizer/token@0.3.0':
     resolution: {integrity: sha512-OvjF+z51L3ov0OyAU0duzsYuvO01PH7x4t6DJx+guahgTnBHkhJdG7soQeTSFLWN3efnHyibZ4Z8l2EuWwJN3A==}
 
-  '@tsconfig/node22@22.0.2':
-    resolution: {integrity: sha512-Kmwj4u8sDRDrMYRoN9FDEcXD8UpBSaPQQ24Gz+Gamqfm7xxn+GBR7ge/Z7pK8OXNGyUzbSwJj+TH6B+DS/epyA==}
+  '@tsconfig/node22@22.0.3':
+    resolution: {integrity: sha512-9UTUkYWI58+MiZhwcQWx2TNZbzkGRss9SCyjrSYeqkMIDYq8jv2FSRknrLOjsRmcYFUsYj79m/bgQYSD/yiRxw==}
 
   '@tybys/wasm-util@0.10.1':
     resolution: {integrity: sha512-9tTaPJLSiejZKx+Bmog4uSubteqTvFrVrURwkmHixBo0G4seD0zUxp98E1DzUBJxLQ3NPwXrGKDiVjwx/DpPsg==}
@@ -3488,7 +3488,7 @@ snapshots:
 
   '@tokenizer/token@0.3.0': {}
 
-  '@tsconfig/node22@22.0.2': {}
+  '@tsconfig/node22@22.0.3': {}
 
   '@tybys/wasm-util@0.10.1':
     dependencies:
