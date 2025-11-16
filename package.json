@@ -31,7 +31,7 @@
     "@swc-node/register": "1.11.1",
     "@swc/cli": "0.7.9",
     "@swc/core": "1.15.1",
-    "@tsconfig/node22": "22.0.2",
+    "@tsconfig/node22": "22.0.3",
     "@types/node": "24.10.1",
     "@vitest/coverage-v8": "4.0.8",
     "fast-check": "4.3.0",
