@@ -37,7 +37,7 @@
     "fast-check": "4.3.0",
     "lefthook": "2.0.4",
     "typescript": "5.9.3",
-    "unplugin-swc": "1.5.8",
+    "unplugin-swc": "1.5.9",
     "vitest": "4.0.13"
   },
   "dependencies": {
