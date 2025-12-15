@@ -1,9 +1,21 @@
-onlyBuiltDependencies:
-  - '@biomejs/biome'
+ignoredBuiltDependencies:
+  # Runs opencollective funding prompt on postinstall
   - '@nestjs/core'
+
+# 3 days in minutes
+minimumReleaseAge: 4320
+
+onlyBuiltDependencies:
+  # Downloads platform-specific native binary for TypeScript/JavaScript compilation
   - '@swc/core'
+  # Downloads platform-specific native binary for bundling/minification
   - esbuild
+  # Downloads platform-specific binary and runs 'lefthook install' to set up git hooks
   - lefthook
 
 patchedDependencies:
   nest-commander: patches/nest-commander.patch
+
+strictDepBuilds: true
+
+trustPolicy: no-downgrade
