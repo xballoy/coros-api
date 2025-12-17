@@ -19,3 +19,7 @@ patchedDependencies:
 strictDepBuilds: true
 
 trustPolicy: no-downgrade
+
+trustPolicyExclude:
+  # https://github.com/paulmillr/chokidar/issues/1440
+  - chokidar@4.0.3
