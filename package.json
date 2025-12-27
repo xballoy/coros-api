@@ -34,7 +34,7 @@
     "@tsconfig/node24": "24.0.3",
     "@types/node": "24.10.4",
     "@vitest/coverage-v8": "4.0.16",
-    "fast-check": "4.5.0",
+    "fast-check": "4.5.2",
     "lefthook": "2.0.12",
     "typescript": "5.9.3",
     "unplugin-swc": "1.5.9",
