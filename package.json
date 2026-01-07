@@ -50,7 +50,7 @@
     "nest-commander": "3.20.1",
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.2",
-    "zod": "4.3.2"
+    "zod": "4.3.5"
   },
   "packageManager": "pnpm@10.27.0"
 }
