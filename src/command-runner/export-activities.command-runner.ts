@@ -46,11 +46,12 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
 
     const activitiesToDownload = activities.map((it) => {
       const activityDate = dayjs(String(it.date), 'YYYYMMDD');
+      const activityName = it.name?.trim() || 'Activity';
 
       return {
         labelId: it.labelId,
         sportType: it.sportType,
-        fileName: `${activityDate.format('YYYY-MM-DD')} ${it.name.trim()} ${it.labelId}.${fileType.key}`,
+        fileName: `${activityDate.format('YYYY-MM-DD')} ${activityName} ${it.labelId}.${fileType.key}`,
       };
     });
 
