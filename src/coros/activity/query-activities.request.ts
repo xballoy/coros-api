@@ -20,7 +20,7 @@ export type QueryActivitiesInput = z.infer<typeof QueryActivitiesInput>;
 export const Activity = z.object({
   date: z.number(),
   labelId: z.string(),
-  name: z.string(),
+  name: z.string().nullish(),
   sportType: z.number(),
 });
 export type Activity = z.infer<typeof Activity>;
