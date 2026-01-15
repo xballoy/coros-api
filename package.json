@@ -33,12 +33,12 @@
     "@swc/core": "1.15.8",
     "@tsconfig/node24": "24.0.3",
     "@types/node": "24.10.7",
-    "@vitest/coverage-v8": "4.0.16",
+    "@vitest/coverage-v8": "4.0.17",
     "fast-check": "4.5.3",
     "lefthook": "2.0.14",
     "typescript": "5.9.3",
     "unplugin-swc": "1.5.9",
-    "vitest": "4.0.16"
+    "vitest": "4.0.17"
   },
   "dependencies": {
     "@nestjs/axios": "4.0.1",
