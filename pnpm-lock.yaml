@@ -66,8 +66,8 @@ importers:
         specifier: 1.15.8
         version: 1.15.8
       '@tsconfig/node24':
-        specifier: 24.0.3
-        version: 24.0.3
+        specifier: 24.0.4
+        version: 24.0.4
       '@types/node':
         specifier: 24.10.9
         version: 24.10.9
@@ -1135,8 +1135,8 @@ packages:
   '@tokenizer/token@0.3.0':
     resolution: {integrity: sha512-OvjF+z51L3ov0OyAU0duzsYuvO01PH7x4t6DJx+guahgTnBHkhJdG7soQeTSFLWN3efnHyibZ4Z8l2EuWwJN3A==}
 
-  '@tsconfig/node24@24.0.3':
-    resolution: {integrity: sha512-vcERKtKQKHgzt/vfS3Gjasd8SUI2a0WZXpgJURdJsMySpS5+ctgbPfuLj2z/W+w4lAfTWxoN4upKfu2WzIRYnw==}
+  '@tsconfig/node24@24.0.4':
+    resolution: {integrity: sha512-2A933l5P5oCbv6qSxHs7ckKwobs8BDAe9SJ/Xr2Hy+nDlwmLE1GhFh/g/vXGRZWgxBg9nX/5piDtHR9Dkw/XuA==}
 
   '@tybys/wasm-util@0.10.1':
     resolution: {integrity: sha512-9tTaPJLSiejZKx+Bmog4uSubteqTvFrVrURwkmHixBo0G4seD0zUxp98E1DzUBJxLQ3NPwXrGKDiVjwx/DpPsg==}
@@ -3494,7 +3494,7 @@ snapshots:
 
   '@tokenizer/token@0.3.0': {}
 
-  '@tsconfig/node24@24.0.3': {}
+  '@tsconfig/node24@24.0.4': {}
 
   '@tybys/wasm-util@0.10.1':
     dependencies:
