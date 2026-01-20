@@ -15,9 +15,7 @@ export const QueryTrainingScheduleInput = z.object({
 });
 export type QueryTrainingScheduleInput = z.infer<typeof QueryTrainingScheduleInput>;
 
-export const QueryTrainingScheduleData = z
-  .union([z.string(), z.record(z.string(), z.unknown()), z.array(z.unknown())])
-  .optional();
+export const QueryTrainingScheduleData = z.record(z.string(), z.unknown());
 export type QueryTrainingScheduleData = z.infer<typeof QueryTrainingScheduleData>;
 
 export const QueryTrainingScheduleResponse = CorosResponse(QueryTrainingScheduleData);
