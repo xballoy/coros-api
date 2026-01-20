@@ -115,6 +115,7 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
     const programs = Array.isArray(schedule.programs)
       ? schedule.programs.filter((program) => this.isRecord(program))
       : [];
+    const subPlans = Array.isArray(schedule.subPlans) ? schedule.subPlans.filter((plan) => this.isRecord(plan)) : [];
     const programsById = new Map<string, UnknownRecord>();
     for (const program of programs) {
       const id = this.toStringValue(program.idInPlan);
@@ -122,30 +123,33 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
         programsById.set(id, program);
       }
     }
+    const subPlansById = new Map<string, UnknownRecord>();
+    for (const plan of subPlans) {
+      const id = this.toStringValue(plan.id);
+      if (id) {
+        subPlansById.set(id, plan);
+      }
+    }
 
     return entities
       .map((entity) => {
-        const happenDay = this.toStringValue(entity.happenDay);
-        if (!happenDay) {
+        const plannedDate = this.resolvePlannedDate(entity, subPlansById);
+        if (!plannedDate) {
           return null;
         }
 
-        const date = dayjs(happenDay, 'YYYYMMDD', true);
-        if (!date.isValid()) {
-          return null;
-        }
-
-        const programId = this.toStringValue(entity.planProgramId);
+        const programId = this.toStringValue(entity.idInPlan) ?? this.toStringValue(entity.planProgramId) ?? undefined;
         const program = programId ? programsById.get(programId) : undefined;
         const summary = this.resolveSummary(entity, program, localeMap);
         const overview = this.resolveOverview(program, localeMap);
         const lengthText = this.formatPlannedLength(program, entity);
         const description = [lengthText, overview].filter((value) => value && value.length > 0).join(' - ');
-        const uid = this.toStringValue(entity.id) ?? `coros-${happenDay}-${programId ?? 'unknown'}`;
+        const uid =
+          this.toStringValue(entity.id) ?? `coros-${plannedDate.format('YYYYMMDD')}-${programId ?? 'unknown'}`;
 
         return {
           uid,
-          date,
+          date: plannedDate,
           summary,
           description,
         };
@@ -216,6 +220,42 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
     }
 
     return `${seconds}s`;
+  }
+
+  private resolvePlannedDate(entity: UnknownRecord, subPlansById: Map<string, UnknownRecord>): dayjs.Dayjs | null {
+    const dayNo = this.toNumber(entity.dayNo);
+    const planId = this.toStringValue(entity.planId);
+    const subPlan = planId ? subPlansById.get(planId) : undefined;
+    const startDay = this.toStringValue(subPlan?.startDay);
+
+    let computedDate: dayjs.Dayjs | null = null;
+    if (startDay && dayNo !== undefined) {
+      const base = dayjs(startDay, 'YYYYMMDD', true);
+      if (base.isValid()) {
+        computedDate = base.add(Math.round(dayNo), 'day');
+      }
+    }
+
+    const happenDay =
+      this.toStringValue(entity.happenDay) ??
+      this.toStringValue(this.isRecord(entity.sportData) ? entity.sportData.happenDay : undefined);
+    const happenDate = happenDay ? dayjs(happenDay, 'YYYYMMDD', true) : null;
+
+    if (computedDate?.isValid()) {
+      if (happenDate?.isValid() && !computedDate.isSame(happenDate, 'day')) {
+        this.logger.warn(
+          `Planned date mismatch for entity ${this.toStringValue(entity.id) ?? 'unknown'}: ` +
+            `computed ${computedDate.format('YYYYMMDD')} vs happenDay ${happenDate.format('YYYYMMDD')}`,
+        );
+      }
+      return computedDate;
+    }
+
+    if (happenDate?.isValid()) {
+      return happenDate;
+    }
+
+    return null;
   }
 
   private buildCalendar(
