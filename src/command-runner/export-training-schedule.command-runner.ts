@@ -9,10 +9,15 @@ import { InvalidParameterError } from './invalid-parameter-error';
 
 type Flags = {
   outDir: string;
+  trainingStart?: TrainingStart;
 };
 
 type LocaleMap = Record<string, string>;
 type UnknownRecord = Record<string, unknown>;
+type TrainingStart = {
+  hour: number;
+  minute: number;
+};
 
 @Command({ name: 'export-training-schedule', description: 'Export your Coros training schedule for the next 7 days' })
 export class ExportTrainingScheduleCommandRunner extends CommandRunner {
@@ -42,8 +47,8 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
     this.logger.debug('Query training schedule success');
 
     const localeMap = await this.fetchLocaleMap();
-    const events = this.buildScheduleEvents(schedule, localeMap);
-    const calendar = this.buildCalendar(events);
+    const events = this.buildScheduleEvents(schedule, localeMap, flags.trainingStart);
+    const calendar = this.buildCalendar(events, flags.trainingStart);
     const fileName = `training-schedule-${startDate.format('YYYY-MM-DD')}-to-${endDate.format('YYYY-MM-DD')}.ics`;
 
     await writeFile(path.join(outDir, fileName), calendar);
@@ -62,6 +67,21 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
     }
 
     return out;
+  }
+
+  @Option({
+    name: 'trainingStart',
+    flags: '--training-start <time>',
+    description: 'Start time for training events (HH:mm)',
+    required: false,
+  })
+  parseTrainingStart(value: string): TrainingStart {
+    const parsed = dayjs(value, 'HH:mm', true);
+    if (!parsed.isValid()) {
+      throw new InvalidParameterError('training-start', value, 'Format must be HH:mm');
+    }
+
+    return { hour: parsed.hour(), minute: parsed.minute() };
   }
 
   private async fetchLocaleMap(): Promise<LocaleMap> {
@@ -98,11 +118,13 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
   private buildScheduleEvents(
     schedule: unknown,
     localeMap: LocaleMap,
+    trainingStart: TrainingStart | undefined,
   ): Array<{
     uid: string;
     date: dayjs.Dayjs;
     summary: string;
     description: string;
+    durationSeconds?: number;
   }> {
     if (!this.isRecord(schedule)) {
       this.logger.warn('Training schedule response is not an object. No events exported.');
@@ -144,6 +166,12 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
         const overview = this.resolveOverview(program, localeMap);
         const lengthText = this.formatPlannedLength(program, entity);
         const description = [lengthText, overview].filter((value) => value && value.length > 0).join(' - ');
+        const durationSeconds = trainingStart ? this.resolveDurationSeconds(program, entity) : undefined;
+        if (trainingStart && durationSeconds === undefined) {
+          this.logger.warn(
+            `Missing duration for training on ${plannedDate.format('YYYY-MM-DD')}: ` + `${summary || 'Training'}`,
+          );
+        }
         const uid =
           this.toStringValue(entity.id) ?? `coros-${plannedDate.format('YYYYMMDD')}-${programId ?? 'unknown'}`;
 
@@ -152,6 +180,7 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
           date: plannedDate,
           summary,
           description,
+          durationSeconds,
         };
       })
       .filter((event): event is NonNullable<typeof event> => event !== null)
@@ -198,6 +227,21 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
     }
 
     return '';
+  }
+
+  private resolveDurationSeconds(program: UnknownRecord | undefined, entity: UnknownRecord): number | undefined {
+    const programDuration = this.toNumber(program?.duration);
+    if (programDuration && programDuration > 0) {
+      return programDuration;
+    }
+
+    const sportData = this.isRecord(entity.sportData) ? entity.sportData : undefined;
+    const entityDuration = this.toNumber(sportData?.duration);
+    if (entityDuration && entityDuration > 0) {
+      return entityDuration;
+    }
+
+    return undefined;
   }
 
   private formatDistance(distance: number): string {
@@ -259,7 +303,14 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
   }
 
   private buildCalendar(
-    events: Array<{ uid: string; date: dayjs.Dayjs; summary: string; description: string }>,
+    events: Array<{
+      uid: string;
+      date: dayjs.Dayjs;
+      summary: string;
+      description: string;
+      durationSeconds?: number;
+    }>,
+    trainingStart: TrainingStart | undefined,
   ): string {
     const lines: string[] = [];
     const addLine = (line: string) => {
@@ -275,13 +326,21 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
 
     const nowStamp = dayjs().format('YYYYMMDDTHHmmss');
     for (const event of events) {
-      const startDate = event.date.format('YYYYMMDD');
-      const endDate = event.date.add(1, 'day').format('YYYYMMDD');
       addLine('BEGIN:VEVENT');
       addLine(`UID:${this.escapeText(event.uid)}`);
       addLine(`DTSTAMP:${nowStamp}`);
-      addLine(`DTSTART;VALUE=DATE:${startDate}`);
-      addLine(`DTEND;VALUE=DATE:${endDate}`);
+      if (trainingStart) {
+        const startDateTime = event.date.hour(trainingStart.hour).minute(trainingStart.minute).second(0).millisecond(0);
+        const durationSeconds = Math.max(0, Math.round(event.durationSeconds ?? 0));
+        const endDateTime = startDateTime.add(durationSeconds, 'second');
+        addLine(`DTSTART:${startDateTime.format('YYYYMMDDTHHmmss')}`);
+        addLine(`DTEND:${endDateTime.format('YYYYMMDDTHHmmss')}`);
+      } else {
+        const startDate = event.date.format('YYYYMMDD');
+        const endDate = event.date.add(1, 'day').format('YYYYMMDD');
+        addLine(`DTSTART;VALUE=DATE:${startDate}`);
+        addLine(`DTEND;VALUE=DATE:${endDate}`);
+      }
       addLine(`SUMMARY:${this.escapeText(event.summary)}`);
       if (event.description) {
         addLine(`DESCRIPTION:${this.escapeText(event.description)}`);
