@@ -1,0 +1,32 @@
+meta {
+  name: Query Training Schedule
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{API_URL}}/training/schedule/query?startDate=20260112&endDate=20260215&supportRestExercise=1
+  body: none
+  auth: none
+}
+
+params:query {
+  startDate: 20260112
+  endDate: 20260215
+  supportRestExercise: 1
+}
+
+script:pre-request {
+  const loginResponse = await bru.runRequest("Login");
+  req.setHeader("accesstoken",  loginResponse.data.data.accessToken);
+}
+
+docs {
+  # Query Training Schedule
+  
+  Query Parameters:
+  
+  - `startDate`: start date (format YYYYMMDD)
+  - `endDate`: end date (format YYYYMMDD)
+  - `supportRestExercise`: whether to include rest exercises (1 = yes)
+}
