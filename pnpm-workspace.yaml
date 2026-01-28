@@ -23,3 +23,6 @@ trustPolicy: no-downgrade
 trustPolicyExclude:
   # https://github.com/paulmillr/chokidar/issues/1440
   - chokidar@4.0.3
+minimumReleaseAgeExclude:
+  # Renovate security update: pnpm@10.28.2
+  - pnpm@10.28.2
