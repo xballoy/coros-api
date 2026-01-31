@@ -267,33 +267,13 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
   }
 
   private resolvePlannedDate(entity: UnknownRecord, subPlansById: Map<string, UnknownRecord>): dayjs.Dayjs | null {
-    const dayNo = this.toNumber(entity.dayNo);
     const planId = this.toStringValue(entity.planId);
     const subPlan = planId ? subPlansById.get(planId) : undefined;
-    const startDay = this.toStringValue(subPlan?.startDay);
-
-    let computedDate: dayjs.Dayjs | null = null;
-    if (startDay && dayNo !== undefined) {
-      const base = dayjs(startDay, 'YYYYMMDD', true);
-      if (base.isValid()) {
-        computedDate = base.add(Math.round(dayNo), 'day');
-      }
-    }
 
     const happenDay =
       this.toStringValue(entity.happenDay) ??
       this.toStringValue(this.isRecord(entity.sportData) ? entity.sportData.happenDay : undefined);
     const happenDate = happenDay ? dayjs(happenDay, 'YYYYMMDD', true) : null;
-
-    if (computedDate?.isValid()) {
-      if (happenDate?.isValid() && !computedDate.isSame(happenDate, 'day')) {
-        this.logger.warn(
-          `Planned date mismatch for entity ${this.toStringValue(entity.id) ?? 'unknown'}: ` +
-            `computed ${computedDate.format('YYYYMMDD')} vs happenDay ${happenDate.format('YYYYMMDD')}`,
-        );
-      }
-      return computedDate;
-    }
 
     if (happenDate?.isValid()) {
       return happenDate;
