@@ -26,3 +26,5 @@ trustPolicyExclude:
 minimumReleaseAgeExclude:
   # Renovate security update: pnpm@10.28.2
   - pnpm@10.28.2
+  # Renovate security update: axios@1.13.5
+  - axios@1.13.5
