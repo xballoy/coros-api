@@ -15,7 +15,7 @@ importers:
     dependencies:
       '@nestjs/axios':
         specifier: 4.0.1
-        version: 4.0.1(@nestjs/common@11.1.13(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.13.4)(rxjs@7.8.2)
+        version: 4.0.1(@nestjs/common@11.1.13(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.13.5)(rxjs@7.8.2)
       '@nestjs/common':
         specifier: 11.1.13
         version: 11.1.13(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -23,8 +23,8 @@ importers:
         specifier: 11.1.13
         version: 11.1.13(@nestjs/common@11.1.13(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2)
       axios:
-        specifier: 1.13.4
-        version: 1.13.4
+        specifier: 1.13.5
+        version: 1.13.5
       dayjs:
         specifier: 1.11.19
         version: 1.11.19
@@ -1382,8 +1382,8 @@ packages:
   asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
 
-  axios@1.13.4:
-    resolution: {integrity: sha512-1wVkUaAO6WyaYtCkcYCOx12ZgpGf9Zif+qXa4n+oYzK558YryKqiL6UWwd5DqiH3VRW0GYhTZQ/vlgJrCoNQlg==}
+  axios@1.13.5:
+    resolution: {integrity: sha512-cz4ur7Vb0xS4/KUN0tPWe44eqxrIu31me+fbang3ijiNscE129POzipJJA6zniq2C/Z6sJCjMimjS8Lc/GAs8Q==}
 
   b4a@1.7.3:
     resolution: {integrity: sha512-5Q2mfq2WfGuFp3uS//0s6baOJLMoVduPYVeNmDYxu5OUA1/cBfvr2RIS7vi62LdNj/urk1hfmj867I3qt6uZ7Q==}
@@ -3148,10 +3148,10 @@ snapshots:
       '@tybys/wasm-util': 0.10.1
     optional: true
 
-  '@nestjs/axios@4.0.1(@nestjs/common@11.1.13(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.13.4)(rxjs@7.8.2)':
+  '@nestjs/axios@4.0.1(@nestjs/common@11.1.13(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.13.5)(rxjs@7.8.2)':
     dependencies:
       '@nestjs/common': 11.1.13(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      axios: 1.13.4
+      axios: 1.13.5
       rxjs: 7.8.2
 
   '@nestjs/cli@11.0.16(@swc/cli@0.7.10(@swc/core@1.15.11)(chokidar@4.0.3))(@swc/core@1.15.11)(@types/node@24.10.11)':
@@ -3832,7 +3832,7 @@ snapshots:
 
   asynckit@0.4.0: {}
 
-  axios@1.13.4:
+  axios@1.13.5:
     dependencies:
       follow-redirects: 1.15.11
       form-data: 4.0.5
