@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/xballoy/coros-api#readme",
   "devDependencies": {
-    "@biomejs/biome": "2.3.14",
+    "@biomejs/biome": "2.3.15",
     "@nestjs/cli": "11.0.16",
     "@nestjs/schematics": "11.0.9",
     "@nestjs/testing": "11.1.13",
