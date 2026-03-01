@@ -32,7 +32,7 @@
     "@swc/cli": "0.8.0",
     "@swc/core": "1.15.13",
     "@tsconfig/node24": "24.0.4",
-    "@types/node": "24.10.14",
+    "@types/node": "24.10.15",
     "@vitest/coverage-v8": "4.0.18",
     "fast-check": "4.5.3",
     "lefthook": "2.1.1",
