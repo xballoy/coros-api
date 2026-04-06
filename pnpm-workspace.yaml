@@ -28,3 +28,5 @@ minimumReleaseAgeExclude:
   - pnpm@10.28.2
   # Renovate security update: axios@1.13.5
   - axios@1.13.5
+  # Renovate security update: @nestjs/core@11.1.18
+  - "@nestjs/core@11.1.18"
