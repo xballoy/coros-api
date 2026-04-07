@@ -98,7 +98,7 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
     if (markerIndex !== -1) {
       payload = text.slice(markerIndex + marker.length).trim();
     } else {
-      const match = text.match(/window\\.en_US\\s*=\\s*(\\{[\\s\\S]*\\})/);
+      const match = text.match(/window\\.en_US\\s*=\\s*(\\{[\\S]*\\})/);
       if (match) {
         payload = match[1];
       }
@@ -137,7 +137,6 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
     const programs = Array.isArray(schedule.programs)
       ? schedule.programs.filter((program) => this.isRecord(program))
       : [];
-    const subPlans = Array.isArray(schedule.subPlans) ? schedule.subPlans.filter((plan) => this.isRecord(plan)) : [];
     const programsById = new Map<string, UnknownRecord>();
     for (const program of programs) {
       const id = this.toStringValue(program.idInPlan);
@@ -145,17 +144,10 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
         programsById.set(id, program);
       }
     }
-    const subPlansById = new Map<string, UnknownRecord>();
-    for (const plan of subPlans) {
-      const id = this.toStringValue(plan.id);
-      if (id) {
-        subPlansById.set(id, plan);
-      }
-    }
 
     return entities
       .map((entity) => {
-        const plannedDate = this.resolvePlannedDate(entity, subPlansById);
+        const plannedDate = this.resolvePlannedDate(entity);
         if (!plannedDate) {
           return null;
         }
@@ -266,10 +258,7 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
     return `${seconds}s`;
   }
 
-  private resolvePlannedDate(entity: UnknownRecord, subPlansById: Map<string, UnknownRecord>): dayjs.Dayjs | null {
-    const planId = this.toStringValue(entity.planId);
-    const subPlan = planId ? subPlansById.get(planId) : undefined;
-
+  private resolvePlannedDate(entity: UnknownRecord): dayjs.Dayjs | null {
     const happenDay =
       this.toStringValue(entity.happenDay) ??
       this.toStringValue(this.isRecord(entity.sportData) ? entity.sportData.happenDay : undefined);
@@ -352,7 +341,11 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
   }
 
   private escapeText(value: string): string {
-    return value.replace(/\\/g, '\\\\').replace(/\r?\n/g, '\\n').replace(/,/g, '\\,').replace(/;/g, '\\;');
+    return value
+      .replaceAll('\\', '\\\\')
+      .replaceAll(/\r?\n/g, String.raw`\n`)
+      .replaceAll(',', String.raw`\,`)
+      .replaceAll(';', String.raw`\;`);
   }
 
   private isRecord(value: unknown): value is UnknownRecord {
