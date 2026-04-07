@@ -1,25 +1,9 @@
-type EntityFixture = {
-  id: string;
-  idInPlan: string;
-  planProgramId: string;
-  happenDay: string;
-  sportData?: {
-    name?: string;
-    distance?: number;
-    duration?: number;
-    happenDay?: string;
-  };
-};
+import type {
+  TrainingScheduleEntity,
+  TrainingScheduleProgram,
+} from '../../coros/training-schedule/query-training-schedule.request';
 
-type ProgramFixture = {
-  idInPlan: string;
-  name: string;
-  overview?: string;
-  distance?: number;
-  duration?: number;
-};
-
-export function buildEntity(overrides: Partial<EntityFixture> = {}): EntityFixture {
+export function buildEntity(overrides: Partial<TrainingScheduleEntity> = {}): TrainingScheduleEntity {
   return {
     id: 'entity-1',
     idInPlan: '1',
@@ -29,7 +13,7 @@ export function buildEntity(overrides: Partial<EntityFixture> = {}): EntityFixtu
   };
 }
 
-export function buildProgram(overrides: Partial<ProgramFixture> = {}): ProgramFixture {
+export function buildProgram(overrides: Partial<TrainingScheduleProgram> = {}): TrainingScheduleProgram {
   return {
     idInPlan: '1',
     name: 'Easy Run',
@@ -44,8 +28,8 @@ export function buildTrainingScheduleResponse({
   entities = [],
   programs = [],
 }: {
-  entities?: EntityFixture[];
-  programs?: ProgramFixture[];
+  entities?: TrainingScheduleEntity[];
+  programs?: TrainingScheduleProgram[];
 } = {}) {
   return {
     apiCode: '781A35F7',

@@ -102,7 +102,7 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
     if (markerIndex !== -1) {
       payload = text.slice(markerIndex + marker.length).trim();
     } else {
-      const match = text.match(/window\\.en_US\\s*=\\s*(\\{[\\S]*\\})/);
+      const match = text.match(/window\.en_US\s*=\s*(\{[\s\S]*\})/);
       if (match) {
         payload = match[1];
       }
@@ -311,12 +311,12 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
 
     const segments: string[] = [];
     let remaining = line;
-    while (remaining.length > maxLength) {
-      segments.push(remaining.slice(0, maxLength));
-      remaining = remaining.slice(maxLength);
-    }
-    if (remaining.length > 0) {
-      segments.push(remaining);
+    let isFirst = true;
+    while (remaining.length > 0) {
+      const chunkSize = isFirst ? maxLength : maxLength - 1;
+      segments.push(remaining.slice(0, chunkSize));
+      remaining = remaining.slice(chunkSize);
+      isFirst = false;
     }
 
     return segments.map((segment, index) => (index === 0 ? segment : ` ${segment}`));

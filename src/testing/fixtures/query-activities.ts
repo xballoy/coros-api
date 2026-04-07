@@ -1,11 +1,6 @@
-type ActivityFixture = {
-  date: number;
-  labelId: string;
-  name: string | null;
-  sportType: number;
-};
+import type { Activity } from '../../coros/activity/query-activities.request';
 
-export function buildActivity(overrides: Partial<ActivityFixture> = {}): ActivityFixture {
+export function buildActivity(overrides: Partial<Activity> = {}): Activity {
   return {
     date: 20250115,
     labelId: 'abc123',
@@ -20,7 +15,7 @@ export function buildQueryActivitiesResponse({
   pageNumber = 1,
   totalPage = 1,
 }: {
-  activities?: ActivityFixture[];
+  activities?: Activity[];
   pageNumber?: number;
   totalPage?: number;
 } = {}) {
