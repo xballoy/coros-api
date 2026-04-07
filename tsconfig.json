@@ -5,7 +5,6 @@
     "experimentalDecorators": true,
 
     "outDir": "./dist",
-    "baseUrl": "./",
 
     "types": ["vitest/globals"]
   }
