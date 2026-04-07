@@ -12,6 +12,8 @@ onlyBuiltDependencies:
   - esbuild
   # Downloads platform-specific binary and runs 'lefthook install' to set up git hooks
   - lefthook
+  # Copies the mockServiceWorker.js file to the public directory
+  - msw
 
 patchedDependencies:
   nest-commander: patches/nest-commander.patch
