@@ -36,7 +36,7 @@
     "@vitest/coverage-v8": "4.1.2",
     "fast-check": "4.6.0",
     "lefthook": "2.1.4",
-    "typescript": "5.9.3",
+    "typescript": "6.0.2",
     "unplugin-swc": "1.5.9",
     "vitest": "4.1.2"
   },
