@@ -15,7 +15,36 @@ export const QueryTrainingScheduleInput = z.object({
 });
 export type QueryTrainingScheduleInput = z.infer<typeof QueryTrainingScheduleInput>;
 
-export const QueryTrainingScheduleData = z.record(z.string(), z.unknown());
+export const TrainingScheduleSportData = z.object({
+  name: z.string().optional(),
+  distance: z.number().optional(),
+  duration: z.number().optional(),
+  happenDay: z.string().optional(),
+});
+export type TrainingScheduleSportData = z.infer<typeof TrainingScheduleSportData>;
+
+export const TrainingScheduleEntity = z.object({
+  id: z.string(),
+  idInPlan: z.string(),
+  planProgramId: z.string(),
+  happenDay: z.string(),
+  sportData: TrainingScheduleSportData.optional(),
+});
+export type TrainingScheduleEntity = z.infer<typeof TrainingScheduleEntity>;
+
+export const TrainingScheduleProgram = z.object({
+  idInPlan: z.string(),
+  name: z.string(),
+  overview: z.string().optional(),
+  distance: z.number().optional(),
+  duration: z.number().optional(),
+});
+export type TrainingScheduleProgram = z.infer<typeof TrainingScheduleProgram>;
+
+export const QueryTrainingScheduleData = z.object({
+  entities: z.array(TrainingScheduleEntity),
+  programs: z.array(TrainingScheduleProgram),
+});
 export type QueryTrainingScheduleData = z.infer<typeof QueryTrainingScheduleData>;
 
 export const QueryTrainingScheduleResponse = CorosResponse(QueryTrainingScheduleData);

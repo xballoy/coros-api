@@ -5,6 +5,11 @@ import { Logger } from '@nestjs/common';
 import dayjs from 'dayjs';
 import { Command, CommandRunner, Option } from 'nest-commander';
 import { CorosAPI } from '../coros/coros-api';
+import type {
+  QueryTrainingScheduleData,
+  TrainingScheduleEntity,
+  TrainingScheduleProgram,
+} from '../coros/training-schedule/query-training-schedule.request';
 import { InvalidParameterError } from './invalid-parameter-error';
 
 type Flags = {
@@ -13,7 +18,6 @@ type Flags = {
 };
 
 type LocaleMap = Record<string, string>;
-type UnknownRecord = Record<string, unknown>;
 type TrainingStart = {
   hour: number;
   minute: number;
@@ -116,7 +120,7 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
   }
 
   private buildScheduleEvents(
-    schedule: unknown,
+    schedule: QueryTrainingScheduleData,
     localeMap: LocaleMap,
     trainingStart: TrainingStart | undefined,
   ): Array<{
@@ -126,34 +130,20 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
     description: string;
     durationSeconds?: number;
   }> {
-    if (!this.isRecord(schedule)) {
-      this.logger.warn('Training schedule response is not an object. No events exported.');
-      return [];
+    const programsById = new Map<string, TrainingScheduleProgram>();
+    for (const program of schedule.programs) {
+      programsById.set(program.idInPlan, program);
     }
 
-    const entities = Array.isArray(schedule.entities)
-      ? schedule.entities.filter((entity) => this.isRecord(entity))
-      : [];
-    const programs = Array.isArray(schedule.programs)
-      ? schedule.programs.filter((program) => this.isRecord(program))
-      : [];
-    const programsById = new Map<string, UnknownRecord>();
-    for (const program of programs) {
-      const id = this.toStringValue(program.idInPlan);
-      if (id) {
-        programsById.set(id, program);
-      }
-    }
-
-    return entities
+    return schedule.entities
       .map((entity) => {
         const plannedDate = this.resolvePlannedDate(entity);
         if (!plannedDate) {
           return null;
         }
 
-        const programId = this.toStringValue(entity.idInPlan) ?? this.toStringValue(entity.planProgramId) ?? undefined;
-        const program = programId ? programsById.get(programId) : undefined;
+        const programId = entity.idInPlan ?? entity.planProgramId;
+        const program = programsById.get(programId);
         const summary = this.resolveSummary(entity, program, localeMap);
         const overview = this.resolveOverview(program, localeMap);
         const lengthText = this.formatPlannedLength(program, entity);
@@ -164,11 +154,9 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
             `Missing duration for training on ${plannedDate.format('YYYY-MM-DD')}: ` + `${summary || 'Training'}`,
           );
         }
-        const uid =
-          this.toStringValue(entity.id) ?? `coros-${plannedDate.format('YYYYMMDD')}-${programId ?? 'unknown'}`;
 
         return {
-          uid,
+          uid: entity.id ?? `coros-${plannedDate.format('YYYYMMDD')}-${programId ?? 'unknown'}`,
           date: plannedDate,
           summary,
           description,
@@ -179,41 +167,37 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
       .sort((a, b) => a.date.valueOf() - b.date.valueOf());
   }
 
-  private resolveSummary(entity: UnknownRecord, program: UnknownRecord | undefined, localeMap: LocaleMap): string {
-    const programName = this.toStringValue(program?.name);
-    if (programName) {
-      return localeMap[programName] ?? programName;
+  private resolveSummary(
+    entity: TrainingScheduleEntity,
+    program: TrainingScheduleProgram | undefined,
+    localeMap: LocaleMap,
+  ): string {
+    if (program?.name) {
+      return localeMap[program.name] ?? program.name;
     }
 
-    const sportData = this.isRecord(entity.sportData) ? entity.sportData : undefined;
-    const activityName = this.toStringValue(sportData?.name);
-    if (activityName) {
-      return activityName;
+    if (entity.sportData?.name) {
+      return entity.sportData.name;
     }
 
     return 'Training';
   }
 
-  private resolveOverview(program: UnknownRecord | undefined, localeMap: LocaleMap): string {
-    const overview = this.toStringValue(program?.overview);
-    if (!overview) {
+  private resolveOverview(program: TrainingScheduleProgram | undefined, localeMap: LocaleMap): string {
+    if (!program?.overview) {
       return '';
     }
 
-    return localeMap[overview] ?? overview;
+    return localeMap[program.overview] ?? program.overview;
   }
 
-  private formatPlannedLength(program: UnknownRecord | undefined, entity: UnknownRecord): string {
-    const programDistance = this.toNumber(program?.distance);
-    const entityDistance = this.toNumber(this.isRecord(entity.sportData) ? entity.sportData.distance : undefined);
-    const distance = programDistance ?? entityDistance;
+  private formatPlannedLength(program: TrainingScheduleProgram | undefined, entity: TrainingScheduleEntity): string {
+    const distance = program?.distance ?? entity.sportData?.distance;
     if (distance && distance > 0) {
       return this.formatDistance(distance);
     }
 
-    const programDuration = this.toNumber(program?.duration);
-    const entityDuration = this.toNumber(this.isRecord(entity.sportData) ? entity.sportData.duration : undefined);
-    const duration = programDuration ?? entityDuration;
+    const duration = program?.duration ?? entity.sportData?.duration;
     if (duration && duration > 0) {
       return this.formatDuration(duration);
     }
@@ -221,16 +205,16 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
     return '';
   }
 
-  private resolveDurationSeconds(program: UnknownRecord | undefined, entity: UnknownRecord): number | undefined {
-    const programDuration = this.toNumber(program?.duration);
-    if (programDuration && programDuration > 0) {
-      return programDuration;
+  private resolveDurationSeconds(
+    program: TrainingScheduleProgram | undefined,
+    entity: TrainingScheduleEntity,
+  ): number | undefined {
+    if (program?.duration && program.duration > 0) {
+      return program.duration;
     }
 
-    const sportData = this.isRecord(entity.sportData) ? entity.sportData : undefined;
-    const entityDuration = this.toNumber(sportData?.duration);
-    if (entityDuration && entityDuration > 0) {
-      return entityDuration;
+    if (entity.sportData?.duration && entity.sportData.duration > 0) {
+      return entity.sportData.duration;
     }
 
     return undefined;
@@ -258,10 +242,8 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
     return `${seconds}s`;
   }
 
-  private resolvePlannedDate(entity: UnknownRecord): dayjs.Dayjs | null {
-    const happenDay =
-      this.toStringValue(entity.happenDay) ??
-      this.toStringValue(this.isRecord(entity.sportData) ? entity.sportData.happenDay : undefined);
+  private resolvePlannedDate(entity: TrainingScheduleEntity): dayjs.Dayjs | null {
+    const happenDay = entity.happenDay ?? entity.sportData?.happenDay;
     const happenDate = happenDay ? dayjs(happenDay, 'YYYYMMDD', true) : null;
 
     if (happenDate?.isValid()) {
@@ -346,32 +328,5 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
       .replaceAll(/\r?\n/g, String.raw`\n`)
       .replaceAll(',', String.raw`\,`)
       .replaceAll(';', String.raw`\;`);
-  }
-
-  private isRecord(value: unknown): value is UnknownRecord {
-    return typeof value === 'object' && value !== null && !Array.isArray(value);
-  }
-
-  private toStringValue(value: unknown): string | undefined {
-    if (typeof value === 'string') {
-      return value;
-    }
-    if (typeof value === 'number' && Number.isFinite(value)) {
-      return String(value);
-    }
-    return undefined;
-  }
-
-  private toNumber(value: unknown): number | undefined {
-    if (typeof value === 'number' && Number.isFinite(value)) {
-      return value;
-    }
-    if (typeof value === 'string' && value.trim() !== '') {
-      const parsed = Number(value);
-      if (Number.isFinite(parsed)) {
-        return parsed;
-      }
-    }
-    return undefined;
   }
 }

@@ -12,7 +12,6 @@ import {
   buildEntity,
   buildLocaleMapJs,
   buildProgram,
-  buildSubPlan,
   buildTrainingScheduleResponse,
 } from '../testing/fixtures/training-schedule';
 import { COROS_API_BASE_URL, server } from '../testing/msw-server';
@@ -78,8 +77,8 @@ describe('export-training-schedule', () => {
   }
 
   it('exports ICS with correct filename and calendar structure', async () => {
-    const entity1 = buildEntity({ id: 'e1', idInPlan: '1', planProgramId: '1', happenDay: '20260408', planId: 'sp1' });
-    const entity2 = buildEntity({ id: 'e2', idInPlan: '2', planProgramId: '2', happenDay: '20260410', planId: 'sp1' });
+    const entity1 = buildEntity({ id: 'e1', idInPlan: '1', planProgramId: '1', happenDay: '20260408' });
+    const entity2 = buildEntity({ id: 'e2', idInPlan: '2', planProgramId: '2', happenDay: '20260410' });
     const program1 = buildProgram({ idInPlan: '1', name: 'Easy Run', distance: 750000, duration: 2700 });
     const program2 = buildProgram({
       idInPlan: '2',
@@ -88,7 +87,6 @@ describe('export-training-schedule', () => {
       distance: 1000000,
       duration: 3600,
     });
-    const subPlan = buildSubPlan({ id: 'sp1' });
 
     server.use(
       loginHandler(),
@@ -97,7 +95,6 @@ describe('export-training-schedule', () => {
           buildTrainingScheduleResponse({
             entities: [entity1, entity2],
             programs: [program1, program2],
-            subPlans: [subPlan],
           }),
         );
       }),
@@ -126,16 +123,13 @@ describe('export-training-schedule', () => {
   });
 
   it('creates timed events with --training-start flag', async () => {
-    const entity = buildEntity({ id: 'e1', idInPlan: '1', planProgramId: '1', happenDay: '20260408', planId: 'sp1' });
+    const entity = buildEntity({ id: 'e1', idInPlan: '1', planProgramId: '1', happenDay: '20260408' });
     const program = buildProgram({ idInPlan: '1', name: 'Easy Run', duration: 2700 });
-    const subPlan = buildSubPlan({ id: 'sp1' });
 
     server.use(
       loginHandler(),
       http.get(`${COROS_API_BASE_URL}/training/schedule/query`, () => {
-        return HttpResponse.json(
-          buildTrainingScheduleResponse({ entities: [entity], programs: [program], subPlans: [subPlan] }),
-        );
+        return HttpResponse.json(buildTrainingScheduleResponse({ entities: [entity], programs: [program] }));
       }),
       localeMapHandler(),
     );
@@ -172,16 +166,13 @@ describe('export-training-schedule', () => {
   });
 
   it('resolves locale map keys to translated names', async () => {
-    const entity = buildEntity({ id: 'e1', idInPlan: '1', planProgramId: '1', happenDay: '20260409', planId: 'sp1' });
+    const entity = buildEntity({ id: 'e1', idInPlan: '1', planProgramId: '1', happenDay: '20260409' });
     const program = buildProgram({ idInPlan: '1', name: 'S4734' });
-    const subPlan = buildSubPlan({ id: 'sp1' });
 
     server.use(
       loginHandler(),
       http.get(`${COROS_API_BASE_URL}/training/schedule/query`, () => {
-        return HttpResponse.json(
-          buildTrainingScheduleResponse({ entities: [entity], programs: [program], subPlans: [subPlan] }),
-        );
+        return HttpResponse.json(buildTrainingScheduleResponse({ entities: [entity], programs: [program] }));
       }),
       localeMapHandler(),
     );
