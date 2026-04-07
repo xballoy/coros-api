@@ -10,4 +10,5 @@ export default defineConfig({
       module: { type: 'es6' },
     }),
   ],
+  oxc: false,
 });
