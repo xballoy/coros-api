@@ -19,6 +19,9 @@
     "enabled": true,
     "rules": {
       "recommended": true,
+      "performance": {
+        "noBarrelFile": "error"
+      },
       "style": {
         "useImportType": "off",
         "noParameterAssign": "error",

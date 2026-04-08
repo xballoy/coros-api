@@ -93,5 +93,5 @@ export const getSportTypeValueFromKey = (value: SportTypeKey) => {
 };
 
 export const isValidSportTypeKey = (value: string): value is SportTypeKey => {
-  return Object.keys(AllSportTypes).some((it) => it === value);
+  return Object.keys(AllSportTypes).includes(value);
 };
