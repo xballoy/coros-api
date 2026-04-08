@@ -2,8 +2,6 @@ import { mkdtemp, readdir, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { Test } from '@nestjs/testing';
-import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { HttpResponse, http } from 'msw';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { AppModule } from '../app.module';
@@ -12,8 +10,6 @@ import { buildLoginResponse } from '../testing/fixtures/login';
 import { buildActivity, buildQueryActivitiesResponse } from '../testing/fixtures/query-activities';
 import { COROS_API_BASE_URL, server } from '../testing/msw-server';
 import { ExportActivitiesCommandRunner } from './export-activities.command-runner';
-
-dayjs.extend(customParseFormat);
 
 const FILE_CONTENT = 'fake-fit-file-content';
 

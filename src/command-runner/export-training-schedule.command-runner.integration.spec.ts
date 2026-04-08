@@ -2,8 +2,6 @@ import { mkdtemp, readdir, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { Test } from '@nestjs/testing';
-import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { HttpResponse, http } from 'msw';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppModule } from '../app.module';
@@ -16,8 +14,6 @@ import {
 } from '../testing/fixtures/training-schedule';
 import { COROS_API_BASE_URL, server } from '../testing/msw-server';
 import { ExportTrainingScheduleCommandRunner } from './export-training-schedule.command-runner';
-
-dayjs.extend(customParseFormat);
 
 const LOCALE_MAP = {
   'training.easy_run': 'Easy Run',

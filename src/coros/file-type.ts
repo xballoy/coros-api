@@ -18,5 +18,5 @@ export const getFileTypeFromKey = (value: FileTypeKey) => {
 };
 
 export const isValidFileTypeKey = (value: string): value is FileTypeKey => {
-  return Object.keys(AllFileTypes).some((it) => it === value);
+  return Object.keys(AllFileTypes).includes(value);
 };

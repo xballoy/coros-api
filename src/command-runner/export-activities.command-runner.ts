@@ -1,12 +1,13 @@
-import { existsSync } from 'node:fs';
 import { Logger } from '@nestjs/common';
 import dayjs from 'dayjs';
 import { Command, CommandRunner, Option } from 'nest-commander';
 import { DownloadFile } from '../core/download-file.service';
+import { InvalidParameterError } from '../core/invalid-parameter-error';
+import { parseDate } from '../core/parse-date';
+import { parseOutDir } from '../core/parse-out-dir';
 import { CorosAPI } from '../coros/coros-api';
 import { DefaultFileType, FileTypeKeys, getFileTypeFromKey, isValidFileTypeKey } from '../coros/file-type';
 import { DefaultSportType, getSportTypeValueFromKey, isValidSportTypeKey, SportTypeKeys } from '../coros/sport-type';
-import { InvalidParameterError } from './invalid-parameter-error';
 
 type FileTypeFlag = { key: string; value: string };
 type SportTypesFlag = string[];
@@ -77,11 +78,7 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
     required: true,
   })
   parseOutDir(out: string) {
-    if (!existsSync(out)) {
-      throw new InvalidParameterError('out', out, 'Directory does not exists');
-    }
-
-    return out;
+    return parseOutDir(out);
   }
 
   @Option({
@@ -128,12 +125,7 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
     required: false,
   })
   parseFrom(from: string): Date {
-    const maybeDate = dayjs(from, 'YYYY-MM-DD', true);
-    if (!maybeDate.isValid()) {
-      throw new InvalidParameterError('fromDate', from, 'Format must be YYYY-MM-DD');
-    }
-
-    return maybeDate.toDate();
+    return parseDate(from, 'fromDate');
   }
 
   @Option({
@@ -143,11 +135,6 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
     required: false,
   })
   parseTo(to: string): Date {
-    const maybeDate = dayjs(to, 'YYYY-MM-DD', true);
-    if (!maybeDate.isValid()) {
-      throw new InvalidParameterError('toDate', to, 'Format must be YYYY-MM-DD');
-    }
-
-    return maybeDate.toDate();
+    return parseDate(to, 'toDate');
   }
 }
