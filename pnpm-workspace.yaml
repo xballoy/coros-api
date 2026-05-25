@@ -10,8 +10,6 @@ minimumReleaseAge: 4320
 patchedDependencies:
   nest-commander: patches/nest-commander.patch
 
-strictDepBuilds: true
-
 trustPolicy: no-downgrade
 
 trustPolicyExclude:
