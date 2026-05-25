@@ -4,7 +4,6 @@ allowBuilds:
   lefthook: true
   msw: true
 
-# 3 days in minutes
 minimumReleaseAge: 4320
 
 patchedDependencies:
@@ -13,13 +12,4 @@ patchedDependencies:
 trustPolicy: no-downgrade
 
 trustPolicyExclude:
-  # https://github.com/paulmillr/chokidar/issues/1440
-  - chokidar@4.0.3
-
-minimumReleaseAgeExclude:
-  # Renovate security update: pnpm@10.28.2
-  - pnpm@10.28.2
-  # Renovate security update: axios@1.13.5 || 1.15.0
-  - axios@1.13.5 || 1.15.0
-  # Renovate security update: @nestjs/core@11.1.18
-  - "@nestjs/core@11.1.18"
+  - chokidar@4.0.3 # https://github.com/paulmillr/chokidar/issues/1440
