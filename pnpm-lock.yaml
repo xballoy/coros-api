@@ -5,9 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
-  nest-commander:
-    hash: c7055d2e7ef124c81d67ee69d5e8712cff189d829cbc380d71a203c9e861ae25
-    path: patches/nest-commander.patch
+  nest-commander: c7055d2e7ef124c81d67ee69d5e8712cff189d829cbc380d71a203c9e861ae25
 
 importers:
 
