@@ -1,19 +1,11 @@
-ignoredBuiltDependencies:
-  # Runs opencollective funding prompt on postinstall
-  - '@nestjs/core'
+allowBuilds:
+  '@nestjs/core': false
+  '@swc/core': true
+  lefthook: true
+  msw: true
 
 # 3 days in minutes
 minimumReleaseAge: 4320
-
-onlyBuiltDependencies:
-  # Downloads platform-specific native binary for TypeScript/JavaScript compilation
-  - '@swc/core'
-  # Downloads platform-specific native binary for bundling/minification
-  - esbuild
-  # Downloads platform-specific binary and runs 'lefthook install' to set up git hooks
-  - lefthook
-  # Copies the mockServiceWorker.js file to the public directory
-  - msw
 
 patchedDependencies:
   nest-commander: patches/nest-commander.patch
@@ -25,6 +17,7 @@ trustPolicy: no-downgrade
 trustPolicyExclude:
   # https://github.com/paulmillr/chokidar/issues/1440
   - chokidar@4.0.3
+
 minimumReleaseAgeExclude:
   # Renovate security update: pnpm@10.28.2
   - pnpm@10.28.2
