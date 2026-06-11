@@ -49,6 +49,7 @@ describe('export-activities', () => {
 
   afterEach(async () => {
     server.resetHandlers();
+    process.exitCode = undefined;
     await rm(tmpDir, { recursive: true, force: true });
   });
 
@@ -164,6 +165,7 @@ describe('export-activities', () => {
     const files = await readdir(tmpDir);
     expect(files).toHaveLength(1);
     expect(files[0]).toBe('2025-01-20 Good Run ok-activity.fit');
+    expect(process.exitCode).toBe(1);
   });
 
   it('respects --exportType gpx', async () => {

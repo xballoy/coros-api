@@ -11,7 +11,10 @@ async function bootstrap() {
 
   await CommandFactory.run(AppModule, {
     logger: ['log', 'warn', 'error', 'fatal'],
-    serviceErrorHandler: (err) => logger.error(err),
+    serviceErrorHandler: (err) => {
+      logger.error(err);
+      process.exitCode = 1;
+    },
   });
 }
 void bootstrap();

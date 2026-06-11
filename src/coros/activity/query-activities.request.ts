@@ -71,7 +71,7 @@ export class QueryActivitiesRequest extends BaseRequest<
     return QueryActivitiesResponse;
   }
 
-  async handle({
+  protected async handle({
     pageSize = 20,
     pageNumber = 1,
     from,
@@ -103,38 +103,43 @@ export class QueryActivitiesRequest extends BaseRequest<
     to?: Date;
     modeList: string;
   }): Promise<Activity[]> {
-    const url = new URL('/activity/query', this.corosConfig.apiUrl);
-    url.searchParams.append('size', String(pageSize));
-    url.searchParams.append('pageNumber', String(pageNumber));
-    url.searchParams.append('modeList', modeList);
+    const activities: Activity[] = [];
+    let currentPage = pageNumber;
+    let lastPage = pageNumber;
 
-    if (from) {
-      url.searchParams.append('startDay', dayjs(from).format('YYYYMMDD'));
-    }
+    do {
+      const url = new URL('/activity/query', this.corosConfig.apiUrl);
+      url.searchParams.append('size', String(pageSize));
+      url.searchParams.append('pageNumber', String(currentPage));
+      url.searchParams.append('modeList', modeList);
 
-    if (to) {
-      url.searchParams.append('endDay', dayjs(to).format('YYYYMMDD'));
-    }
+      if (from) {
+        url.searchParams.append('startDay', dayjs(from).format('YYYYMMDD'));
+      }
 
-    const { data } = await this.httpService.axiosRef.get(url.toString(), {
-      headers: {
-        accessToken: this.corosAuthenticationService.accessToken,
-      },
-    });
-    this.logger.verbose('Query activity response', data);
+      if (to) {
+        url.searchParams.append('endDay', dayjs(to).format('YYYYMMDD'));
+      }
 
-    this.assertCorosResponseBase(data);
-    this.assertCorosResponse(data);
+      const { data } = await this.httpService.axiosRef.get(url.toString(), {
+        headers: {
+          accessToken: this.corosAuthenticationService.accessToken,
+        },
+      });
+      this.logger.verbose('Query activity response', data);
 
-    const {
-      data: { dataList, totalPage },
-    } = data;
+      this.assertCorosResponseBase(data);
+      this.assertCorosResponse(data);
 
-    const activities = [...(dataList ?? [])];
-    if (pageNumber < (totalPage ?? 0)) {
-      const next = await this.getActivities({ pageSize, pageNumber: pageNumber + 1, from, to, modeList });
-      activities.push(...next);
-    }
+      const {
+        data: { dataList, totalPage },
+      } = data;
+
+      activities.push(...(dataList ?? []));
+      lastPage = totalPage ?? 0;
+      currentPage += 1;
+    } while (currentPage <= lastPage);
+
     return activities;
   }
 }

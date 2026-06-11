@@ -109,7 +109,7 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
         }
 
         const programId = entity.idInPlan ?? entity.planProgramId;
-        const program = programsById.get(programId);
+        const program = programId ? programsById.get(programId) : undefined;
         const summary = resolveSummary(entity, program, localeMap);
         const overview = resolveOverview(program, localeMap);
         const lengthText = formatPlannedLength(program, entity);

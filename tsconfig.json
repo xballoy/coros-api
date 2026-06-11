@@ -4,8 +4,6 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
 
-    "outDir": "./dist",
-
-    "types": ["vitest/globals"]
+    "outDir": "./dist"
   }
 }

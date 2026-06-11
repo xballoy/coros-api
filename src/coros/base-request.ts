@@ -1,4 +1,5 @@
 import type { z } from 'zod';
+import { redactAccessToken } from '../core/redact-access-token';
 import { ValidationError } from '../core/validation-error';
 import { CorosResponseBase, type CorosResponseWithData } from './common';
 
@@ -12,14 +13,14 @@ export abstract class BaseRequest<Input, Response extends CorosResponseWithData,
     if (!parseResult.success) {
       throw new ValidationError(parseResult.error, { cause: args });
     }
-    return await this.handle(args);
+    return await this.handle(parseResult.data);
   }
 
   protected assertCorosResponseBase(data: unknown): asserts data is CorosResponseBase {
     const parseResult = CorosResponseBase.safeParse(data);
     if (!parseResult.success) {
       throw new ValidationError(parseResult.error, {
-        cause: data,
+        cause: redactAccessToken(data),
       });
     }
 
@@ -33,7 +34,7 @@ export abstract class BaseRequest<Input, Response extends CorosResponseWithData,
     const parseResult = this.responseValidator().safeParse(data);
     if (!parseResult.success) {
       throw new ValidationError(parseResult.error, {
-        cause: data,
+        cause: redactAccessToken(data),
       });
     }
   }

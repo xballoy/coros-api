@@ -1,4 +1,4 @@
-import { mkdtemp, rm } from 'node:fs/promises';
+import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
@@ -23,5 +23,11 @@ describe('parseOutDir', () => {
   it('throws InvalidParameterError when the directory does not exist', () => {
     const nonExistent = path.join(tmpDir, 'does-not-exist');
     expect(() => parseOutDir(nonExistent)).toThrow(InvalidParameterError);
+  });
+
+  it('throws InvalidParameterError when the path is a file', async () => {
+    const filePath = path.join(tmpDir, 'a-file.txt');
+    await writeFile(filePath, 'content');
+    expect(() => parseOutDir(filePath)).toThrow(InvalidParameterError);
   });
 });

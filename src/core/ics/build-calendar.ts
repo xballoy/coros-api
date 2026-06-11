@@ -1,7 +1,10 @@
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import type { TrainingStart } from '../../coros/training-schedule/parse-training-start';
 import { escapeText } from './escape-text';
 import { foldLine } from './fold-line';
+
+dayjs.extend(utc);
 
 export type CalendarEvent = {
   uid: string;
@@ -28,7 +31,8 @@ export const buildCalendar = (
   addLine('CALSCALE:GREGORIAN');
   addLine('METHOD:PUBLISH');
 
-  const stamp = nowStamp ?? dayjs().format('YYYYMMDDTHHmmss');
+  // RFC 5545 §3.8.7.2: DTSTAMP must be a UTC timestamp
+  const stamp = nowStamp ?? dayjs().utc().format('YYYYMMDDTHHmmss[Z]');
   for (const event of events) {
     addLine('BEGIN:VEVENT');
     addLine(`UID:${escapeText(event.uid)}`);
