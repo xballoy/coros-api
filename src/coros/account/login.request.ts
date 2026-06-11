@@ -3,6 +3,7 @@ import { URL } from 'node:url';
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import { z } from 'zod';
+import { redactAccessToken } from '../../core/redact-access-token';
 import { BaseRequest } from '../base-request';
 import { CorosResponse } from '../common';
 import { CorosConfigService } from '../coros.config';
@@ -27,7 +28,7 @@ const LoginInput = z.object({});
 type LoginInput = z.infer<typeof LoginInput>;
 
 @Injectable()
-export class LoginRequest extends BaseRequest<LoginInput, LoginResponse, Omit<LoginData, 'accessToken'>> {
+export class LoginRequest extends BaseRequest<LoginInput, LoginResponse, void> {
   private readonly logger = new Logger(LoginRequest.name);
   private readonly httpService: HttpService;
   private readonly corosConfig: CorosConfigService;
@@ -52,23 +53,21 @@ export class LoginRequest extends BaseRequest<LoginInput, LoginResponse, Omit<Lo
     return LoginResponse;
   }
 
-  protected async handle(_: LoginInput): Promise<Omit<LoginData, 'accessToken'>> {
+  protected async handle(_: LoginInput): Promise<void> {
     const url = new URL('/account/login', this.corosConfig.apiUrl);
     const { data } = await this.httpService.axiosRef.post(url.toString(), {
       account: this.corosConfig.email,
       accountType: 2,
       pwd: createHash('md5').update(this.corosConfig.password).digest('hex'),
     } satisfies LoginBody);
-    this.logger.verbose('Login request response', data);
+    this.logger.verbose('Login request response', redactAccessToken(data));
 
     this.assertCorosResponseBase(data);
     this.assertCorosResponse(data);
 
     const {
-      data: { accessToken, ...rest },
+      data: { accessToken },
     } = data;
     this.corosAuthenticationService.accessToken = accessToken;
-
-    return rest;
   }
 }

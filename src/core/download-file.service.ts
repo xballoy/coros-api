@@ -19,6 +19,6 @@ export class DownloadFile {
       responseType: 'stream',
     });
 
-    await pipeline(response.data, fs.createWriteStream(path.join(directory, fileName)));
+    await pipeline(response.data, fs.createWriteStream(path.join(directory, path.basename(fileName))));
   }
 }

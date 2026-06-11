@@ -24,10 +24,10 @@ export const TrainingScheduleSportData = z.object({
 export type TrainingScheduleSportData = z.infer<typeof TrainingScheduleSportData>;
 
 export const TrainingScheduleEntity = z.object({
-  id: z.string(),
-  idInPlan: z.string(),
-  planProgramId: z.string(),
-  happenDay: z.string(),
+  id: z.string().optional(),
+  idInPlan: z.string().optional(),
+  planProgramId: z.string().optional(),
+  happenDay: z.string().optional(),
   sportData: TrainingScheduleSportData.optional(),
 });
 export type TrainingScheduleEntity = z.infer<typeof TrainingScheduleEntity>;
@@ -88,7 +88,7 @@ export class QueryTrainingScheduleRequest extends BaseRequest<
 
     const { data } = await this.httpService.axiosRef.get(url.toString(), {
       headers: {
-        accesstoken: this.corosAuthenticationService.accessToken,
+        accessToken: this.corosAuthenticationService.accessToken,
       },
     });
 

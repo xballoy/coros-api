@@ -3,9 +3,9 @@ import { Injectable } from '@nestjs/common';
 import { z } from 'zod';
 
 const CorosConfig = z.object({
-  apiUrl: z.string(),
-  email: z.string(),
-  password: z.string(),
+  apiUrl: z.url(),
+  email: z.string().min(1),
+  password: z.string().min(1),
 });
 type CorosConfig = z.infer<typeof CorosConfig>;
 

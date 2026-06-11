@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { CalendarEvent } from './build-calendar';
 import { buildCalendar } from './build-calendar';
 
-const NOW_STAMP = '20260407T100000';
+const NOW_STAMP = '20260407T100000Z';
 
 const makeEvent = (overrides: Partial<CalendarEvent> = {}): CalendarEvent => ({
   uid: 'test-uid-1',
@@ -71,6 +71,19 @@ describe('buildCalendar', () => {
   it('includes DTSTAMP with the provided nowStamp', () => {
     const result = buildCalendar([makeEvent()], undefined, NOW_STAMP);
     expect(result).toContain(`DTSTAMP:${NOW_STAMP}`);
+  });
+
+  describe('default DTSTAMP', () => {
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it('is the current time in UTC with a Z suffix', () => {
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date('2026-04-07T10:00:00Z'));
+      const result = buildCalendar([makeEvent()], undefined);
+      expect(result).toContain('DTSTAMP:20260407T100000Z');
+    });
   });
 
   it('renders multiple events', () => {

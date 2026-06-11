@@ -15,7 +15,7 @@ export const DownloadActivityDetailInput = z.object({
 export type DownloadActivityDetailInput = z.infer<typeof DownloadActivityDetailInput>;
 
 export const DownloadActivityDetailData = z.object({
-  fileUrl: z.string(),
+  fileUrl: z.url(),
 });
 export type DownloadActivityDetailData = z.infer<typeof DownloadActivityDetailData>;
 
@@ -51,7 +51,11 @@ export class DownloadActivityDetailRequest extends BaseRequest<
     return DownloadActivityDetailResponse;
   }
 
-  async handle({ labelId, sportType, fileType }: DownloadActivityDetailInput): Promise<DownloadActivityDetailData> {
+  protected async handle({
+    labelId,
+    sportType,
+    fileType,
+  }: DownloadActivityDetailInput): Promise<DownloadActivityDetailData> {
     const url = new URL('/activity/detail/download', this.corosConfig.apiUrl);
     url.searchParams.append('labelId', labelId);
     url.searchParams.append('sportType', String(sportType));

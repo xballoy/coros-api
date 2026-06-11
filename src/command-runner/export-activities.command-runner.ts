@@ -47,7 +47,8 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
 
     const activitiesToDownload = activities.map((it) => {
       const activityDate = dayjs(String(it.date), 'YYYYMMDD');
-      const activityName = it.name?.trim() || 'Activity';
+      // The activity name comes from the API: strip path separators so it cannot escape the output directory
+      const activityName = (it.name?.trim() || 'Activity').replace(/[/\\]/g, '-');
 
       return {
         labelId: it.labelId,
@@ -56,6 +57,7 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
       };
     });
 
+    let failedDownloads = 0;
     for (const { labelId, sportType, fileName } of activitiesToDownload) {
       try {
         const { fileUrl } = await this.corosService.downloadActivityDetail({
@@ -65,9 +67,15 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
         });
         await this.downloadFileCommand.handle(fileUrl, outDir, fileName);
         this.logger.debug(`Downloading ${fileName} success`);
-      } catch {
-        this.logger.error(`Downloading ${fileName} failed`);
+      } catch (error) {
+        failedDownloads += 1;
+        this.logger.error(`Downloading ${fileName} failed`, error instanceof Error ? error.stack : error);
       }
+    }
+
+    if (failedDownloads > 0) {
+      this.logger.error(`${failedDownloads} of ${activitiesToDownload.length} downloads failed`);
+      process.exitCode = 1;
     }
   }
 
