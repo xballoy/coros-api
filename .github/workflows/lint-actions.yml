@@ -2,15 +2,15 @@ name: Lint GitHub Actions
 
 on:
   pull_request:
-    paths:
-      - ".github/**"
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions: {}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   lint:
@@ -34,10 +34,7 @@ jobs:
           advanced-security: false
           annotations: true
 
-      # actionlint has no official pinnable action, so it is fetched via its release install
-      # script by tag. This is the one dependency here not SHA-pinned; Renovate bumps
-      # ACTIONLINT_VERSION via the customManager in renovate.json. The problem matcher is
-      # downloaded so annotations work without committing it to the repo.
+      # actionlint has no pinnable action; fetched by tag, Renovate bumps ACTIONLINT_VERSION.
       - name: Run actionlint
         env:
           # renovate: datasource=github-releases depName=rhysd/actionlint
