@@ -14,6 +14,13 @@
       "managerFilePatterns": ["/^.github/(?:workflows|actions)/.+\\.ya?ml$/"],
       "matchStrings": ["node-version: \"(?<currentValue>.*?)\""],
       "datasourceTemplate": "node-version"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^.github/(?:workflows|actions)/.+\\.ya?ml$/"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)(?: versioning=(?<versioning>\\S+))?\\s+\\S+?: ?[\"']?(?<currentValue>[^\"'\\s]+)[\"']?"
+      ]
     }
   ]
 }

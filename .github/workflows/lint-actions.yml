@@ -1,0 +1,55 @@
+name: Lint GitHub Actions
+
+on:
+  pull_request:
+    paths:
+      - ".github/**"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-24.04
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Run zizmor
+        uses: zizmorcore/zizmor-action@192e21d79ab29983730a13d1382995c2307fbcaa # v0.5.7
+        with:
+          # renovate: datasource=github-releases depName=zizmorcore/zizmor
+          version: "1.26.1"
+          advanced-security: false
+          annotations: true
+
+      # actionlint has no official pinnable action, so it is fetched via its release install
+      # script by tag. This is the one dependency here not SHA-pinned; Renovate bumps
+      # ACTIONLINT_VERSION via the customManager in renovate.json. The problem matcher is
+      # downloaded so annotations work without committing it to the repo.
+      - name: Run actionlint
+        env:
+          # renovate: datasource=github-releases depName=rhysd/actionlint
+          ACTIONLINT_VERSION: 1.7.12
+        run: |
+          curl -fsSL -o actionlint-matcher.json "https://raw.githubusercontent.com/rhysd/actionlint/v${ACTIONLINT_VERSION}/.github/actionlint-matcher.json"
+          echo "::add-matcher::actionlint-matcher.json"
+          bash <(curl -fsSL "https://raw.githubusercontent.com/rhysd/actionlint/v${ACTIONLINT_VERSION}/scripts/download-actionlint.bash") "${ACTIONLINT_VERSION}"
+          ./actionlint -color
+        shell: bash
+
+      - name: Verify actions are pinned
+        uses: suzuki-shunsuke/pinact-action@896d595f299e71d65b9d28349d6956abe144390a # v3.0.0
+        with:
+          fix: "false"
