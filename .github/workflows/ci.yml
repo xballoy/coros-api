@@ -36,6 +36,8 @@ jobs:
         run: pnpm install
       - name: Code quality
         run: pnpm lint:ci
+      - name: Typecheck
+        run: pnpm typecheck
       - name: Tests
         run:  pnpm test
       - name: Build

@@ -11,7 +11,8 @@
     "lint:fix": "biome check --write --no-errors-on-unmatched .",
     "lint:check": "biome check --no-errors-on-unmatched .",
     "lint:ci": "biome ci --no-errors-on-unmatched",
-    "test": "vitest --run"
+    "test": "vitest --run",
+    "typecheck": "tsc --noEmit"
   },
   "repository": {
     "type": "git",
@@ -33,11 +34,12 @@
     "@swc/core": "1.15.46",
     "@tsconfig/node24": "24.0.4",
     "@types/node": "24.13.3",
+    "@typescript/native": "npm:typescript@7.0.2",
     "@vitest/coverage-v8": "4.1.10",
     "fast-check": "4.9.0",
     "lefthook": "2.1.10",
     "msw": "2.15.0",
-    "typescript": "6.0.3",
+    "typescript": "npm:@typescript/typescript6@6.0.2",
     "unplugin-swc": "1.5.9",
     "vitest": "4.1.10"
   },
