@@ -37,7 +37,7 @@
     "fast-check": "4.9.0",
     "lefthook": "2.1.10",
     "msw": "2.15.0",
-    "typescript": "6.0.3",
+    "typescript": "7.0.2",
     "unplugin-swc": "1.5.9",
     "vitest": "4.1.10"
   },
