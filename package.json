@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/xballoy/coros-api#readme",
   "devDependencies": {
-    "@biomejs/biome": "2.5.6",
+    "@biomejs/biome": "2.5.7",
     "@nestjs/cli": "11.0.24",
     "@nestjs/schematics": "11.1.0",
     "@nestjs/testing": "11.1.28",
@@ -40,7 +40,7 @@
     "lefthook": "2.1.10",
     "msw": "2.15.0",
     "typescript": "npm:@typescript/typescript6@6.0.2",
-    "unplugin-swc": "1.5.9",
+    "unplugin-swc": "1.5.10",
     "vitest": "4.1.10"
   },
   "dependencies": {
@@ -55,5 +55,5 @@
     "rxjs": "7.8.2",
     "zod": "4.4.3"
   },
-  "packageManager": "pnpm@11.18.0"
+  "packageManager": "pnpm@11.20.0"
 }
