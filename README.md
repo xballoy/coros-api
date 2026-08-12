@@ -1,4 +1,6 @@
 # Bulk export Coros activities
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fxballoy%2Fcoros-api.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fxballoy%2Fcoros-api?ref=badge_shield)
+
 
 ⚠️ This repository is using a **non-public API** from [COROS Training Hub](https://t.coros.com/) that could break
 anytime.
@@ -73,3 +75,6 @@ The API used by this project are documented using [Bruno](https://www.usebruno.c
 ## Licence
 
 [MIT License](LICENSE.md)
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fxballoy%2Fcoros-api.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fxballoy%2Fcoros-api?ref=badge_large)
