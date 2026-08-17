@@ -89,7 +89,7 @@ importers:
         version: '@typescript/typescript6@6.0.2'
       unplugin-swc:
         specifier: 1.5.11
-        version: 1.5.11(@swc/core@1.15.47)(rolldown@1.2.3)(vite@8.2.1(@types/node@24.13.3)(terser@5.49.2))(webpack@5.106.2(@swc/core@1.15.47)(lightningcss@1.33.0)(postcss@8.5.26))
+        version: 1.5.11(@swc/core@1.15.47)(rolldown@1.2.4)(vite@8.2.1(@types/node@24.13.3)(terser@5.50.0))(webpack@5.106.2(@swc/core@1.15.47)(lightningcss@1.33.0)(postcss@8.5.26))
       vitest:
         specifier: 4.1.10
         version: 4.1.10(@types/node@24.13.3)(@vitest/coverage-v8@4.1.10)(msw@2.15.0(@types/node@24.13.3)(@typescript/typescript6@6.0.2))(vite@8.2.1(@types/node@24.13.3)(terser@5.50.0))
@@ -5665,12 +5665,12 @@ snapshots:
 
   universalify@2.0.1: {}
 
-  unplugin-swc@1.5.11(@swc/core@1.15.47)(rolldown@1.2.3)(vite@8.2.1(@types/node@24.13.3)(terser@5.49.2))(webpack@5.106.2(@swc/core@1.15.47)(lightningcss@1.33.0)(postcss@8.5.26)):
+  unplugin-swc@1.5.11(@swc/core@1.15.47)(rolldown@1.2.4)(vite@8.2.1(@types/node@24.13.3)(terser@5.50.0))(webpack@5.106.2(@swc/core@1.15.47)(lightningcss@1.33.0)(postcss@8.5.26)):
     dependencies:
       '@rollup/pluginutils': 5.4.0
       '@swc/core': 1.15.47
       load-tsconfig: 0.2.5
-      unplugin: 3.3.0(rolldown@1.2.3)(vite@8.2.1(@types/node@24.13.3)(terser@5.49.2))(webpack@5.106.2(@swc/core@1.15.47)(lightningcss@1.33.0)(postcss@8.5.26))
+      unplugin: 3.3.0(rolldown@1.2.4)(vite@8.2.1(@types/node@24.13.3)(terser@5.50.0))(webpack@5.106.2(@swc/core@1.15.47)(lightningcss@1.33.0)(postcss@8.5.26))
     transitivePeerDependencies:
       - '@farmfe/core'
       - '@rspack/core'
@@ -5682,14 +5682,14 @@ snapshots:
       - vite
       - webpack
 
-  unplugin@3.3.0(rolldown@1.2.3)(vite@8.2.1(@types/node@24.13.3)(terser@5.49.2))(webpack@5.106.2(@swc/core@1.15.47)(lightningcss@1.33.0)(postcss@8.5.26)):
+  unplugin@3.3.0(rolldown@1.2.4)(vite@8.2.1(@types/node@24.13.3)(terser@5.50.0))(webpack@5.106.2(@swc/core@1.15.47)(lightningcss@1.33.0)(postcss@8.5.26)):
     dependencies:
       '@jridgewell/remapping': 2.3.5
       picomatch: 4.0.5
       webpack-virtual-modules: 0.6.2
     optionalDependencies:
-      rolldown: 1.2.3
-      vite: 8.2.1(@types/node@24.13.3)(terser@5.49.2)
+      rolldown: 1.2.4
+      vite: 8.2.1(@types/node@24.13.3)(terser@5.50.0)
       webpack: 5.106.2(@swc/core@1.15.47)(lightningcss@1.33.0)(postcss@8.5.26)
 
   until-async@3.0.2: {}
