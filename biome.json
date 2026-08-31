@@ -19,6 +19,14 @@
     "enabled": true,
     "rules": {
       "recommended": true,
+      "correctness": {
+        "useImportExtensions": {
+          "level": "error",
+          "options": {
+            "forceJsExtensions": true
+          }
+        }
+      },
       "performance": {
         "noBarrelFile": "error"
       },

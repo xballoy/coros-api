@@ -1,6 +1,6 @@
 import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
-import { formatDuration } from './format-duration';
+import { formatDuration } from './format-duration.js';
 
 describe('formatDuration', () => {
   it('always produces a non-empty string for non-negative input', () => {

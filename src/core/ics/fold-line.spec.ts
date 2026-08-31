@@ -1,6 +1,6 @@
 import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
-import { foldLine } from './fold-line';
+import { foldLine } from './fold-line.js';
 
 const octetLength = (value: string) => new TextEncoder().encode(value).length;
 

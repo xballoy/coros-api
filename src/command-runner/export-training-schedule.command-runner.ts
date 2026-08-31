@@ -4,23 +4,23 @@ import { HttpService } from '@nestjs/axios';
 import { Logger } from '@nestjs/common';
 import dayjs from 'dayjs';
 import { Command, CommandRunner, Option } from 'nest-commander';
-import { buildCalendar } from '../core/ics/build-calendar';
-import { parseOutDir } from '../core/parse-out-dir';
-import { CorosAPI } from '../coros/coros-api';
-import { fetchLocaleMap } from '../coros/training-schedule/fetch-locale-map';
-import type { TrainingStart } from '../coros/training-schedule/parse-training-start';
-import { parseTrainingStart } from '../coros/training-schedule/parse-training-start';
+import { buildCalendar } from '../core/ics/build-calendar.js';
+import { parseOutDir } from '../core/parse-out-dir.js';
+import { CorosAPI } from '../coros/coros-api.js';
+import { fetchLocaleMap } from '../coros/training-schedule/fetch-locale-map.js';
+import type { TrainingStart } from '../coros/training-schedule/parse-training-start.js';
+import { parseTrainingStart } from '../coros/training-schedule/parse-training-start.js';
 import type {
   QueryTrainingScheduleData,
   TrainingScheduleProgram,
-} from '../coros/training-schedule/query-training-schedule.request';
+} from '../coros/training-schedule/query-training-schedule.request.js';
 import {
   formatPlannedLength,
   resolveDurationSeconds,
   resolveOverview,
   resolvePlannedDate,
   resolveSummary,
-} from '../coros/training-schedule/resolve-training-data';
+} from '../coros/training-schedule/resolve-training-data.js';
 
 type Flags = {
   outDir: string;

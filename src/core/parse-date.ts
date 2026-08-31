@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { InvalidParameterError } from './invalid-parameter-error';
+import { InvalidParameterError } from './invalid-parameter-error.js';
 
 export const parseDate = (value: string, parameterName: string): Date => {
   const maybeDate = dayjs(value, 'YYYY-MM-DD', true);

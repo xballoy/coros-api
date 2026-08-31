@@ -1,7 +1,7 @@
 import type { z } from 'zod';
-import { redactAccessToken } from '../core/redact-access-token';
-import { ValidationError } from '../core/validation-error';
-import { CorosResponseBase, type CorosResponseWithData } from './common';
+import { redactAccessToken } from '../core/redact-access-token.js';
+import { ValidationError } from '../core/validation-error.js';
+import { CorosResponseBase, type CorosResponseWithData } from './common.js';
 
 export abstract class BaseRequest<Input, Response extends CorosResponseWithData, Output = Response['data']> {
   protected abstract inputValidator(): z.Schema<Input>;

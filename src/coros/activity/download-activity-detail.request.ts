@@ -2,10 +2,10 @@ import { URL } from 'node:url';
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import { z } from 'zod';
-import { BaseRequest } from '../base-request';
-import { CorosResponse } from '../common';
-import { CorosConfigService } from '../coros.config';
-import { CorosAuthenticationService } from '../coros-authentication.service';
+import { BaseRequest } from '../base-request.js';
+import { CorosResponse } from '../common.js';
+import { CorosConfigService } from '../coros.config.js';
+import { CorosAuthenticationService } from '../coros-authentication.service.js';
 
 export const DownloadActivityDetailInput = z.object({
   labelId: z.string(),

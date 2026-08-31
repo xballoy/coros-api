@@ -6,6 +6,9 @@ allowBuilds:
 
 minimumReleaseAge: 4320
 
+minimumReleaseAgeExclude:
+  - nest-commander
+
 patchedDependencies:
   nest-commander: patches/nest-commander.patch
 

@@ -1,6 +1,6 @@
 import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
-import { DefaultSportType, getSportTypeValueFromKey, isValidSportTypeKey, SportTypeKeys } from './sport-type';
+import { DefaultSportType, getSportTypeValueFromKey, isValidSportTypeKey, SportTypeKeys } from './sport-type.js';
 
 const InvalidSportTypeArbitrary = fc.string().filter((sportType) => !SportTypeKeys.includes(sportType as never));
 

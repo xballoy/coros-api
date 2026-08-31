@@ -4,12 +4,12 @@ import path from 'node:path';
 import { Test } from '@nestjs/testing';
 import { HttpResponse, http } from 'msw';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
-import { AppModule } from '../app.module';
-import { buildDownloadActivityDetailResponse } from '../testing/fixtures/download-activity';
-import { buildLoginResponse } from '../testing/fixtures/login';
-import { buildActivity, buildQueryActivitiesResponse } from '../testing/fixtures/query-activities';
-import { COROS_API_BASE_URL, server } from '../testing/msw-server';
-import { ExportActivitiesCommandRunner } from './export-activities.command-runner';
+import { AppModule } from '../app.module.js';
+import { buildDownloadActivityDetailResponse } from '../testing/fixtures/download-activity.js';
+import { buildLoginResponse } from '../testing/fixtures/login.js';
+import { buildActivity, buildQueryActivitiesResponse } from '../testing/fixtures/query-activities.js';
+import { COROS_API_BASE_URL, server } from '../testing/msw-server.js';
+import { ExportActivitiesCommandRunner } from './export-activities.command-runner.js';
 
 const FILE_CONTENT = 'fake-fit-file-content';
 

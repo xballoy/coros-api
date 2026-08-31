@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import type { TrainingScheduleEntity, TrainingScheduleProgram } from './query-training-schedule.request';
+import type { TrainingScheduleEntity, TrainingScheduleProgram } from './query-training-schedule.request.js';
 import {
   formatPlannedLength,
   resolveDurationSeconds,
   resolveOverview,
   resolvePlannedDate,
   resolveSummary,
-} from './resolve-training-data';
+} from './resolve-training-data.js';
 
 const makeEntity = (overrides: Partial<TrainingScheduleEntity> = {}): TrainingScheduleEntity => ({
   id: 'e1',

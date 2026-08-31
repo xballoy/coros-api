@@ -1,7 +1,7 @@
 import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
-import { InvalidParameterError } from './invalid-parameter-error';
-import { parseDate } from './parse-date';
+import { InvalidParameterError } from './invalid-parameter-error.js';
+import { parseDate } from './parse-date.js';
 
 const validDateArbitrary = fc
   .record({

@@ -1,13 +1,13 @@
 import { Logger } from '@nestjs/common';
 import dayjs from 'dayjs';
 import { Command, CommandRunner, Option } from 'nest-commander';
-import { DownloadFile } from '../core/download-file.service';
-import { InvalidParameterError } from '../core/invalid-parameter-error';
-import { parseDate } from '../core/parse-date';
-import { parseOutDir } from '../core/parse-out-dir';
-import { CorosAPI } from '../coros/coros-api';
-import { DefaultFileType, FileTypeKeys, getFileTypeFromKey, isValidFileTypeKey } from '../coros/file-type';
-import { DefaultSportType, getSportTypeValueFromKey, isValidSportTypeKey, SportTypeKeys } from '../coros/sport-type';
+import { DownloadFile } from '../core/download-file.service.js';
+import { InvalidParameterError } from '../core/invalid-parameter-error.js';
+import { parseDate } from '../core/parse-date.js';
+import { parseOutDir } from '../core/parse-out-dir.js';
+import { CorosAPI } from '../coros/coros-api.js';
+import { DefaultFileType, FileTypeKeys, getFileTypeFromKey, isValidFileTypeKey } from '../coros/file-type.js';
+import { DefaultSportType, getSportTypeValueFromKey, isValidSportTypeKey, SportTypeKeys } from '../coros/sport-type.js';
 
 type FileTypeFlag = { key: string; value: string };
 type SportTypesFlag = string[];

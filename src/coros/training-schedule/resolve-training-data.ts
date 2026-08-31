@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
-import { formatDistance } from '../../core/format-distance';
-import { formatDuration } from '../../core/format-duration';
-import type { TrainingScheduleEntity, TrainingScheduleProgram } from './query-training-schedule.request';
+import { formatDistance } from '../../core/format-distance.js';
+import { formatDuration } from '../../core/format-duration.js';
+import type { TrainingScheduleEntity, TrainingScheduleProgram } from './query-training-schedule.request.js';
 
 type LocaleMap = Record<string, string>;
 

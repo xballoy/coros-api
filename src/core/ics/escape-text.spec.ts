@@ -1,6 +1,6 @@
 import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
-import { escapeText } from './escape-text';
+import { escapeText } from './escape-text.js';
 
 describe('escapeText', () => {
   it('output never contains unescaped commas', () => {

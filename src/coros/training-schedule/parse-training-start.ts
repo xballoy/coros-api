@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { InvalidParameterError } from '../../core/invalid-parameter-error';
+import { InvalidParameterError } from '../../core/invalid-parameter-error.js';
 
 export type TrainingStart = {
   hour: number;

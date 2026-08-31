@@ -4,16 +4,16 @@ import path from 'node:path';
 import { Test } from '@nestjs/testing';
 import { HttpResponse, http } from 'msw';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
-import { AppModule } from '../app.module';
-import { buildLoginResponse } from '../testing/fixtures/login';
+import { AppModule } from '../app.module.js';
+import { buildLoginResponse } from '../testing/fixtures/login.js';
 import {
   buildEntity,
   buildLocaleMapJs,
   buildProgram,
   buildTrainingScheduleResponse,
-} from '../testing/fixtures/training-schedule';
-import { COROS_API_BASE_URL, server } from '../testing/msw-server';
-import { ExportTrainingScheduleCommandRunner } from './export-training-schedule.command-runner';
+} from '../testing/fixtures/training-schedule.js';
+import { COROS_API_BASE_URL, server } from '../testing/msw-server.js';
+import { ExportTrainingScheduleCommandRunner } from './export-training-schedule.command-runner.js';
 
 const LOCALE_MAP = {
   'training.easy_run': 'Easy Run',

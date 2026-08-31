@@ -1,7 +1,7 @@
 import type {
   TrainingScheduleEntity,
   TrainingScheduleProgram,
-} from '../../coros/training-schedule/query-training-schedule.request';
+} from '../../coros/training-schedule/query-training-schedule.request.js';
 
 export function buildEntity(overrides: Partial<TrainingScheduleEntity> = {}): TrainingScheduleEntity {
   return {

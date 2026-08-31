@@ -1,4 +1,4 @@
-import type { Activity } from '../../coros/activity/query-activities.request';
+import type { Activity } from '../../coros/activity/query-activities.request.js';
 
 export function buildActivity(overrides: Partial<Activity> = {}): Activity {
   return {

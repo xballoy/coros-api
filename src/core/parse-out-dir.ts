@@ -1,5 +1,5 @@
 import { statSync } from 'node:fs';
-import { InvalidParameterError } from './invalid-parameter-error';
+import { InvalidParameterError } from './invalid-parameter-error.js';
 
 export const parseOutDir = (out: string): string => {
   const stats = statSync(out, { throwIfNoEntry: false });

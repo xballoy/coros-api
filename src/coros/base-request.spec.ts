@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
-import { ValidationError } from '../core/validation-error';
-import { BaseRequest } from './base-request';
-import { CorosResponse } from './common';
+import { ValidationError } from '../core/validation-error.js';
+import { BaseRequest } from './base-request.js';
+import { CorosResponse } from './common.js';
 
 const TestInput = z.object({
   name: z.string(),
