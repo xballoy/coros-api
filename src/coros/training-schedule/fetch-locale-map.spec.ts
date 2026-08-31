@@ -1,6 +1,6 @@
 import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
-import { parseLocalePayload } from './fetch-locale-map';
+import { parseLocalePayload } from './fetch-locale-map.js';
 
 describe('parseLocalePayload', () => {
   it('parses payload with exact marker "window.en_US="', () => {

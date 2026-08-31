@@ -3,11 +3,11 @@ import { URL } from 'node:url';
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import { z } from 'zod';
-import { redactAccessToken } from '../../core/redact-access-token';
-import { BaseRequest } from '../base-request';
-import { CorosResponse } from '../common';
-import { CorosConfigService } from '../coros.config';
-import { CorosAuthenticationService } from '../coros-authentication.service';
+import { redactAccessToken } from '../../core/redact-access-token.js';
+import { BaseRequest } from '../base-request.js';
+import { CorosResponse } from '../common.js';
+import { CorosConfigService } from '../coros.config.js';
+import { CorosAuthenticationService } from '../coros-authentication.service.js';
 
 export const LoginBody = z.object({
   account: z.string(),

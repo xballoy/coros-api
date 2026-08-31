@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import type { CalendarEvent } from './build-calendar';
-import { buildCalendar } from './build-calendar';
+import type { CalendarEvent } from './build-calendar.js';
+import { buildCalendar } from './build-calendar.js';
 
 const NOW_STAMP = '20260407T100000Z';
 

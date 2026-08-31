@@ -1,6 +1,6 @@
 import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
-import { formatDistance } from './format-distance';
+import { formatDistance } from './format-distance.js';
 
 describe('formatDistance', () => {
   it('always ends with " km"', () => {

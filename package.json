@@ -2,6 +2,7 @@
   "name": "coros-api",
   "version": "2.0.1",
   "description": "Coros API",
+  "type": "module",
   "scripts": {
     "build": "nest build",
     "format:check": "biome format src",
@@ -26,9 +27,9 @@
   "homepage": "https://github.com/xballoy/coros-api#readme",
   "devDependencies": {
     "@biomejs/biome": "2.5.11",
-    "@nestjs/cli": "11.0.24",
-    "@nestjs/schematics": "11.1.0",
-    "@nestjs/testing": "11.2.3",
+    "@nestjs/cli": "12.0.0",
+    "@nestjs/schematics": "12.0.0",
+    "@nestjs/testing": "12.0.1",
     "@swc-node/register": "1.12.1",
     "@swc/cli": "0.8.1",
     "@swc/core": "1.16.1",
@@ -44,13 +45,13 @@
     "vitest": "4.1.11"
   },
   "dependencies": {
-    "@nestjs/axios": "4.0.1",
-    "@nestjs/common": "11.2.3",
-    "@nestjs/core": "11.2.3",
+    "@nestjs/axios": "12.0.0",
+    "@nestjs/common": "12.0.1",
+    "@nestjs/core": "12.0.1",
     "axios": "1.20.0",
     "dayjs": "1.11.23",
     "dotenv": "17.4.2",
-    "nest-commander": "3.20.1",
+    "nest-commander": "3.21.0",
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.2",
     "zod": "4.4.3"

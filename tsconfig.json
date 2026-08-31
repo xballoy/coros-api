@@ -4,6 +4,11 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
 
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "resolvePackageJsonExports": true,
+    "isolatedModules": true,
+
     "outDir": "./dist"
   }
 }

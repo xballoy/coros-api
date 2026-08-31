@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import type { TrainingStart } from '../../coros/training-schedule/parse-training-start';
-import { escapeText } from './escape-text';
-import { foldLine } from './fold-line';
+import utc from 'dayjs/plugin/utc.js';
+import type { TrainingStart } from '../../coros/training-schedule/parse-training-start.js';
+import { escapeText } from './escape-text.js';
+import { foldLine } from './fold-line.js';
 
 dayjs.extend(utc);
 

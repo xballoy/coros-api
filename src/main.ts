@@ -1,8 +1,8 @@
 import { Logger } from '@nestjs/common';
 import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
+import customParseFormat from 'dayjs/plugin/customParseFormat.js';
 import { CommandFactory } from 'nest-commander';
-import { AppModule } from './app.module';
+import { AppModule } from './app.module.js';
 
 dayjs.extend(customParseFormat);
 

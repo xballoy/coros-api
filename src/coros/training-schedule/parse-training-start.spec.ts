@@ -1,7 +1,7 @@
 import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
-import { InvalidParameterError } from '../../core/invalid-parameter-error';
-import { parseTrainingStart } from './parse-training-start';
+import { InvalidParameterError } from '../../core/invalid-parameter-error.js';
+import { parseTrainingStart } from './parse-training-start.js';
 
 const validTimeArbitrary = fc
   .record({

@@ -1,6 +1,6 @@
 import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
-import { DefaultFileType, FileTypeKeys, getFileTypeFromKey, isValidFileTypeKey } from './file-type';
+import { DefaultFileType, FileTypeKeys, getFileTypeFromKey, isValidFileTypeKey } from './file-type.js';
 
 const ValidFileTypes = ['fit', 'tcx', 'gpx', 'kml', 'csv'];
 const InvalidFileTypeArbitrary = fc.string().filter((fileType) => !ValidFileTypes.includes(fileType));
