@@ -26,22 +26,22 @@
   },
   "homepage": "https://github.com/xballoy/coros-api#readme",
   "devDependencies": {
-    "@biomejs/biome": "2.5.12",
+    "@biomejs/biome": "2.5.13",
     "@nestjs/cli": "12.0.0",
     "@nestjs/schematics": "12.0.0",
     "@nestjs/testing": "12.0.1",
     "@swc-node/register": "1.12.1",
     "@swc/cli": "0.8.1",
-    "@swc/core": "1.16.1",
+    "@swc/core": "1.16.2",
     "@tsconfig/node24": "24.0.5",
-    "@types/node": "24.13.3",
+    "@types/node": "24.13.4",
     "@typescript/native": "npm:typescript@7.0.2",
     "@vitest/coverage-v8": "4.1.11",
-    "fast-check": "4.9.0",
+    "fast-check": "4.10.0",
     "lefthook": "2.1.12",
     "msw": "2.15.0",
     "typescript": "npm:@typescript/typescript6@6.0.2",
-    "unplugin-swc": "1.5.11",
+    "unplugin-swc": "1.6.0",
     "vitest": "4.1.11"
   },
   "dependencies": {
@@ -54,7 +54,7 @@
     "nest-commander": "3.21.0",
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.2",
-    "zod": "4.5.4"
+    "zod": "4.6.2"
   },
-  "packageManager": "pnpm@12.3.4"
+  "packageManager": "pnpm@12.4.1"
 }
