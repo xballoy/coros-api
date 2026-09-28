@@ -27,17 +27,17 @@
   "homepage": "https://github.com/xballoy/coros-api#readme",
   "devDependencies": {
     "@biomejs/biome": "2.5.14",
-    "@nestjs/cli": "12.0.3",
-    "@nestjs/schematics": "12.0.3",
-    "@nestjs/testing": "12.0.3",
+    "@nestjs/cli": "12.0.6",
+    "@nestjs/schematics": "12.0.5",
+    "@nestjs/testing": "12.1.0",
     "@swc-node/register": "1.12.1",
     "@swc/cli": "0.8.1",
     "@swc/core": "1.16.2",
     "@tsconfig/node24": "24.0.5",
-    "@types/node": "24.13.5",
+    "@types/node": "24.13.6",
     "@typescript/native": "npm:typescript@7.0.2",
     "@vitest/coverage-v8": "5.0.1",
-    "fast-check": "4.10.1",
+    "fast-check": "4.10.2",
     "lefthook": "2.1.14",
     "msw": "2.15.0",
     "typescript": "npm:@typescript/typescript6@6.0.2",
@@ -46,15 +46,15 @@
   },
   "dependencies": {
     "@nestjs/axios": "12.0.1",
-    "@nestjs/common": "12.0.3",
-    "@nestjs/core": "12.0.3",
+    "@nestjs/common": "12.1.0",
+    "@nestjs/core": "12.1.0",
     "axios": "1.20.0",
     "dayjs": "1.11.23",
-    "dotenv": "18.0.0",
+    "dotenv": "18.0.3",
     "nest-commander": "3.21.0",
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.2",
     "zod": "4.6.5"
   },
-  "packageManager": "pnpm@12.4.2"
+  "packageManager": "pnpm@12.6.0"
 }
