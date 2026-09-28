@@ -12,7 +12,7 @@ concurrency:
 jobs:
   changes:
     name: Detect workflow changes
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       pull-requests: read
     outputs:
@@ -29,7 +29,7 @@ jobs:
     name: Lint
     needs: changes
     if: needs.changes.outputs.github == 'true'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
     steps:
@@ -66,7 +66,7 @@ jobs:
     name: Lint gate
     if: always()
     needs: [changes, lint]
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Check lint outcome
         env:
