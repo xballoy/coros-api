@@ -1,0 +1,5 @@
+window.en_US={
+  "T1170": "Jogging",
+  "T3001": "Training",
+  "TD1030": "Please enter the team profile"
+}
