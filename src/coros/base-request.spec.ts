@@ -35,8 +35,8 @@ class TestRequest extends BaseRequest<TestInput, TestResponse, TestInput> {
     this.assertCorosResponseBase(data);
   }
 
-  public assertResponse(data: unknown): void {
-    this.assertCorosResponse(data);
+  public parseResponse(data: unknown): TestResponse {
+    return this.parseCorosResponse(data);
   }
 }
 
@@ -73,7 +73,7 @@ describe('BaseRequest', () => {
     });
   });
 
-  describe('assertCorosResponse', () => {
+  describe('parseCorosResponse', () => {
     it('throws ValidationError with the accessToken redacted from the cause', () => {
       const request = new TestRequest();
       const response = {
@@ -85,7 +85,7 @@ describe('BaseRequest', () => {
 
       let thrown: unknown;
       try {
-        request.assertResponse(response);
+        request.parseResponse(response);
       } catch (error) {
         thrown = error;
       }

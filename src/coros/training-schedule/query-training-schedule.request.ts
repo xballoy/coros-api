@@ -15,11 +15,13 @@ export const QueryTrainingScheduleInput = z.object({
 });
 export type QueryTrainingScheduleInput = z.infer<typeof QueryTrainingScheduleInput>;
 
+const CorosDay = z.union([z.string(), z.number()]).transform(String);
+
 export const TrainingScheduleSportData = z.object({
   name: z.string().optional(),
   distance: z.number().optional(),
   duration: z.number().optional(),
-  happenDay: z.string().optional(),
+  happenDay: CorosDay.optional(),
 });
 export type TrainingScheduleSportData = z.infer<typeof TrainingScheduleSportData>;
 
@@ -27,7 +29,7 @@ export const TrainingScheduleEntity = z.object({
   id: z.string().optional(),
   idInPlan: z.string().optional(),
   planProgramId: z.string().optional(),
-  happenDay: z.string().optional(),
+  happenDay: CorosDay.optional(),
   sportData: TrainingScheduleSportData.optional(),
 });
 export type TrainingScheduleEntity = z.infer<typeof TrainingScheduleEntity>;
@@ -95,8 +97,8 @@ export class QueryTrainingScheduleRequest extends BaseRequest<
     this.logger.verbose('Query training schedule response', data);
 
     this.assertCorosResponseBase(data);
-    this.assertCorosResponse(data);
+    const response = this.parseCorosResponse(data);
 
-    return data.data;
+    return response.data;
   }
 }

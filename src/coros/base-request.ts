@@ -30,12 +30,13 @@ export abstract class BaseRequest<Input, Response extends CorosResponseWithData,
     }
   }
 
-  protected assertCorosResponse(data: unknown): asserts data is Response {
+  protected parseCorosResponse(data: unknown): Response {
     const parseResult = this.responseValidator().safeParse(data);
     if (!parseResult.success) {
       throw new ValidationError(parseResult.error, {
         cause: redactAccessToken(data),
       });
     }
+    return parseResult.data;
   }
 }

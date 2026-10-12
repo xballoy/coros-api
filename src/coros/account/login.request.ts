@@ -63,11 +63,11 @@ export class LoginRequest extends BaseRequest<LoginInput, LoginResponse, void> {
     this.logger.verbose('Login request response', redactAccessToken(data));
 
     this.assertCorosResponseBase(data);
-    this.assertCorosResponse(data);
+    const response = this.parseCorosResponse(data);
 
     const {
       data: { accessToken },
-    } = data;
+    } = response;
     this.corosAuthenticationService.accessToken = accessToken;
   }
 }

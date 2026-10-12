@@ -69,8 +69,8 @@ export class DownloadActivityDetailRequest extends BaseRequest<
     this.logger.verbose('Download activity detail response', data);
 
     this.assertCorosResponseBase(data);
-    this.assertCorosResponse(data);
+    const response = this.parseCorosResponse(data);
 
-    return data.data;
+    return response.data;
   }
 }
