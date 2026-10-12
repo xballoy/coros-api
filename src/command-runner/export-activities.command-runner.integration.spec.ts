@@ -35,7 +35,7 @@ describe('export-activities', () => {
     process.env.COROS_API_URL = COROS_API_BASE_URL;
     process.env.COROS_EMAIL = 'test@example.com';
     process.env.COROS_PASSWORD = 'testpassword';
-    server.listen({ onUnhandledRequest: 'error' });
+    server.listen({ onUnhandledFrame: 'error' });
   });
 
   afterAll(() => {
