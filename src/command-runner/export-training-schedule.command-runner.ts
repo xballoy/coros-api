@@ -7,7 +7,7 @@ import { Command, CommandRunner, Option } from 'nest-commander';
 import { buildCalendar } from '../core/ics/build-calendar.js';
 import { parseOutDir } from '../core/parse-out-dir.js';
 import { CorosAPI } from '../coros/coros-api.js';
-import { fetchLocaleMap } from '../coros/training-schedule/fetch-locale-map.js';
+import { fetchLocaleMap, type LocaleMap } from '../coros/training-schedule/fetch-locale-map.js';
 import type { TrainingStart } from '../coros/training-schedule/parse-training-start.js';
 import { parseTrainingStart } from '../coros/training-schedule/parse-training-start.js';
 import type {
@@ -56,7 +56,7 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
     });
     this.logger.debug('Query training schedule success');
 
-    const localeMap = await fetchLocaleMap(this.httpService);
+    const localeMap = await this.loadLocaleMap();
     const events = this.buildScheduleEvents(schedule, localeMap, flags.trainingStart);
     const calendar = buildCalendar(events, flags.trainingStart);
     const fileName = `training-schedule-${startDate.format('YYYY-MM-DD')}-to-${endDate.format('YYYY-MM-DD')}.ics`;
@@ -83,6 +83,16 @@ export class ExportTrainingScheduleCommandRunner extends CommandRunner {
   })
   parseTrainingStart(value: string): TrainingStart {
     return parseTrainingStart(value);
+  }
+
+  private async loadLocaleMap(): Promise<LocaleMap> {
+    try {
+      return await fetchLocaleMap(this.httpService);
+    } catch (error) {
+      const reason = error instanceof Error ? error.message : String(error);
+      this.logger.warn(`Could not download Coros translations, training names are left untranslated: ${reason}`);
+      return {};
+    }
   }
 
   private buildScheduleEvents(

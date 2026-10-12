@@ -1,20 +1,3 @@
-import { Logger } from '@nestjs/common';
-import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat.js';
-import { CommandFactory } from 'nest-commander';
-import { AppModule } from './app.module.js';
+import { runCli } from './cli.js';
 
-dayjs.extend(customParseFormat);
-
-async function bootstrap() {
-  const logger = new Logger(CommandFactory.name);
-
-  await CommandFactory.run(AppModule, {
-    logger: ['log', 'warn', 'error', 'fatal'],
-    serviceErrorHandler: (err) => {
-      logger.error(err);
-      process.exitCode = 1;
-    },
-  });
-}
-void bootstrap();
+void runCli(process.argv);

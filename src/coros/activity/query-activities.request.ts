@@ -129,11 +129,11 @@ export class QueryActivitiesRequest extends BaseRequest<
       this.logger.verbose('Query activity response', data);
 
       this.assertCorosResponseBase(data);
-      this.assertCorosResponse(data);
+      const response = this.parseCorosResponse(data);
 
       const {
         data: { dataList, totalPage },
-      } = data;
+      } = response;
 
       activities.push(...(dataList ?? []));
       lastPage = totalPage ?? 0;
