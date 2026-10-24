@@ -8,6 +8,8 @@ minimumReleaseAge: 4320
 
 minimumReleaseAgeExclude:
   - nest-commander
+  # Renovate security update: zod@4.6.6
+  - zod@4.6.6
 
 patchedDependencies:
   nest-commander: patches/nest-commander.patch
