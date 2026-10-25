@@ -15,13 +15,13 @@
   },
   "assist": {
     "actions": {
-      "recommended": true
+      "preset": "recommended"
     }
   },
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
       "correctness": {
         "useImportExtensions": {
           "level": "error",
