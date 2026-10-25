@@ -1,6 +1,6 @@
 allowBuilds:
-  '@nestjs/core': false
-  '@swc/core': true
+  "@nestjs/core": false
+  "@swc/core": true
   lefthook: true
   msw: true
 
@@ -18,3 +18,5 @@ trustPolicy: no-downgrade
 
 trustPolicyExclude:
   - chokidar@4.0.3 # https://github.com/paulmillr/chokidar/issues/1440
+  # Manual publish while bootstrapping the new lefthook-android-arm64 package; JS wrapper identical to 2.2.1, platform binaries keep OIDC provenance
+  - lefthook@2.2.2
