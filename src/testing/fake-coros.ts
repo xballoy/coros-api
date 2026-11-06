@@ -64,10 +64,14 @@ export function recordedInvalidCredentialsResponse(): RecordedCorosResponse {
   return readRecorded('login-invalid-credentials.json', CorosResponseBase);
 }
 
+export function recordedAccessTokenInvalidResponse(): RecordedCorosResponse {
+  return readRecorded('access-token-invalid.json', CorosResponseBase);
+}
+
 export const DOWNLOAD_REJECTED_MESSAGE = 'The activity could not be exported.';
 
-function corosErrorResponse(apiCode: string, message: string): RecordedCorosResponse {
-  return { ...recordedInvalidCredentialsResponse(), apiCode, message, result: '1019' };
+function unrecordedCorosErrorResponse(message: string): RecordedCorosResponse {
+  return { message, result: '9999' };
 }
 
 export function activityFileContent(labelId: string): string {
@@ -78,8 +82,12 @@ export type FakeCorosOptions = {
   loginResponse?: RecordedCorosResponse;
   activityPages?: RecordedActivity[][];
   detailDownloadCorosErrors?: string[];
+  detailDownloadRevokedToken?: string[];
+  detailDownloadRateLimited?: string[];
   detailDownloadServerErrors?: string[];
   missingFiles?: string[];
+  fileServerErrors?: string[];
+  fileRateLimited?: string[];
   trainingSchedule?: RecordedTrainingSchedule;
   localeScript?: string | null;
 };
@@ -89,8 +97,12 @@ export function fakeCoros(options: FakeCorosOptions = {}): { requests: RecordedR
     loginResponse = recordedLogin(),
     activityPages = [recordedActivities()],
     detailDownloadCorosErrors = [],
+    detailDownloadRevokedToken = [],
+    detailDownloadRateLimited = [],
     detailDownloadServerErrors = [],
     missingFiles = [],
+    fileServerErrors = [],
+    fileRateLimited = [],
     trainingSchedule = recordedTrainingSchedule(),
     localeScript = readRecordedText('locale-en-US.txt'),
   } = options;
@@ -129,7 +141,13 @@ export function fakeCoros(options: FakeCorosOptions = {}): { requests: RecordedR
       const params = new URL(request.url).searchParams;
       const labelId = params.get('labelId') ?? '';
       if (detailDownloadCorosErrors.includes(labelId)) {
-        return HttpResponse.json(corosErrorResponse(downloadEnvelope.apiCode, DOWNLOAD_REJECTED_MESSAGE));
+        return HttpResponse.json(unrecordedCorosErrorResponse(DOWNLOAD_REJECTED_MESSAGE));
+      }
+      if (detailDownloadRevokedToken.includes(labelId)) {
+        return HttpResponse.json(recordedAccessTokenInvalidResponse());
+      }
+      if (detailDownloadRateLimited.includes(labelId)) {
+        return new HttpResponse(null, { status: 429 });
       }
       if (detailDownloadServerErrors.includes(labelId)) {
         return new HttpResponse(null, { status: 500 });
@@ -144,6 +162,12 @@ export function fakeCoros(options: FakeCorosOptions = {}): { requests: RecordedR
       const labelId = String(params.fileName).split('.')[0];
       if (missingFiles.includes(labelId)) {
         return new HttpResponse(null, { status: 404 });
+      }
+      if (fileServerErrors.includes(labelId)) {
+        return new HttpResponse(null, { status: 500 });
+      }
+      if (fileRateLimited.includes(labelId)) {
+        return new HttpResponse(null, { status: 429 });
       }
       return new HttpResponse(activityFileContent(labelId), {
         headers: { 'Content-Type': 'application/octet-stream' },

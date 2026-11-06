@@ -2,6 +2,7 @@ import type { z } from 'zod';
 import { redactAccessToken } from '../core/redact-access-token.js';
 import { ValidationError } from '../core/validation-error.js';
 import { CorosResponseBase, type CorosResponseWithData } from './common.js';
+import { CorosApiError } from './coros-api-error.js';
 
 export abstract class BaseRequest<Input, Response extends CorosResponseWithData, Output = Response['data']> {
   protected abstract inputValidator(): z.Schema<Input>;
@@ -26,7 +27,7 @@ export abstract class BaseRequest<Input, Response extends CorosResponseWithData,
 
     const { message, result, apiCode } = parseResult.data;
     if (result !== '0000') {
-      throw new Error(message, { cause: { apiCode, result } });
+      throw new CorosApiError(message, { result, apiCode });
     }
   }
 

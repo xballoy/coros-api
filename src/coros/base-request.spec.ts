@@ -71,6 +71,18 @@ describe('BaseRequest', () => {
         'Invalid credentials',
       );
     });
+
+    it('accepts a successful response without apiCode', () => {
+      const request = new TestRequest();
+      expect(() => request.assertBase({ message: 'OK', result: '0000' })).not.toThrow();
+    });
+
+    it('throws the API message when an error response has no apiCode', () => {
+      const request = new TestRequest();
+      expect(() => request.assertBase({ result: '1019', tlogId: '1', message: 'Access token is invalid' })).toThrow(
+        'Access token is invalid',
+      );
+    });
   });
 
   describe('parseCorosResponse', () => {

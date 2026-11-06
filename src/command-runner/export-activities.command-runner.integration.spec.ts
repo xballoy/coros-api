@@ -179,23 +179,83 @@ describe('coros-api export-activities', () => {
     expect(requests).toEqual([]);
   });
 
-  it('keeps exporting the other activities when some downloads fail, and exits with an error', async () => {
+  it('keeps exporting the other activities when some files cannot be fetched, and exits with an error', async () => {
     fakeCoros({
-      detailDownloadCorosErrors: ['900000000000000003'],
-      detailDownloadServerErrors: ['900000000000000004'],
-      missingFiles: ['900000000000000005'],
+      missingFiles: ['900000000000000003'],
+      fileServerErrors: ['900000000000000005'],
     });
 
     const { exitCode, output } = await runCorosCli(['export-activities', '--out', env.outDir]);
 
     expect(exitCode).toBe(1);
-    expect(output).toContain(DOWNLOAD_REJECTED_MESSAGE);
-    expect(output).toContain('3 of 5 downloads failed');
+    expect(output).toContain('2 of 5 downloads failed');
     expect(await env.listFiles()).toEqual([
       '2025-03-08 City Walk 1 900000000000000006.fit',
+      '2025-03-08 Strength 900000000000000004.fit',
       '2025-03-10 City Walk 1 900000000000000002.fit',
     ]);
   });
+
+  const FAILING_ACTIVITY = '900000000000000003';
+  const FAILING_DETAIL_REQUEST = `${COROS_API_BASE_URL}/activity/detail/download`;
+  const FAILING_FILE_REQUEST = `${COROS_FILES_BASE_URL}/${FAILING_ACTIVITY}.fit`;
+
+  const urlWithoutQuery = (request: { url: URL }) => `${request.url.origin}${request.url.pathname}`;
+
+  it.each([
+    {
+      failure: 'a revoked access token',
+      options: { detailDownloadRevokedToken: [FAILING_ACTIVITY] },
+      lastRequest: FAILING_DETAIL_REQUEST,
+      messages: [
+        'Access token is invalid',
+        'Coros session ended, most likely because you logged in elsewhere (e.g. Coros Training Hub).',
+      ],
+    },
+    {
+      failure: 'rate limiting from the API',
+      options: { detailDownloadRateLimited: [FAILING_ACTIVITY] },
+      lastRequest: FAILING_DETAIL_REQUEST,
+      messages: ['Coros is rate limiting requests.'],
+    },
+    {
+      failure: 'an unknown Coros error',
+      options: { detailDownloadCorosErrors: [FAILING_ACTIVITY] },
+      lastRequest: FAILING_DETAIL_REQUEST,
+      messages: [DOWNLOAD_REJECTED_MESSAGE, 'Coros API request failed.'],
+    },
+    {
+      failure: 'a server error from the API',
+      options: { detailDownloadServerErrors: [FAILING_ACTIVITY] },
+      lastRequest: FAILING_DETAIL_REQUEST,
+      messages: ['Coros API request failed.'],
+    },
+    {
+      failure: 'rate limiting from the file host',
+      options: { fileRateLimited: [FAILING_ACTIVITY] },
+      lastRequest: FAILING_FILE_REQUEST,
+      messages: ['Coros is rate limiting requests.'],
+    },
+  ])(
+    'stops sending requests as soon as it meets $failure, keeping the files already exported',
+    async ({ options, lastRequest, messages }) => {
+      const { requests } = fakeCoros(options);
+
+      const { exitCode, output } = await runCorosCli(['export-activities', '--out', env.outDir]);
+
+      expect(exitCode).toBe(1);
+      for (const message of messages) {
+        expect(output).toContain(message);
+      }
+      expect(output).toContain('Export stopped: 1 of 5 activities exported.');
+      expect(apiRequests(requests, '/account/login')).toHaveLength(1);
+      expect(
+        apiRequests(requests, '/activity/detail/download').map((request) => request.url.searchParams.get('labelId')),
+      ).toEqual(['900000000000000002', FAILING_ACTIVITY]);
+      expect(urlWithoutQuery(requests[requests.length - 1])).toBe(lastRequest);
+      expect(await env.listFiles()).toEqual(['2025-03-10 City Walk 1 900000000000000002.fit']);
+    },
+  );
 
   it('writes files inside the output directory whatever the activity name', async () => {
     const [activity] = recordedActivities();
