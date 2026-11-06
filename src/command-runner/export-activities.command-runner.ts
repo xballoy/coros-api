@@ -3,11 +3,23 @@ import dayjs from 'dayjs';
 import { Command, CommandRunner, Option } from 'nest-commander';
 import { DownloadFile } from '../core/download-file.service.js';
 import { InvalidParameterError } from '../core/invalid-parameter-error.js';
+import { isRateLimited } from '../core/is-rate-limited.js';
 import { parseDate } from '../core/parse-date.js';
 import { parseOutDir } from '../core/parse-out-dir.js';
 import { CorosAPI } from '../coros/coros-api.js';
+import { CorosApiError } from '../coros/coros-api-error.js';
 import { DefaultFileType, FileTypeKeys, getFileTypeFromKey, isValidFileTypeKey } from '../coros/file-type.js';
 import { DefaultSportType, getSportTypeValueFromKey, isValidSportTypeKey, SportTypeKeys } from '../coros/sport-type.js';
+
+const stopReason = (error: unknown): string => {
+  if (error instanceof CorosApiError && error.isAccessTokenInvalid) {
+    return 'Coros session ended, most likely because you logged in elsewhere (e.g. Coros Training Hub).';
+  }
+  if (isRateLimited(error)) {
+    return 'Coros is rate limiting requests.';
+  }
+  return 'Coros API request failed.';
+};
 
 type FileTypeFlag = { key: string; value: string };
 type SportTypesFlag = string[];
@@ -57,17 +69,30 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
       };
     });
 
+    let exported = 0;
     let failedDownloads = 0;
     for (const { labelId, sportType, fileName } of activitiesToDownload) {
+      let fileUrl: string;
       try {
-        const { fileUrl } = await this.corosService.downloadActivityDetail({
+        ({ fileUrl } = await this.corosService.downloadActivityDetail({
           labelId,
           sportType,
           fileType: fileType.value,
-        });
+        }));
+      } catch (error) {
+        this.stopExport(fileName, error, exported, activitiesToDownload.length);
+        return;
+      }
+
+      try {
         await this.downloadFileCommand.handle(fileUrl, outDir, fileName);
+        exported += 1;
         this.logger.debug(`Downloading ${fileName} success`);
       } catch (error) {
+        if (isRateLimited(error)) {
+          this.stopExport(fileName, error, exported, activitiesToDownload.length);
+          return;
+        }
         failedDownloads += 1;
         this.logger.error(`Downloading ${fileName} failed`, error instanceof Error ? error.stack : error);
       }
@@ -77,6 +102,12 @@ export class ExportActivitiesCommandRunner extends CommandRunner {
       this.logger.error(`${failedDownloads} of ${activitiesToDownload.length} downloads failed`);
       process.exitCode = 1;
     }
+  }
+
+  private stopExport(fileName: string, error: unknown, exported: number, total: number): void {
+    this.logger.error(`Downloading ${fileName} failed`, error instanceof Error ? error.stack : error);
+    this.logger.error(`${stopReason(error)} Export stopped: ${exported} of ${total} activities exported.`);
+    process.exitCode = 1;
   }
 
   @Option({

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const CorosResponseBase = z.object({
-  apiCode: z.string(),
+  apiCode: z.string().optional(),
   message: z.string(),
   result: z.string(),
 });
