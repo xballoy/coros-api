@@ -18,12 +18,15 @@ jobs:
     outputs:
       github: ${{ steps.filter.outputs.github }}
     steps:
-      - uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4.0.3
+      - uses: dorny/paths-filter@v4.0.3
         id: filter
         with:
           filters: |
             github:
               - '.github/**'
+              - '.nvmrc'
+              - 'package.json'
+              - 'pnpm-lock.yaml'
 
   lint:
     name: Lint
@@ -34,33 +37,37 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
 
       - name: Run zizmor
-        uses: zizmorcore/zizmor-action@45d7276c9ca790aabd705e31ca99c6185c3e76dd # v0.8.1
+        uses: zizmorcore/zizmor-action@v0.8.1
         with:
-          # renovate: datasource=github-releases depName=zizmorcore/zizmor
-          version: "1.32.0"
           advanced-security: false
           annotations: true
 
-      - name: Run actionlint
-        env:
-          # renovate: datasource=github-releases depName=rhysd/actionlint
-          ACTIONLINT_VERSION: 1.7.12
-        run: |
-          curl -fsSL -o actionlint-matcher.json "https://raw.githubusercontent.com/rhysd/actionlint/v${ACTIONLINT_VERSION}/.github/actionlint-matcher.json"
-          echo "::add-matcher::actionlint-matcher.json"
-          bash <(curl -fsSL "https://raw.githubusercontent.com/rhysd/actionlint/v${ACTIONLINT_VERSION}/scripts/download-actionlint.bash") "${ACTIONLINT_VERSION}"
-          ./actionlint -color
-        shell: bash
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6.1.1
 
-      - name: Verify actions are pinned
-        uses: suzuki-shunsuke/pinact-action@b1a1f46bb10f2908950d95f626ca8cc109e2cf7d # v3.1.0
+      - name: Set up Node
+        uses: actions/setup-node@v7.1.0
         with:
-          fix: "false"
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Install Node dependencies
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Run actionlint
+        run: pnpm exec actionlint -color
+
+      - name: Verify the actions lockfile
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh extension install github/gh-actions-lock --pin v0.4.1
+          gh actions-lock --verify
 
   gate:
     name: Lint gate
