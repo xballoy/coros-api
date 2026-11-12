@@ -111,6 +111,22 @@ describe('coros-api export-activities', () => {
     expect(apiRequests(requests, '/activity/query')[0].url.searchParams.get('modeList')).toBe('100,200');
   });
 
+  it('accepts every Training Hub sport type and sends its mode code', async () => {
+    const { requests } = fakeCoros();
+
+    await runCorosCli([
+      'export-activities',
+      '--out',
+      env.outDir,
+      '--exportSportTypes',
+      'boatFishingLure,shoreFishingLure,pondFishingLure,kayakFishingLure,inshoreFishing,offshoreFishing,boatFlyFishing,shoreFlyFishing,surfFishing,outdoorClimb,elliptical,yoga,pilates,boxing,badminton,tableTennis,basketball,football,pickleball,tennis,padel,frisbee,skateboarding,hyrox',
+    ]);
+
+    expect(apiRequests(requests, '/activity/query')[0].url.searchParams.get('modeList')).toBe(
+      '707,708,709,710,711,712,713,714,715,802,903,904,905,906,1000,1001,1002,1003,1004,1005,1006,1100,1101,1200',
+    );
+  });
+
   it('filters on the requested date range', async () => {
     const { requests } = fakeCoros();
 
