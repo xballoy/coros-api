@@ -38,6 +38,30 @@ type SportTypeKey =
   | 'walk'
   | 'jumpRope'
   | 'climbStairs'
+  | 'boatFishingLure'
+  | 'shoreFishingLure'
+  | 'pondFishingLure'
+  | 'kayakFishingLure'
+  | 'inshoreFishing'
+  | 'offshoreFishing'
+  | 'boatFlyFishing'
+  | 'shoreFlyFishing'
+  | 'surfFishing'
+  | 'outdoorClimb'
+  | 'elliptical'
+  | 'yoga'
+  | 'pilates'
+  | 'boxing'
+  | 'badminton'
+  | 'tableTennis'
+  | 'basketball'
+  | 'football'
+  | 'pickleball'
+  | 'tennis'
+  | 'padel'
+  | 'frisbee'
+  | 'skateboarding'
+  | 'hyrox'
   | 'customSport';
 
 const AllSportTypes: {
@@ -82,6 +106,30 @@ const AllSportTypes: {
   walk: { key: 'walk', value: '900' },
   jumpRope: { key: 'jumpRope', value: '901' },
   climbStairs: { key: 'climbStairs', value: '902' },
+  boatFishingLure: { key: 'boatFishingLure', value: '707' },
+  shoreFishingLure: { key: 'shoreFishingLure', value: '708' },
+  pondFishingLure: { key: 'pondFishingLure', value: '709' },
+  kayakFishingLure: { key: 'kayakFishingLure', value: '710' },
+  inshoreFishing: { key: 'inshoreFishing', value: '711' },
+  offshoreFishing: { key: 'offshoreFishing', value: '712' },
+  boatFlyFishing: { key: 'boatFlyFishing', value: '713' },
+  shoreFlyFishing: { key: 'shoreFlyFishing', value: '714' },
+  surfFishing: { key: 'surfFishing', value: '715' },
+  outdoorClimb: { key: 'outdoorClimb', value: '802' },
+  elliptical: { key: 'elliptical', value: '903' },
+  yoga: { key: 'yoga', value: '904' },
+  pilates: { key: 'pilates', value: '905' },
+  boxing: { key: 'boxing', value: '906' },
+  badminton: { key: 'badminton', value: '1000' },
+  tableTennis: { key: 'tableTennis', value: '1001' },
+  basketball: { key: 'basketball', value: '1002' },
+  football: { key: 'football', value: '1003' },
+  pickleball: { key: 'pickleball', value: '1004' },
+  tennis: { key: 'tennis', value: '1005' },
+  padel: { key: 'padel', value: '1006' },
+  frisbee: { key: 'frisbee', value: '1100' },
+  skateboarding: { key: 'skateboarding', value: '1101' },
+  hyrox: { key: 'hyrox', value: '1200' },
   customSport: { key: 'customSport', value: '98' },
 };
 
